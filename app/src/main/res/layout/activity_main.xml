@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".activity.MainActivity">
+
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:titleBarHeight="50dp"
+        titlebar:showBottomLine="true"
+        titlebar:centerType="searchView"
+        titlebar:centerSearchRightType="delete"
+        titlebar:leftCustomView="@layout/view_find_title_bar_left"
+        titlebar:leftType="customView"
+        titlebar:rightCustomView="@layout/view_find_title_bar_right"
+        titlebar:rightType="customView" />
+    <FrameLayout
+        android:id="@+id/id_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:ignore="Suspicious0dp">
+    </FrameLayout>
+
+    <include layout="@layout/view_navigation"/>
+</LinearLayout>
