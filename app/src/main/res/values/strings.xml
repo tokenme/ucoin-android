@@ -5,4 +5,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="entity_find_fav">收藏</string>
     <string name="entity_find_share">分享</string>
+    <string name="entity_task_coin_award">奖励</string>
+    <string name="entity_task_button">去做任务</string>
 </resources>

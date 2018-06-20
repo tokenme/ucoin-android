@@ -10,4 +10,10 @@
     <color name="txtColor">#1D1E1E</color>
     <color name="tabDefault">#DADADA</color>
     <color name="findTag">#ff9372</color>
+    <color name="colorGray">#525252</color>
+    <color name="colorTaskCoinAward">#f85347</color>
+    <color name="colorEntityTaskTitle">#333333</color>
+    <color name="colorEntityTaskDesc">#999999</color>
+    <color name="colorEntityTaskBottomBorder">#e5e5e5</color>
+    <color name="colorEntityTaskButton">#0099ff</color>
 </resources>

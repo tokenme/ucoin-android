@@ -16,7 +16,7 @@
 
         <com.mikepenz.iconics.view.IconicsTextView
             android:id="@+id/tab_find_img"
-            android:text="{faw-eye}"
+            android:text="{faw-compass}"
             android:textColor="@color/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

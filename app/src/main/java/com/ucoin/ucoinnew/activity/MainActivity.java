@@ -1,6 +1,7 @@
 package com.ucoin.ucoinnew.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,8 @@ import com.ucoin.ucoinnew.fragment.UserFragment;
 
 import com.mikepenz.iconics.view.IconicsTextView;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
+
+import cn.bingoogolapple.qrcode.core.QRCodeView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -119,20 +122,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         leftCustomLayout.findViewById(R.id.find_title_bar_scan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Logger.i("here");
+                startActivity(new Intent(MainActivity.this, ScanQrcodeActivity.class));
             }
         });
-        /*
-        titleBar.setListener(new CommonTitleBar.OnTitleBarListener() {
-            @Override
-            public void onClicked(View v, int action, String extra) {
-                Logger.i("hahahaha");
-                if (action == CommonTitleBar.ACTION_LEFT_BUTTON || action == CommonTitleBar.ACTION_LEFT_TEXT) {
-                    onBackPressed();
-                }
-            }
-        });
-        */
     }
 
     private void initTabEvents() {

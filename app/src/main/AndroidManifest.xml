@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ucoin.ucoinnew">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:name=".application.App"
         android:allowBackup="true"
@@ -16,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.ScanQrcodeActivity" android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -23,6 +23,7 @@ public class Api {
     protected static final OkHttpClient sClient = new OkHttpClient();
     protected static HashMap<String, String> sRequestUrls = new HashMap<String,String>(){{
         put("getItemList", "/getItemList");
+        put("getTaskList", "/getTaskList");
     }};
 
     public static void request(String name, String method, JSONObject params, Context context, Callback cb) throws IOException, JSONException {

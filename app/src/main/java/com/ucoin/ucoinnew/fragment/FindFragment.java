@@ -41,7 +41,6 @@ public class FindFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RefreshLayout mRefreshLayout;
     private int mCurrentPage = 1;
-    private String TAG = "FindFragment";
 
     @Override
     public void onAttach(Context context) {
@@ -54,7 +53,7 @@ public class FindFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tab_find, container, false);
 
-        mRecyclerView = (RecyclerView) mView.findViewById(R.id.rv_find_list);
+        mRecyclerView = mView.findViewById(R.id.rv_find_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mMainActivity));
 
         mFindAdapter = new FindAdapter(R.layout.entity_find, mDataList);
@@ -111,7 +110,7 @@ public class FindFragment extends Fragment {
             Api.request("getItemList", "GET", params, mMainActivity, new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
-                    Logger.e("onFailure: ");
+                    Logger.e("onFailure: " + e.getMessage());
                 }
 
                 @Override
