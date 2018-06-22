@@ -24,6 +24,7 @@ public class Api {
     protected static HashMap<String, String> sRequestUrls = new HashMap<String,String>(){{
         put("getItemList", "/getItemList");
         put("getTaskList", "/getTaskList");
+        put("getCoinList", "/getCoinList");
     }};
 
     public static void request(String name, String method, JSONObject params, Context context, Callback cb) throws IOException, JSONException {

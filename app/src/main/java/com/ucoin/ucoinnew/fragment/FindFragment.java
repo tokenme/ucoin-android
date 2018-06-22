@@ -127,10 +127,16 @@ public class FindFragment extends Fragment {
                                 String title = e.getString("title");
                                 String desc = e.getString("desc");
                                 String pic = e.getString("pic");
+                                String coinName = e.getString("coin_name");
+                                String coinPic = e.getString("coin_pic");
+                                Double coinNum = e.getDouble("coin_num");
                                 JSONArray tags = e.getJSONArray("tags");
                                 entity.setTitle(title);
                                 entity.setDesc(desc);
                                 entity.setPic(pic);
+                                entity.setCoinName(coinName);
+                                entity.setCoinPic(coinPic);
+                                entity.setCoinNum(coinNum);
                                 entity.setTags(tags);
                                 mDataList.add(entity);
                             }

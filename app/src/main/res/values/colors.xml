@@ -9,6 +9,7 @@
     <color name="icon">#0099ff</color>
     <color name="txtColor">#1D1E1E</color>
     <color name="tabDefault">#DADADA</color>
+    <color name="borderDefault">#CCCCCC</color>
     <color name="findTag">#ff9372</color>
     <color name="colorGray">#525252</color>
     <color name="colorTaskCoinAward">#f85347</color>
@@ -16,4 +17,10 @@
     <color name="colorEntityTaskDesc">#999999</color>
     <color name="colorEntityTaskBottomBorder">#e5e5e5</color>
     <color name="colorEntityTaskButton">#0099ff</color>
+    <color name="colorTabChangeCoinHeaderBg">#999999</color>
+    <color name="colorTabChangeCoinHeader">#333333</color>
+    <color name="colorTabChangeCoinTableHeader">#f2f2f2</color>
+    <color name="colorTabUserHeaderBg">#999999</color>
+    <color name="colorEntityCoinIncrease">#42cc52</color>
+    <color name="colorActivityMakeTaskHeaderBg">#f2f2f2</color>
 </resources>

@@ -38,8 +38,8 @@ public class TaskAdapter extends BaseQuickAdapter<TaskEntity, BaseViewHolder> {
 
         String coinPic = entity.getCoinPic();
         Uri coinPicUri = Uri.parse(coinPic);
-        SimpleDraweeView coinPicdraweeView = helper.getView(R.id.entity_task_coin_pic);
-        coinPicdraweeView.setImageURI(coinPicUri);
+        SimpleDraweeView coinPicDraweeView = helper.getView(R.id.entity_task_coin_pic);
+        coinPicDraweeView.setImageURI(coinPicUri);
 
         JSONArray pics = entity.getPics();
         int screenWidth = UiUtil.getScreenWidth(mContext);
@@ -52,10 +52,7 @@ public class TaskAdapter extends BaseQuickAdapter<TaskEntity, BaseViewHolder> {
                     Uri picUri = Uri.parse(pic);
                     SimpleDraweeView picView = new SimpleDraweeView(mContext);
                     picView.setImageURI(picUri);
-                    GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams(
-                        GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f),
-                        GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f)
-                    );
+                    GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
 
                     int w = (int) Math.round(screenWidth / 3.5);
                     layoutParams.width = Integer.valueOf(w);
@@ -73,27 +70,6 @@ public class TaskAdapter extends BaseQuickAdapter<TaskEntity, BaseViewHolder> {
                 }
             }
         }
-
-        /*
-
-        JSONArray tags = entity.getTags();
-        if (tags.length() > 0) {
-            LinearLayout tagsWarpper = helper.getView(R.id.entity_find_tags);
-            tagsWarpper.removeAllViews();
-            for (int i = 0; i < tags.length(); i ++) {
-                TextView tag = new TextView(mContext);
-                try {
-                    tag.setText(tags.getString(i));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                tagsWarpper.addView(tag);
-                tag.setBackgroundResource(R.drawable.find_item_tag_border_radius);
-                tag.setPadding(20, 2, 20, 2);
-                tag.setTextColor(tagsWarpper.getResources().getColor(R.color.findTag));
-                UiUtil.setMargins(tag, 0, 0, 10, 0);
-            }
-        }
-        */
+        helper.addOnClickListener(R.id.entity_task_go_to_make);
     }
 }

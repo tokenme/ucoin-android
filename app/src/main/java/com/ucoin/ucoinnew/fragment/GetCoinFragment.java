@@ -1,6 +1,7 @@
 package com.ucoin.ucoinnew.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.activity.MainActivity;
+import com.ucoin.ucoinnew.activity.MakeTaskActivity;
 import com.ucoin.ucoinnew.adapter.TaskAdapter;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.entity.TaskEntity;
@@ -69,8 +71,36 @@ public class GetCoinFragment extends Fragment {
         }
         refresh();
         loadMore();
+        click();
 
         return mView;
+    }
+
+    private void click() {
+        mTaskAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                final TaskEntity te = (TaskEntity) adapter.getItem(position);
+                switch (view.getId()) {
+                    case R.id.entity_task_go_to_make:
+                        Intent intent = new Intent(mMainActivity, MakeTaskActivity.class);
+                        intent.putExtra("title", te.getTitle());
+                        intent.putExtra("desc", te.getDesc());
+                        try {
+                            JSONArray pics = te.getPics();
+                            String pic = "";
+                            if (pics.length() > 0) {
+                                pic = pics.getString(0);
+                            }
+                            intent.putExtra("pic", pic);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 
     private void refresh() {

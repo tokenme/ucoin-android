@@ -25,11 +25,18 @@ public class FindAdapter extends BaseQuickAdapter<FindEntity, BaseViewHolder> {
     protected void convert(BaseViewHolder helper, FindEntity entity) {
         helper.setText(R.id.entity_find_title, entity.getTitle());
         helper.setText(R.id.entity_find_desc, entity.getDesc());
+        helper.setText(R.id.entity_find_coin_name, entity.getCoinName());
+        helper.setText(R.id.entity_find_coin_num, String.valueOf(entity.getCoinNum()));
 
         String pic = entity.getPic();
         Uri uri = Uri.parse(pic);
         SimpleDraweeView draweeView = helper.getView(R.id.entity_find_pic);
         draweeView.setImageURI(uri);
+
+        String coinPic = entity.getCoinPic();
+        Uri coinPicUri = Uri.parse(coinPic);
+        SimpleDraweeView coinPicDarweeView = helper.getView(R.id.entity_find_coin_pic);
+        coinPicDarweeView.setImageURI(coinPicUri);
 
         JSONArray tags = entity.getTags();
         if (tags.length() > 0) {

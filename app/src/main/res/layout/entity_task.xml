@@ -109,6 +109,7 @@
             app:columnCount="3">
         </android.support.v7.widget.GridLayout>
         <Button
+            android:id="@+id/entity_task_go_to_make"
             android:layout_width="match_parent"
             android:layout_height="38dp"
             android:background="@drawable/task_button_border_radius"

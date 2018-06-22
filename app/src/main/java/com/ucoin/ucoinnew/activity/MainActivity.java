@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private long mExitTime = 0;
     private int mCurrentTab;
 
+    private CommonTitleBar mTitleBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +66,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCurrentTab = v.getId();
         switch (v.getId()) {
             case R.id.tab_find:
+                mTitleBar.setVisibility(View.VISIBLE);
                 selectTab(0);
                 break;
             case R.id.tab_get_coin:
+                mTitleBar.setVisibility(View.VISIBLE);
                 selectTab(1);
                 break;
             case R.id.tab_change_coin:
+                mTitleBar.setVisibility(View.VISIBLE);
                 selectTab(2);
                 break;
             case R.id.tab_user:
+                mTitleBar.setVisibility(View.GONE);
                 selectTab(3);
                 break;
         }
@@ -117,8 +123,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
-        final CommonTitleBar titleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = titleBar.getLeftCustomView();
+        mTitleBar = findViewById(R.id.title_bar);
+        View leftCustomLayout = mTitleBar.getLeftCustomView();
         leftCustomLayout.findViewById(R.id.find_title_bar_scan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

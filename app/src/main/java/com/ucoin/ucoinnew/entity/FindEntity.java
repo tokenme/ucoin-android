@@ -6,6 +6,9 @@ public class FindEntity {
     private String mTitle;
     private String mDesc;
     private String mPic;
+    private String mCoinName;
+    private String mCoinPic;
+    private Double mCoinNum;
     private JSONArray mTags;
     private Class<?> mActivity;
 
@@ -39,6 +42,30 @@ public class FindEntity {
 
     public void setPic(String pic) {
         this.mPic = pic;
+    }
+
+    public String getCoinName() {
+        return mCoinName;
+    }
+
+    public void setCoinName(String coinName) {
+        this.mCoinName = coinName;
+    }
+
+    public String getCoinPic() {
+        return mCoinPic;
+    }
+
+    public void setCoinPic(String coinPic) {
+        this.mCoinPic = coinPic;
+    }
+
+    public Double getCoinNum() {
+        return mCoinNum;
+    }
+
+    public void setCoinNum(Double coinNum) {
+        this.mCoinNum = coinNum;
     }
 
     public Class<?> getActivity() {
