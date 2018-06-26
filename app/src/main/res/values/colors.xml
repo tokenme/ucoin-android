@@ -13,17 +13,12 @@
     <color name="findTag">#ff9372</color>
     <color name="colorGray">#525252</color>
     <color name="colorTaskCoinAward">#f85347</color>
-    <color name="colorEntityTaskTitle">#333333</color>
-    <color name="colorEntityTaskDesc">#999999</color>
-    <color name="colorEntityTaskBottomBorder">#e5e5e5</color>
     <color name="colorEntityTaskButton">#0099ff</color>
-    <color name="colorTabChangeCoinHeaderBg">#999999</color>
-    <color name="colorTabChangeCoinHeader">#333333</color>
-    <color name="colorTabChangeCoinTableHeader">#f2f2f2</color>
-    <color name="colorTabUserHeaderBg">#999999</color>
     <color name="colorEntityCoinIncrease">#42cc52</color>
-    <color name="colorActivityMakeTaskHeaderBg">#f2f2f2</color>
-    <color name="colorActivityRightLike">#f12f2f</color>
-    <color name="colorActivityRightDesc">#333333</color>
-    <color name="colorActivityRightCommentBg">#f2f2f2</color>
+    <color name="colorActivityCoinDashBoardMidLine">#dfdfdf</color>
+    <color name="colorActivityCoinDashBoardTop">#f01000</color>
+    <color name="colorGeneralLine">#e5e5e5</color>
+    <color name="colorGeneralCommentBg">#f2f2f2</color>
+    <color name="colorGeneralBg">#999999</color>
+    <color name="colorGeneralText">#333333</color>
 </resources>

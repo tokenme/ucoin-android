@@ -23,6 +23,7 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 public class RightActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,21 +50,23 @@ public class RightActivity extends AppCompatActivity {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
-                                Logger.i("去买入");
+                                intent.setClass(RightActivity.this, CoinTaskActivity.class);
+                                startActivity(intent);
                                 dialog.dismiss();
                             }
                         })
                         .onNegative(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(MaterialDialog dialog, DialogAction which) {
-                                Logger.i("去赚取");
+                                intent.setClass(RightActivity.this, CoinActivity.class);
+                                startActivity(intent);
                                 dialog.dismiss();
                             }
                         })
                         .title(R.string.activity_right_exchange_dialog_title)
                         .items(items)
-                        .positiveText(R.string.activity_right_exchange_dialog_buy)
-                        .negativeText(R.string.activity_right_exchange_dialog_task)
+                        .negativeText(R.string.activity_right_exchange_dialog_buy)
+                        .positiveText(R.string.activity_right_exchange_dialog_task)
                         .itemsCallback(new MaterialDialog.ListCallback() {
                             @Override
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
@@ -77,7 +80,7 @@ public class RightActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceAsColor")
     private void initView() {
-        Intent intent = getIntent();
+        intent = getIntent();
         String title = intent.getStringExtra("title");
         String desc = intent.getStringExtra("desc");
         String pic = intent.getStringExtra("pic");

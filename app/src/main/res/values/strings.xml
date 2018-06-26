@@ -43,4 +43,14 @@
     <string name="dialog_positive">确定</string>
     <string name="dialog_negative">取消</string>
     <string name="activity_make_task_remove_upload_pic_dialog_title">是否确定删除?</string>
+    <string name="vertical_line">|</string>
+    <string name="activity_coin_button_buy">买入</string>
+    <string name="activity_coin_button_sell">卖出</string>
+    <string name="activity_coin_button_cancel">撤销</string>
+    <string name="activityCoinInfoTitle">权益简介</string>
+    <string name="activity_right_title">权益</string>
+    <string name="activity_coin_task_title">任务列表</string>
+    <string name="activity_coin_task_desc">完成以下任务，即可获得</string>
+    <string name="activity_coin_task_go_to_task_button">去领任务</string>
+    <string name="activity_coin_task_task_text">任务</string>
 </resources>

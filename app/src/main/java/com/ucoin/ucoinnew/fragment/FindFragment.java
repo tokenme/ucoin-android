@@ -98,7 +98,6 @@ public class FindFragment extends Fragment {
                         String userName = fe.getUserName();
                         int exchangeNum = fe.getExchangeNum();
                         int likeNum = fe.getLikeNum();
-                        Logger.i(startDate);
 
                         intent.putExtra("title", title);
                         intent.putExtra("desc", desc);

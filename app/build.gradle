@@ -42,6 +42,4 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.2'
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
-    implementation 'com.flyco.dialog:FlycoDialog_Lib:1.3.2@aar'
-
 }

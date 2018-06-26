@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center"
-        android:background="@color/colorTabChangeCoinHeaderBg">
+        android:background="@color/colorGeneralBg">
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/tab_change_coin_ucoin_logo"
             android:layout_width="50dp"
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:textColor="@color/colorTabChangeCoinHeader"
+                android:textColor="@color/colorGeneralText"
                 android:text="@string/tab_change_coin_header_fav"/>
         </LinearLayout>
         <LinearLayout
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:textColor="@color/colorTabChangeCoinHeader"
+                android:textColor="@color/colorGeneralText"
                 android:text="@string/tab_change_coin_header_asset"/>
         </LinearLayout>
         <LinearLayout
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
-                android:textColor="@color/colorTabChangeCoinHeader"
+                android:textColor="@color/colorGeneralText"
                 android:text="@string/tab_change_coin_header_exchange"/>
         </LinearLayout>
     </android.support.v7.widget.GridLayout>
@@ -89,7 +89,7 @@
         <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/colorTabChangeCoinTableHeader"
+            android:background="@color/colorGeneralCommentBg"
             app:rowCount="1"
             app:columnCount="3">
             <LinearLayout
@@ -100,11 +100,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTabChangeCoinHeader"
+                    android:textColor="@color/colorGeneralText"
                     android:text="@string/tab_change_coin_header_title_increase"/>
                 <com.mikepenz.iconics.view.IconicsTextView
                     android:text="{faw-sort-down}"
-                    android:textColor="@color/colorTabChangeCoinHeader"
+                    android:textColor="@color/colorGeneralText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
@@ -118,14 +118,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTabChangeCoinHeader"
+                    android:textColor="@color/colorGeneralText"
                     android:text="@string/tab_change_coin_header_title_price"/>
                 <com.mikepenz.iconics.view.IconicsTextView
                     android:text="{faw-sort-down}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textColor="@color/colorTabChangeCoinHeader"
+                    android:textColor="@color/colorGeneralText"
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
@@ -136,14 +136,14 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorTabChangeCoinHeader"
+                    android:textColor="@color/colorGeneralText"
                     android:text="@string/tab_change_coin_header_title_market_value"/>
                 <com.mikepenz.iconics.view.IconicsTextView
                     android:text="{faw-sort-down}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:textColor="@color/colorTabChangeCoinHeader"
+                    android:textColor="@color/colorGeneralText"
                     android:textSize="16sp" />
             </LinearLayout>
         </android.support.v7.widget.GridLayout>

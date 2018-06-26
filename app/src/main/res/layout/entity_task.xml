@@ -84,7 +84,7 @@
             android:layout_marginTop="16dp">
             <TextView
                 android:id="@+id/entity_task_title"
-                android:textColor="@color/colorEntityTaskTitle"
+                android:textColor="@color/colorGeneralText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
@@ -97,7 +97,7 @@
             android:layout_marginBottom="6dp">
             <TextView
                 android:id="@+id/entity_task_desc"
-                android:textColor="@color/colorEntityTaskDesc"
+                android:textColor="@color/colorGeneralBg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -121,7 +121,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorEntityTaskBottomBorder"
+            android:background="@color/colorGeneralLine"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="16dp"
             android:minHeight="1dp">

@@ -37,7 +37,7 @@
                 android:layout_height="20dp" />
             -->
             <TextView
-                android:textColor="@color/colorTabChangeCoinHeader"
+                android:textColor="@color/colorGeneralText"
                 android:id="@+id/entity_coin_name"
                 android:textStyle="bold"
                 android:layout_marginLeft="2dp"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rmb"/>
             <TextView
-                android:textColor="@color/colorTabChangeCoinHeader"
+                android:textColor="@color/colorGeneralText"
                 android:id="@+id/entity_coin_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -69,7 +69,7 @@
             android:gravity="right"
             android:orientation="horizontal">
             <TextView
-                android:textColor="@color/colorTabChangeCoinHeader"
+                android:textColor="@color/colorGeneralText"
                 android:id="@+id/entity_coin_market_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

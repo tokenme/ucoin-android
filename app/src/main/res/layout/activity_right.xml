@@ -14,7 +14,7 @@
         app:titleBarHeight="50dp"
         app:showBottomLine="true"
         app:centerType="textView"
-        app:centerText="@string/activity_make_task_title_bar_title"
+        app:centerText="@string/activity_right_title"
         app:leftCustomView="@layout/view_title_bar_left_back"
         app:leftType="customView" />
 
@@ -145,7 +145,7 @@
                     android:layout_marginTop="10dp">
                     <TextView
                         android:id="@+id/activity_right_desc"
-                        android:textColor="@color/colorActivityRightDesc"
+                        android:textColor="@color/colorGeneralText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -206,7 +206,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:textColor="@color/colorActivityRightLike"
+                                android:textColor="@color/colorGeneralCommentBg"
                                 android:textSize="12sp" />
                             <TextView
                                 android:id="@+id/activity_right_like_num"
@@ -222,7 +222,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="10dp"
-                    android:background="@color/colorActivityRightCommentBg">
+                    android:background="@color/colorGeneralCommentBg">
                     <com.mikepenz.iconics.view.IconicsTextView
                         android:text="{faw-comment-dots}"
                         android:layout_width="wrap_content"
@@ -281,7 +281,7 @@
                     android:layout_marginTop="10dp"
                     android:gravity="center_vertical"
                     android:paddingHorizontal="10dp"
-                    android:background="@color/colorActivityRightCommentBg">
+                    android:background="@color/colorGeneralCommentBg">
                     <com.mikepenz.iconics.view.IconicsTextView
                         android:text="{faw-gratipay}"
                         android:layout_width="wrap_content"
