@@ -1,6 +1,7 @@
 package com.ucoin.ucoinnew.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.activity.MainActivity;
+import com.ucoin.ucoinnew.activity.RightActivity;
 import com.ucoin.ucoinnew.adapter.FindAdapter;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.entity.FindEntity;
@@ -70,8 +72,51 @@ public class FindFragment extends Fragment {
         }
         refresh();
         loadMore();
+        click();
 
         return mView;
+    }
+
+    private void click() {
+        mFindAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                final FindEntity fe = (FindEntity) adapter.getItem(position);
+                switch (view.getId()) {
+                    case R.id.entity_find_title:
+                    case R.id.entity_find_pic:
+                        Intent intent = new Intent(mMainActivity, RightActivity.class);
+                        String title = fe.getTitle();
+                        String pic = fe.getPic();
+                        String desc = fe.getDesc();
+                        String coinName = fe.getCoinName();
+                        String coinPic = fe.getCoinPic();
+                        Double coinNum = fe.getCoinNum();
+                        String startDate = fe.getStartDate();
+                        String endDate = fe.getEndDate();
+                        String userAvatar = fe.getUserAvatar();
+                        String userName = fe.getUserName();
+                        int exchangeNum = fe.getExchangeNum();
+                        int likeNum = fe.getLikeNum();
+                        Logger.i(startDate);
+
+                        intent.putExtra("title", title);
+                        intent.putExtra("desc", desc);
+                        intent.putExtra("pic", pic);
+                        intent.putExtra("coin_name", coinName);
+                        intent.putExtra("coin_pic", coinPic);
+                        intent.putExtra("coin_num", coinNum);
+                        intent.putExtra("start_date", startDate);
+                        intent.putExtra("end_date", endDate);
+                        intent.putExtra("user_avatar", userAvatar);
+                        intent.putExtra("user_name", userName);
+                        intent.putExtra("exchange_num", exchangeNum);
+                        intent.putExtra("like_num", likeNum);
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
     }
 
     private void refresh() {
@@ -130,6 +175,12 @@ public class FindFragment extends Fragment {
                                 String coinName = e.getString("coin_name");
                                 String coinPic = e.getString("coin_pic");
                                 Double coinNum = e.getDouble("coin_num");
+                                String startDate = e.getString("start_date");
+                                String endDate = e.getString("end_date");
+                                String userName = e.getString("user_name");
+                                String userAvatar = e.getString("user_avatar");
+                                int exchangeNum = e.getInt("exchange_num");
+                                int likeNum = e.getInt("like_num");
                                 JSONArray tags = e.getJSONArray("tags");
                                 entity.setTitle(title);
                                 entity.setDesc(desc);
@@ -137,6 +188,12 @@ public class FindFragment extends Fragment {
                                 entity.setCoinName(coinName);
                                 entity.setCoinPic(coinPic);
                                 entity.setCoinNum(coinNum);
+                                entity.setStartDate(startDate);
+                                entity.setEndDate(endDate);
+                                entity.setUserName(userName);
+                                entity.setUserAvatar(userAvatar);
+                                entity.setExchangeNum(exchangeNum);
+                                entity.setLikeNum(likeNum);
                                 entity.setTags(tags);
                                 mDataList.add(entity);
                             }

@@ -31,4 +31,16 @@
     <string name="activity_make_task_submit">提交</string>
     <string name="activity_make_task_upload_tip">请上传您的任务凭证，可以是做任务的照片或者视频</string>
     <string name="activity_make_task_upload">上传</string>
+    <string name="activity_right_available">有效</string>
+    <string name="activity_right_exchange_num_text">已兑换</string>
+    <string name="activity_right_exchange_unit">笔</string>
+    <string name="activity_right_comment_title">评论</string>
+    <string name="activity_right_suggestion_title">猜您喜欢</string>
+    <string name="activity_right_exchange_dialog_title">很抱歉，您的余额不足</string>
+    <string name="activity_right_exchange_dialog_buy">去买入</string>
+    <string name="activity_right_exchange_dialog_task">去赚取</string>
+    <string name="activity_make_task_choose_pic_dialog_title">请选择您上传图片的方式</string>
+    <string name="dialog_positive">确定</string>
+    <string name="dialog_negative">取消</string>
+    <string name="activity_make_task_remove_upload_pic_dialog_title">是否确定删除?</string>
 </resources>

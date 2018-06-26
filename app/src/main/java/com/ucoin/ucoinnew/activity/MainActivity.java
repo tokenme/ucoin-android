@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.fragment.ChangeCoinFragment;
 import com.ucoin.ucoinnew.fragment.FindFragment;
@@ -23,8 +22,6 @@ import com.ucoin.ucoinnew.fragment.UserFragment;
 
 import com.mikepenz.iconics.view.IconicsTextView;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
-
-import cn.bingoogolapple.qrcode.core.QRCodeView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

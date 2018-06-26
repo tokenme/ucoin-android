@@ -23,4 +23,7 @@
     <color name="colorTabUserHeaderBg">#999999</color>
     <color name="colorEntityCoinIncrease">#42cc52</color>
     <color name="colorActivityMakeTaskHeaderBg">#f2f2f2</color>
+    <color name="colorActivityRightLike">#f12f2f</color>
+    <color name="colorActivityRightDesc">#333333</color>
+    <color name="colorActivityRightCommentBg">#f2f2f2</color>
 </resources>

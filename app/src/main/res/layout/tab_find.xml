@@ -17,7 +17,6 @@
             android:id="@+id/rv_find_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"/>
+            android:paddingHorizontal="10dp" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

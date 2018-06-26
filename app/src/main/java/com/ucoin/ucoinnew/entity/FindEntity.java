@@ -9,6 +9,12 @@ public class FindEntity {
     private String mCoinName;
     private String mCoinPic;
     private Double mCoinNum;
+    private String mStartDate;
+    private String mEndDate;
+    private String mUserAvatar;
+    private String mUserName;
+    private int mExchangeNum;
+    private int mLikeNum;
     private JSONArray mTags;
     private Class<?> mActivity;
 
@@ -66,6 +72,54 @@ public class FindEntity {
 
     public void setCoinNum(Double coinNum) {
         this.mCoinNum = coinNum;
+    }
+
+    public String getStartDate() {
+        return mStartDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.mStartDate = startDate;
+    }
+
+    public String getEndDate() {
+        return mEndDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.mEndDate = endDate;
+    }
+
+    public String getUserAvatar() {
+        return mUserAvatar;
+    }
+
+    public void setUserAvatar(String userAvatar) {
+        this.mUserAvatar = userAvatar;
+    }
+
+    public String getUserName() {
+        return mUserName;
+    }
+
+    public void setUserName(String userName) {
+        this.mUserName = userName;
+    }
+
+    public void setExchangeNum(int exchangeNum) {
+        this.mExchangeNum = exchangeNum;
+    }
+
+    public int getExchangeNum() {
+        return mExchangeNum;
+    }
+
+    public void setLikeNum(int likeNum) {
+        this.mLikeNum = likeNum;
+    }
+
+    public int getLikeNum() {
+        return mLikeNum;
     }
 
     public Class<?> getActivity() {

@@ -8,8 +8,13 @@ import android.widget.GridLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.entity.TaskEntity;
@@ -52,6 +57,7 @@ public class TaskAdapter extends BaseQuickAdapter<TaskEntity, BaseViewHolder> {
                     Uri picUri = Uri.parse(pic);
                     SimpleDraweeView picView = new SimpleDraweeView(mContext);
                     picView.setImageURI(picUri);
+
                     GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
 
                     int w = (int) Math.round(screenWidth / 3.5);
@@ -59,11 +65,18 @@ public class TaskAdapter extends BaseQuickAdapter<TaskEntity, BaseViewHolder> {
                     layoutParams.height = layoutParams.width;
                     picView.setLayoutParams(layoutParams);
                     picView.setPadding(6, 6, 6, 6);
-
                     RoundingParams roundingParams = RoundingParams.fromCornersRadius(16f);
                     roundingParams.setBorder(R.color.colorWhite, 0.1f);
                     picView.getHierarchy().setRoundingParams(roundingParams);
 
+                    ImageRequest request = ImageRequestBuilder.newBuilderWithSource(picUri)
+                            .setResizeOptions(new ResizeOptions(layoutParams.width, layoutParams.height))
+                            .build();
+                    PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
+                            .setOldController(picView.getController())
+                            .setImageRequest(request)
+                            .build();
+                    picView.setController(controller);
                     picsWrapper.addView(picView);
                 } catch (JSONException e) {
                     e.printStackTrace();

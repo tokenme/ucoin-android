@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleBarHeight="50dp"
+        app:showBottomLine="true"
+        app:centerType="textView"
+        app:centerText="@string/activity_make_task_title_bar_title"
+        app:leftCustomView="@layout/view_title_bar_left_back"
+        app:leftType="customView" />
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srlEnableNestedScrolling="true"
+        app:srlEnableLoadMore="false"
+        app:srlEnableAutoLoadMore="false">
+        <com.scwang.smartrefresh.layout.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ScrollView
+            android:orientation="vertical"
+            android:scrollbars="none"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingHorizontal="10dp">
+                    <TextView
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18sp"
+                        android:id="@+id/activity_right_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right">
+                        <Button
+                            android:id="@+id/activity_right_exchange"
+                            android:layout_width="50dp"
+                            android:layout_height="30dp"
+                            android:text="兑"
+                            android:background="@drawable/activity_right_exchange_button_border_radius"
+                            android:textColor="@color/colorWhite" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:paddingHorizontal="10dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginTop="10dp">
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/activity_right_coin_pic"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="4dp"
+                        android:layout_marginLeft="6dp">
+                        <TextView
+                            android:id="@+id/activity_right_coin_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorTaskCoinAward" />
+                        <com.mikepenz.iconics.view.IconicsTextView
+                            android:text="{faw-times}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10sp"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginLeft="4dp"
+                            android:textColor="@color/colorTaskCoinAward" />
+                        <TextView
+                            android:id="@+id/activity_right_coin_num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:textColor="@color/colorTaskCoinAward" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="6dp"
+                            android:text="@string/entity_find_change"
+                            android:textColor="@color/colorGray" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:paddingTop="8dp">
+                        <TextView
+                            android:id="@+id/activity_right_start_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:id="@+id/activity_right_end_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/activity_right_available"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginTop="10dp">
+                    <TextView
+                        android:id="@+id/activity_right_desc"
+                        android:textColor="@color/colorActivityRightDesc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginTop="10dp">
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/activity_right_pic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginTop="10dp" >
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/activity_right_user_avatar"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp" />
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center">
+                            <TextView
+                                android:id="@+id/activity_right_user_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:textColor="@color/colorBlack" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:gravity="right"
+                            android:layout_gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/activity_right_exchange_num_text" />
+                            <TextView
+                                android:id="@+id/activity_right_exchange_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/activity_right_exchange_unit" />
+                            <com.mikepenz.iconics.view.IconicsTextView
+                                android:text="{faw-thumbs-up2}"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:textColor="@color/colorActivityRightLike"
+                                android:textSize="12sp" />
+                            <TextView
+                                android:id="@+id/activity_right_like_num"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="10dp"
+                    android:background="@color/colorActivityRightCommentBg">
+                    <com.mikepenz.iconics.view.IconicsTextView
+                        android:text="{faw-comment-dots}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/activity_right_comment_title" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp"
+                    android:paddingHorizontal="10dp">
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/activity_right_comment_user_avatar"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="10dp"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/activity_right_comment_editor_border_radius">
+                        <com.mikepenz.iconics.view.IconicsTextView
+                            android:text="{faw-pencil-alt}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="18dp"
+                            android:textSize="12sp" />
+                        <LinearLayout
+                            android:layout_width="1dp"
+                            android:layout_height="26dp"
+                            android:layout_marginLeft="15dp"
+                            android:layout_marginRight="15dp"
+                            android:background="#AAAAAA" />
+                        <EditText
+                            android:hint="写评论"
+                            android:background="@null"
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:layout_height="40dp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="10dp"
+                    android:background="@color/colorActivityRightCommentBg">
+                    <com.mikepenz.iconics.view.IconicsTextView
+                        android:text="{faw-gratipay}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:layout_marginLeft="5dp"
+                        android:text="@string/activity_right_suggestion_title" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

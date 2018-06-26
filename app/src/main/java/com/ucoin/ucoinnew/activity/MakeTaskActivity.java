@@ -5,15 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayout;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.generic.RoundingParams;
@@ -21,19 +18,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.flyco.dialog.listener.OnBtnClickL;
-import com.flyco.dialog.listener.OnOperItemClickL;
-import com.flyco.dialog.widget.ActionSheetDialog;
-import com.flyco.dialog.widget.NormalDialog;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
 import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
-import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.util.UiUtil;
-import com.ucoin.ucoinnew.util.Util;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import java.io.File;
@@ -88,32 +79,33 @@ public class MakeTaskActivity extends TakePhotoActivity {
                 imgDraweeView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        final NormalDialog dialog = new NormalDialog(MakeTaskActivity.this);
-                        dialog.content("是否确定删除?")
-                                .btnText("取消", "确定")
-                                .show();
-                        dialog.setOnBtnClickL(
-                                new OnBtnClickL() {
+                        new MaterialDialog.Builder(MakeTaskActivity.this)
+                                .autoDismiss(false)
+                                .canceledOnTouchOutside(false)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
-                                    public void onBtnClick() {
-                                        dialog.dismiss();
-                                    }
-                                },
-                                new OnBtnClickL() {
-                                    @Override
-                                    public void onBtnClick() {
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
                                         ll.removeView(v);
                                         uploadImages.remove(image);
                                         dialog.dismiss();
                                     }
-                                });
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .title(R.string.activity_make_task_remove_upload_pic_dialog_title)
+                                .positiveText(R.string.dialog_positive)
+                                .negativeText(R.string.dialog_negative)
+                                .show();
                     }
                 });
                 ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.fromFile(new File(image.getOriginalPath())))
                         .setResizeOptions(new ResizeOptions(uploadImageWidth, uploadImageWidth))
                         .build();
                 PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                        // .setControllerListener(controllerListener)
                         .setOldController(imgDraweeView.getController())
                         .setImageRequest(request)
                         .build();
@@ -158,36 +150,37 @@ public class MakeTaskActivity extends TakePhotoActivity {
             @Override
             public void onClick(View view) {
                 final String[] stringItems = {"拍照", "相册"};
-                ExpandableListView elv = findViewById(R.id.elv);
-                final ActionSheetDialog dialog = new ActionSheetDialog(MakeTaskActivity.this, stringItems, elv);
-                dialog.title(String.format("您还可以选择%d张图片", imageLimit - uploadImages.size()))
-                        .show();
-
-                dialog.setOnOperItemClickL(new OnOperItemClickL() {
-                    @Override
-                    public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        TakePhoto takePhoto = getTakePhoto();
-                        CompressConfig compressConfig = new CompressConfig.Builder()
-                                .setMaxSize(800 * 800)
-                                .setMaxPixel(800)
-                                .create();
-                        takePhoto.onEnableCompress(compressConfig,false);
-                        switch(position) {
-                            case 0:
-                                File file = new File(Environment.getExternalStorageDirectory(), "/ucoin/temp/" + System.currentTimeMillis() + ".jpg");
-                                if ( ! file.getParentFile().exists()) {
-                                    file.getParentFile().mkdirs();
+                new MaterialDialog.Builder(MakeTaskActivity.this)
+                        .autoDismiss(false)
+                        .canceledOnTouchOutside(false)
+                        .title(R.string.activity_make_task_choose_pic_dialog_title)
+                        .items(stringItems)
+                        .itemsCallback(new MaterialDialog.ListCallback() {
+                            @Override
+                            public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                TakePhoto takePhoto = getTakePhoto();
+                                CompressConfig compressConfig = new CompressConfig.Builder()
+                                        .setMaxSize(800 * 800)
+                                        .setMaxPixel(800)
+                                        .create();
+                                takePhoto.onEnableCompress(compressConfig,false);
+                                switch (which) {
+                                    case 0:
+                                        File file = new File(Environment.getExternalStorageDirectory(), "/ucoin/temp/" + System.currentTimeMillis() + ".jpg");
+                                        if ( ! file.getParentFile().exists()) {
+                                            file.getParentFile().mkdirs();
+                                        }
+                                        Uri imageUri = Uri.fromFile(file);
+                                        takePhoto.onPickFromCapture(imageUri);
+                                        break;
+                                    case 1:
+                                        takePhoto.onPickMultiple(imageLimit - uploadImages.size());
+                                        break;
                                 }
-                                Uri imageUri = Uri.fromFile(file);
-                                takePhoto.onPickFromCapture(imageUri);
-                                break;
-                            case 1:
-                                takePhoto.onPickMultiple(imageLimit - uploadImages.size());
-                                break;
-                        }
-                        dialog.dismiss();
-                    }
-                });
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
     }

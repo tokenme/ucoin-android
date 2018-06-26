@@ -56,5 +56,7 @@ public class FindAdapter extends BaseQuickAdapter<FindEntity, BaseViewHolder> {
                 UiUtil.setMargins(tag, 0, 0, 10, 0);
             }
         }
+        helper.addOnClickListener(R.id.entity_find_title);
+        helper.addOnClickListener(R.id.entity_find_pic);
     }
 }
