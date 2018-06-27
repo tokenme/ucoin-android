@@ -16,6 +16,7 @@
     <string name="tab_change_coin_header_title_market_value">流通币值(UC)</string>
     <string name="rmb">￥</string>
     <string name="percent">%</string>
+    <string name="midline">-</string>
     <string name="tab_user_header_total_value">资产总市值: </string>
     <string name="tab_user_header_available">可用: </string>
     <string name="tab_user_header_task">任务凭证</string>
@@ -53,4 +54,13 @@
     <string name="activity_coin_task_desc">完成以下任务，即可获得</string>
     <string name="activity_coin_task_go_to_task_button">去领任务</string>
     <string name="activity_coin_task_task_text">任务</string>
+    <string name="activity_coin_task_award">奖励</string>
+    <string name="activity_coin_task_date">有效期</string>
+    <string name="activity_coin_task_go_to_make_task">完成任务</string>
+    <string name="activity_coin_task_detail_title">任务详情</string>
+    <string name="activity_get_coin_qrcode_title">收付款</string>
+    <string name="tab_user_header_no_coin_tip">您还没有自己的专属币哦!</string>
+    <string name="tab_user_header_create_coin">点击创建</string>
+    <string name="activity_login">登录</string>
+    <string name="activity_register">注册</string>
 </resources>

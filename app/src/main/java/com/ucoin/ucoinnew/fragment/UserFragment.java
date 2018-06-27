@@ -2,6 +2,7 @@ package com.ucoin.ucoinnew.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,10 +22,13 @@ import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ucoin.ucoinnew.R;
+import com.ucoin.ucoinnew.activity.GetCoinQrcodeActivity;
+import com.ucoin.ucoinnew.activity.LoginActivity;
 import com.ucoin.ucoinnew.activity.MainActivity;
 import com.ucoin.ucoinnew.adapter.UserCoinAdapter;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.entity.UserCoinEntity;
+import com.ucoin.ucoinnew.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +95,13 @@ public class UserFragment extends Fragment {
         roundingParams.setBorder(view.getResources().getColor(R.color.colorWhite), 5.0f);
         roundingParams.setRoundAsCircle(true);
         picDraweeView.getHierarchy().setRoundingParams(roundingParams);
+        view.findViewById(R.id.tab_user_header_qrcode).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mMainActivity, GetCoinQrcodeActivity.class);
+                startActivity(intent);
+            }
+        });
         mUserCoinAdapter.addHeaderView(view);
     }
 

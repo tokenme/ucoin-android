@@ -17,10 +17,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.LoginActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".activity.RegisterActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.RightActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CoinActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CoinTaskActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".activity.CoinTaskDetailActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.ScanQrcodeActivity" android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".activity.GetCoinQrcodeActivity" android:windowSoftInputMode="adjustPan"></activity>
         <activity android:name=".activity.MakeTaskActivity" android:windowSoftInputMode="adjustPan"></activity>
     </application>
 

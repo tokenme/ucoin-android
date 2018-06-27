@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ucoin.ucoinnew.R;
@@ -27,6 +31,22 @@ public class CoinActivity extends AppCompatActivity {
     }
 
     private void initClick() {
+        LinearLayout buyView = findViewById(R.id.activity_coin_button_buy);
+        buyView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MaterialDialog dialog = new MaterialDialog.Builder(CoinActivity.this)
+                        .title("购买BTC")
+                        .content("花钱买xxxxxxxx")
+                        .inputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                        .input("数量", "", new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(MaterialDialog dialog, CharSequence input) {
+                                // Do something
+                            }
+                        }).show();
+            }
+        });
     }
 
     @SuppressLint("ResourceAsColor")

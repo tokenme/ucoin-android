@@ -75,7 +75,7 @@
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="20dp"
+        android:paddingVertical="30dp"
         app:rowCount="2"
         app:columnCount="3">
         <LinearLayout
@@ -139,7 +139,7 @@
                 android:text="@string/tab_user_header_right"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_width="80dp"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
@@ -160,7 +160,7 @@
                 android:text="@string/tab_user_header_bill"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="30dp"
             android:layout_width="80dp"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
@@ -181,7 +181,8 @@
                 android:text="@string/tab_user_header_right_fav"/>
         </LinearLayout>
         <LinearLayout
-            android:layout_marginTop="10dp"
+            android:id="@+id/tab_user_header_qrcode"
+            android:layout_marginTop="30dp"
             android:layout_width="80dp"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
@@ -205,11 +206,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp">
+        android:paddingHorizontal="10dp"
+        android:orientation="vertical">
         <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/colorGeneralCommentBg"
+            android:background="@drawable/entity_coin_header_border"
             app:rowCount="1"
             app:columnCount="3">
             <LinearLayout
@@ -267,5 +269,32 @@
                     android:textSize="16sp" />
             </LinearLayout>
         </android.support.v7.widget.GridLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/entity_coin_border"
+            android:paddingVertical="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_user_header_no_coin_tip"/>
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:text="{faw-plus-circle}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textColor="@color/icon" />
+            <TextView
+                android:id="@+id/tab_user_header_create_coin"
+                android:text="@string/tab_user_header_create_coin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textSize="14sp"
+                android:textColor="@color/icon" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

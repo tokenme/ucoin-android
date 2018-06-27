@@ -206,7 +206,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="20dp"
-                                android:textColor="@color/colorGeneralCommentBg"
+                                android:textColor="@color/colorTaskCoinAward"
                                 android:textSize="12sp" />
                             <TextView
                                 android:id="@+id/activity_right_like_num"

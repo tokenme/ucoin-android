@@ -7,7 +7,7 @@
     android:orientation="horizontal">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:id="@+id/tab_find"
@@ -31,7 +31,7 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/tab_get_coin"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
@@ -54,7 +54,7 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/tab_change_coin"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
@@ -77,7 +77,7 @@
     </LinearLayout>
     <LinearLayout
         android:id="@+id/tab_user"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"

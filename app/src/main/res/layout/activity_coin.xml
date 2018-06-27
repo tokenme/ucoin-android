@@ -407,6 +407,7 @@
                             app:layout_columnWeight="1"
                             android:gravity="center">
                             <LinearLayout
+                                android:id="@+id/activity_coin_button_buy"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:gravity="center"
@@ -425,6 +426,7 @@
                             app:layout_columnWeight="1"
                             android:gravity="center">
                             <LinearLayout
+                                android:id="@+id/activity_coin_button_sell"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:gravity="center"
@@ -443,6 +445,7 @@
                             app:layout_columnWeight="1"
                             android:gravity="center">
                             <LinearLayout
+                                android:id="@+id/activity_coin_button_cancel"
                                 android:layout_width="80dp"
                                 android:layout_height="80dp"
                                 android:gravity="center"

@@ -17,12 +17,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.util.UiUtil;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class CoinTaskActivity extends AppCompatActivity {
+public class CoinTaskDetailActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
     private Intent intent;
@@ -30,7 +29,7 @@ public class CoinTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_coin_task);
+        setContentView(R.layout.activity_coin_task_detail);
         init();
     }
 
@@ -41,11 +40,11 @@ public class CoinTaskActivity extends AppCompatActivity {
     }
 
     private void initClick() {
-        Button getTask = findViewById(R.id.activity_coin_task_get_task);
-        getTask.setOnClickListener(new View.OnClickListener() {
+        Button goToMakeTaskView = findViewById(R.id.activity_coin_task_go_to_make_task);
+        goToMakeTaskView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.setClass(CoinTaskActivity.this, CoinTaskDetailActivity.class);
+                intent.setClass(CoinTaskDetailActivity.this, MakeTaskActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,19 +63,6 @@ public class CoinTaskActivity extends AppCompatActivity {
         String startDate = intent.getStringExtra("start_date");
         String endDate = intent.getStringExtra("end_date");
 
-        TextView userNameView = findViewById(R.id.activity_coin_task_user_name);
-        userNameView.setText(userName);
-
-        Uri userAvatarUri = Uri.parse(userAvatar);
-        SimpleDraweeView userDavatarDraweeView = findViewById(R.id.activity_coin_task_user_avatar);
-        RoundingParams roundingParams = RoundingParams.fromCornersRadius(20f);
-        roundingParams.setRoundAsCircle(true);
-        userDavatarDraweeView.getHierarchy().setRoundingParams(roundingParams);
-        userDavatarDraweeView.setImageURI(userAvatarUri);
-
-        TextView descCoinNameView = findViewById(R.id.activity_coin_task_desc_coin_name);
-        descCoinNameView.setText(coinName);
-
         TextView titleView = findViewById(R.id.activity_coin_task_title);
         titleView.setText(title);
 
@@ -92,12 +78,22 @@ public class CoinTaskActivity extends AppCompatActivity {
         TextView endDateView = findViewById(R.id.activity_coin_task_end_date);
         endDateView.setText(endDate);
 
+        TextView userNameView = findViewById(R.id.activity_coin_task_detail_user_name);
+        userNameView.setText(userName);
+
+        Uri userAvatarUri = Uri.parse(userAvatar);
+        SimpleDraweeView userDavatarDraweeView = findViewById(R.id.activity_coin_task_detail_user_avatar);
+        RoundingParams roundingParams = RoundingParams.fromCornersRadius(20f);
+        roundingParams.setRoundAsCircle(true);
+        userDavatarDraweeView.getHierarchy().setRoundingParams(roundingParams);
+        userDavatarDraweeView.setImageURI(userAvatarUri);
+
         int i = 3;
-        int screenWidth = UiUtil.getScreenWidth(CoinTaskActivity.this);
+        int screenWidth = UiUtil.getScreenWidth(CoinTaskDetailActivity.this);
         android.support.v7.widget.GridLayout picsWrapper = findViewById(R.id.activity_coin_task_pics);
         while (i > 0) {
             Uri picUri = Uri.parse(pic);
-            SimpleDraweeView picView = new SimpleDraweeView(CoinTaskActivity.this);
+            SimpleDraweeView picView = new SimpleDraweeView(CoinTaskDetailActivity.this);
             picView.setImageURI(picUri);
 
             GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();

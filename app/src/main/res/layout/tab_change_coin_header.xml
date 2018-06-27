@@ -24,7 +24,8 @@
     </LinearLayout>
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="30dp"
         app:rowCount="1"
         app:columnCount="3">
         <LinearLayout
@@ -46,6 +47,7 @@
                 android:text="@string/tab_change_coin_header_fav"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/tab_change_coin_header_asset"
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
             android:orientation="vertical"
@@ -89,7 +91,7 @@
         <android.support.v7.widget.GridLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@color/colorGeneralCommentBg"
+            android:background="@drawable/entity_coin_header_border"
             app:rowCount="1"
             app:columnCount="3">
             <LinearLayout

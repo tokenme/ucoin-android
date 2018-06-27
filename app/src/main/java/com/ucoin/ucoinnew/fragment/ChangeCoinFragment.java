@@ -1,6 +1,7 @@
 package com.ucoin.ucoinnew.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -72,7 +73,6 @@ public class ChangeCoinFragment extends Fragment {
         }
         refresh();
         loadMore();
-
         return mView;
     }
 
@@ -82,6 +82,12 @@ public class ChangeCoinFragment extends Fragment {
         Uri picUri = Uri.parse(pic);
         SimpleDraweeView picDraweeView = view.findViewById(R.id.tab_change_coin_ucoin_logo);
         picDraweeView.setImageURI(picUri);
+        view.findViewById(R.id.tab_change_coin_header_asset).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mMainActivity.selectTab(3);
+            }
+        });
         mCoinAdapter.addHeaderView(view);
     }
 

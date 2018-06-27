@@ -21,6 +21,7 @@ import com.ucoin.ucoinnew.fragment.GetCoinFragment;
 import com.ucoin.ucoinnew.fragment.UserFragment;
 
 import com.mikepenz.iconics.view.IconicsTextView;
+import com.ucoin.ucoinnew.util.Util;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -75,8 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 selectTab(2);
                 break;
             case R.id.tab_user:
-                mTitleBar.setVisibility(View.GONE);
-                selectTab(3);
+                if ( ! Util.checkUserToken()) {
+                    iconActive(0);
+                    startActivity(new Intent(this, RegisterActivity.class));
+                } else {
+                    mTitleBar.setVisibility(View.GONE);
+                    selectTab(3);
+                }
                 break;
         }
     }

@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingTop="20dp">
+    android:background="@drawable/entity_coin_border"
+    android:layout_marginHorizontal="10dp"
+    android:paddingVertical="10dp">
     <android.support.v7.widget.GridLayout
         android:id="@+id/entity_coin_container"
         android:layout_width="match_parent"
@@ -30,13 +32,6 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite" />
             </LinearLayout>
-            <!--
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/entity_coin_pic"
-                android:layout_marginRight="3dp"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-            -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,6 +65,7 @@
         <LinearLayout
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
+            android:paddingTop="8dp"
             android:layout_width="50dp"
             android:paddingRight="30dp"
             android:gravity="right"
@@ -87,6 +83,7 @@
         <LinearLayout
             app:layout_columnWeight="1"
             app:layout_rowWeight="1"
+            android:paddingTop="8dp"
             android:layout_width="50dp"
             android:paddingRight="20dp"
             android:gravity="right"
@@ -98,15 +95,4 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.v7.widget.GridLayout>
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:paddingHorizontal="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#DADADA">
-        </LinearLayout>
-    </LinearLayout>
 </LinearLayout>

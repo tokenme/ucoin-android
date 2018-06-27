@@ -110,7 +110,7 @@ public class MakeTaskActivity extends TakePhotoActivity {
                         .setImageRequest(request)
                         .build();
                 imgDraweeView.setController(controller);
-                UiUtil.setMargins(imgDraweeView, 0, 0, 10, 10);
+                UiUtil.setMargins(imgDraweeView, 5, 0, 5, 10);
                 ll.addView(imgDraweeView);
             }
         }
@@ -163,7 +163,7 @@ public class MakeTaskActivity extends TakePhotoActivity {
                                         .setMaxSize(800 * 800)
                                         .setMaxPixel(800)
                                         .create();
-                                takePhoto.onEnableCompress(compressConfig,false);
+                                takePhoto.onEnableCompress(compressConfig,true);
                                 switch (which) {
                                     case 0:
                                         File file = new File(Environment.getExternalStorageDirectory(), "/ucoin/temp/" + System.currentTimeMillis() + ".jpg");

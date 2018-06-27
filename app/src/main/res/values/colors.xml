@@ -8,7 +8,7 @@
     <color name="colorBlack">#000000</color>
     <color name="icon">#0099ff</color>
     <color name="txtColor">#1D1E1E</color>
-    <color name="tabDefault">#DADADA</color>
+    <color name="tabDefault">#666666</color>
     <color name="borderDefault">#CCCCCC</color>
     <color name="findTag">#ff9372</color>
     <color name="colorGray">#525252</color>
