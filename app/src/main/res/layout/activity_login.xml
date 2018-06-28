@@ -17,22 +17,59 @@
         app:centerText="@string/activity_login"
         app:leftCustomView="@layout/view_title_bar_left_back"
         app:leftType="customView" />
-
-    <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/refreshLayout"
+    <ScrollView
+        android:orientation="vertical"
+        android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:srlEnableNestedScrolling="true"
-        app:srlEnableLoadMore="false"
-        app:srlEnableAutoLoadMore="false">
-        <com.scwang.smartrefresh.layout.header.ClassicsHeader
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-        <ScrollView
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:orientation="vertical"
-            android:scrollbars="none"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ScrollView>
-    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+            android:layout_height="match_parent"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/activity_login_telephone"
+                    android:hint="手机号:"
+                    android:inputType="number|numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/EditTextTheme"
+                    android:textSize="16sp"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/colorGeneralText"/>
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/activity_login_ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    app:ccp_textSize="16sp"
+                    app:ccp_defaultLanguage="CHINESE_SIMPLIFIED"/>
+            </RelativeLayout>
+            <EditText
+                android:id="@+id/activity_login_password"
+                android:hint="密码:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/EditTextTheme"
+                android:textSize="16sp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/colorGeneralText"
+                android:layout_marginTop="10dp" />
+            <Button
+                android:id="@+id/activity_login_submit"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/activity_login"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/activity_register_submit_button_border_radius"/>
+        </LinearLayout>
+
+    </ScrollView>
 </LinearLayout>

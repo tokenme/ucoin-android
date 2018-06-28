@@ -37,6 +37,12 @@ public class Util {
         return editor.commit();
     }
 
+    public static boolean removeSP(String key) {
+        SharedPreferences sharedPreferences = App.getInstance().getSharedPreferences("config", App.getInstance().MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        return editor.remove(key).commit();
+    }
+
     public static String getSP(String key) {
         SharedPreferences sharedPreferences = App.getInstance().getSharedPreferences("config", App.getInstance().MODE_PRIVATE);
         return sharedPreferences.getString(key, null);

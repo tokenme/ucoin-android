@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hbb20.CountryCodePicker;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.fragment.ChangeCoinFragment;
 import com.ucoin.ucoinnew.fragment.FindFragment;
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.tab_user:
                 if ( ! Util.checkUserToken()) {
                     iconActive(0);
-                    startActivity(new Intent(this, RegisterActivity.class));
+                    startActivity(new Intent(this, LoginActivity.class));
                 } else {
                     mTitleBar.setVisibility(View.GONE);
                     selectTab(3);

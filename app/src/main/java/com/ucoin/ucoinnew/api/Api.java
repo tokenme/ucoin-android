@@ -29,14 +29,25 @@ public class Api {
         put("getTaskList", "/getTaskList");
         put("getCoinList", "/getCoinList");
         put("sendVerificationCode", "/auth/send");
+        put("register", "/user/create");
+        put("login", "/auth/login");
+        put("getUserInfo", "/user/info");
+        put("getTokenProductList", "/token/product/list");
     }};
 
     public static void request(String name, String method, JSONObject params, Context context, Callback cb) throws IOException, JSONException {
         String url = Util.getProperty("APIRequestHost", context);
+        if (name.equals("getItemList") || name.equals("getTaskList") || name.equals("getCoinList")) {
+            url = Util.getProperty("APIRequestHostTest", context);
+        }
         url = url + sRequestUrls.get(name);
         Logger.d(url);
         Logger.i(params.toString());
         Request.Builder request = new Request.Builder();
+        String userToken = Util.getSP("userToken");
+        if (userToken != null) {
+            request.addHeader("Authorization", "Bearer " + userToken);
+        }
         switch (method) {
             case "GET":
                 if (params != null) {

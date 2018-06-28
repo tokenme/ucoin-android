@@ -25,20 +25,73 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp">
             <EditText
-                android:inputType="number|numberDecimal"
                 android:id="@+id/activity_register_telephone"
+                android:hint="手机号:"
+                android:inputType="number|numberDecimal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:theme="@style/EditTextTheme"
+                android:textSize="16sp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/colorGeneralText"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <EditText
+                    android:id="@+id/activity_register_verify_code"
+                    android:hint="验证码:"
+                    android:maxLength="4"
+                    android:inputType="number|numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/EditTextTheme"
+                    android:textSize="16sp"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/colorGeneralText"/>
+                <Button
+                    android:id="@+id/activity_register_send_verify_code"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:text="@string/activity_register_send_verify_code"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/icon"/>
+            </RelativeLayout>
+            <EditText
+                android:id="@+id/activity_register_password"
+                android:hint="密码:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/EditTextTheme"
+                android:textSize="16sp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/colorGeneralText"
+                android:layout_marginTop="10dp" />
+            <EditText
+                android:id="@+id/activity_register_repassword"
+                android:hint="重复密码:"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/EditTextTheme"
+                android:textSize="16sp"
+                android:paddingBottom="20dp"
+                android:textColor="@color/colorGeneralText"
+                android:layout_marginTop="10dp" />
             <Button
                 android:id="@+id/activity_register_submit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:height="30dp"
+                android:layout_height="40dp"
                 android:text="@string/activity_register"
                 android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/activity_register_submit_button_border_radius"/>
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>

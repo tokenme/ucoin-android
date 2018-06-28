@@ -63,4 +63,6 @@
     <string name="tab_user_header_create_coin">点击创建</string>
     <string name="activity_login">登录</string>
     <string name="activity_register">注册</string>
+    <string name="activity_register_send_verify_code">获取验证码</string>
+    <string name="dialog_tip_title">提示</string>
 </resources>

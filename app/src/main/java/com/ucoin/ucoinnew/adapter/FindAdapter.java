@@ -1,6 +1,7 @@
 package com.ucoin.ucoinnew.adapter;
 
 import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -8,6 +9,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ucoin.ucoinnew.R;
+import com.ucoin.ucoinnew.application.App;
 import com.ucoin.ucoinnew.entity.FindEntity;
 import com.ucoin.ucoinnew.util.UiUtil;
 
@@ -52,7 +54,7 @@ public class FindAdapter extends BaseQuickAdapter<FindEntity, BaseViewHolder> {
                 tagsWarpper.addView(tag);
                 tag.setBackgroundResource(R.drawable.find_item_tag_border_radius);
                 tag.setPadding(20, 2, 20, 2);
-                tag.setTextColor(tagsWarpper.getResources().getColor(R.color.findTag));
+                tag.setTextColor(ContextCompat.getColor(App.getInstance(), R.color.findTag));
                 UiUtil.setMargins(tag, 0, 0, 10, 0);
             }
         }

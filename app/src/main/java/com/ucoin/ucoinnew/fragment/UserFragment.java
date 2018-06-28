@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,13 +88,32 @@ public class UserFragment extends Fragment {
 
     @SuppressLint("ResourceAsColor")
     private void initHeaderView() {
+        try {
+            JSONObject params = new JSONObject();
+            Api.request("getUserInfo", "GET", params, mMainActivity, new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, IOException e) {
+                    Logger.e(String.valueOf(e));
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, Response response) throws IOException {
+                    String jsonStr = response.body().string();
+                    Logger.i(jsonStr);
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         View view = getLayoutInflater().inflate(R.layout.tab_user_header, (ViewGroup) mRecyclerView.getParent(), false);
         String pic = "https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTLeYdiaVF5aueicbwnSNic3BaajXn61rPMn0HKXdYWHOsM4z8h6vZWyxZ6QQWTkDMKvjL6RVhH7dpLaA/132";
         Uri picUri = Uri.parse(pic);
         SimpleDraweeView picDraweeView = view.findViewById(R.id.tab_user_avatar);
         picDraweeView.setImageURI(picUri);
         RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
-        roundingParams.setBorder(view.getResources().getColor(R.color.colorWhite), 5.0f);
+        roundingParams.setBorder(ContextCompat.getColor(mMainActivity, R.color.colorWhite), 5.0f);
         roundingParams.setRoundAsCircle(true);
         picDraweeView.getHierarchy().setRoundingParams(roundingParams);
         view.findViewById(R.id.tab_user_header_qrcode).setOnClickListener(new View.OnClickListener() {
