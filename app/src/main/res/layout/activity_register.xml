@@ -28,21 +28,36 @@
             android:layout_height="match_parent"
             android:paddingHorizontal="20dp"
             android:paddingVertical="20dp">
-            <EditText
-                android:id="@+id/activity_register_telephone"
-                android:hint="手机号:"
-                android:inputType="number|numberDecimal"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:theme="@style/EditTextTheme"
-                android:textSize="16sp"
-                android:paddingBottom="20dp"
-                android:textColor="@color/colorGeneralText"/>
+                android:layout_height="wrap_content">
+                <EditText
+                    android:lines="1"
+                    android:id="@+id/activity_register_telephone"
+                    android:hint="手机号:"
+                    android:inputType="number|numberDecimal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/EditTextTheme"
+                    android:textSize="16sp"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/colorGeneralText"/>
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/activity_login_ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    app:ccp_textSize="16sp"
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_autoDetectLanguage="true"
+                    app:ccp_defaultLanguage="ENGLISH"/>
+            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
                 <EditText
+                    android:lines="1"
                     android:id="@+id/activity_register_verify_code"
                     android:hint="验证码:"
                     android:maxLength="4"
@@ -63,6 +78,7 @@
                     android:background="@color/icon"/>
             </RelativeLayout>
             <EditText
+                android:lines="1"
                 android:id="@+id/activity_register_password"
                 android:hint="密码:"
                 android:layout_width="match_parent"
@@ -73,6 +89,7 @@
                 android:textColor="@color/colorGeneralText"
                 android:layout_marginTop="10dp" />
             <EditText
+                android:lines="1"
                 android:id="@+id/activity_register_repassword"
                 android:hint="重复密码:"
                 android:layout_width="match_parent"

@@ -3,14 +3,14 @@ package com.ucoin.ucoinnew.api;
 import android.content.Context;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -23,7 +23,9 @@ import org.json.JSONObject;
 
 public class Api {
 
-    protected static final OkHttpClient sClient = new OkHttpClient();
+    private static final int mTimeout = 10;
+
+    protected static OkHttpClient sClient;
     protected static HashMap<String, String> sRequestUrls = new HashMap<String,String>(){{
         put("getItemList", "/getItemList");
         put("getTaskList", "/getTaskList");
@@ -32,10 +34,18 @@ public class Api {
         put("register", "/user/create");
         put("login", "/auth/login");
         put("getUserInfo", "/user/info");
-        put("getTokenProductList", "/token/product/list");
+        put("getUserCoinList", "/token/owned/list");
+        put("getCoinProductList", "/token/product/list");
+        put("createCoin", "/token/create");
+        put("uploadCoinLogo", "/qiniu/token/logo");
     }};
 
-    public static void request(String name, String method, JSONObject params, Context context, Callback cb) throws IOException, JSONException {
+    public static void request(String name, String method, JSONObject params, Boolean isForm, Context context, Callback cb) throws IOException, JSONException {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.readTimeout(mTimeout, TimeUnit.SECONDS);
+        builder.writeTimeout(mTimeout, TimeUnit.SECONDS);
+        sClient = builder.build();
+
         String url = Util.getProperty("APIRequestHost", context);
         if (name.equals("getItemList") || name.equals("getTaskList") || name.equals("getCoinList")) {
             url = Util.getProperty("APIRequestHostTest", context);
@@ -66,9 +76,20 @@ public class Api {
                 break;
             case "POST":
                 RequestBody body = null;
-                if (params != null) {
-                    MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-                    body = RequestBody.create(JSON, params.toString());
+                if (isForm) {
+                    MultipartBody.Builder multipartBuilder = new MultipartBody.Builder();
+                    Iterator iterator = params.keys();
+                    while(iterator.hasNext()){
+                        String key = (String) iterator.next();
+                        String value = params.getString(key);
+                        multipartBuilder.addFormDataPart(key, value);
+                    }
+                    body = multipartBuilder.setType(MultipartBody.FORM).build();
+                } else {
+                    if (params != null) {
+                        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                        body = RequestBody.create(JSON, params.toString());
+                    }
                 }
                 request.url(url);
                 request.post(body);

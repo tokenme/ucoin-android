@@ -124,7 +124,7 @@ public class ChangeCoinFragment extends Fragment {
                 mCurrentPage = 1;
             }
             params.put("page", mCurrentPage);
-            Api.request("getCoinList", "GET", params, mMainActivity, new Callback() {
+            Api.request("getCoinList", "GET", params, false, mMainActivity, new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
                     Logger.e("onFailure: " + e.getMessage());
@@ -141,11 +141,11 @@ public class ChangeCoinFragment extends Fragment {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject e = data.getJSONObject(i);
                                 CoinEntity entity = new CoinEntity();
-                                String name = e.getString("name");
-                                String pic = e.getString("pic");
-                                String price = e.getString("price");
-                                String marcketValue = e.getString("market_value");
-                                Double increase = e.getDouble("increase");
+                                String name = e.optString("name");
+                                String pic = e.optString("pic");
+                                String price = e.optString("price");
+                                String marcketValue = e.optString("market_value");
+                                Double increase = e.optDouble("increase");
                                 entity.setName(name);
                                 entity.setPic(pic);
                                 entity.setPrice(price);

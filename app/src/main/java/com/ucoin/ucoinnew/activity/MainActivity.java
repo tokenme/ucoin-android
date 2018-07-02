@@ -65,15 +65,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mCurrentTab = v.getId();
         switch (v.getId()) {
             case R.id.tab_find:
-                mTitleBar.setVisibility(View.VISIBLE);
                 selectTab(0);
                 break;
             case R.id.tab_get_coin:
-                mTitleBar.setVisibility(View.VISIBLE);
                 selectTab(1);
                 break;
             case R.id.tab_change_coin:
-                mTitleBar.setVisibility(View.VISIBLE);
                 selectTab(2);
                 break;
             case R.id.tab_user:
@@ -81,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     iconActive(0);
                     startActivity(new Intent(this, LoginActivity.class));
                 } else {
-                    mTitleBar.setVisibility(View.GONE);
                     selectTab(3);
                 }
                 break;
@@ -171,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         iconActive(i);
         switch (i) {
             case 0:
+                mTitleBar.setVisibility(View.VISIBLE);
                 if (mFragFind == null) {
                     mFragFind = new FindFragment();
                     transaction.add(R.id.id_content, mFragFind);
@@ -179,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 1:
+                mTitleBar.setVisibility(View.VISIBLE);
                 if (mFragGetCoin == null) {
                     mFragGetCoin = new GetCoinFragment();
                     transaction.add(R.id.id_content, mFragGetCoin);
@@ -187,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 2:
+                mTitleBar.setVisibility(View.VISIBLE);
                 if (mFragChangeCoin == null) {
                     mFragChangeCoin = new ChangeCoinFragment();
                     transaction.add(R.id.id_content, mFragChangeCoin);
@@ -195,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 3:
+                mTitleBar.setVisibility(View.GONE);
                 if (mFragUser == null) {
                     mFragUser = new UserFragment();
                     transaction.add(R.id.id_content, mFragUser);

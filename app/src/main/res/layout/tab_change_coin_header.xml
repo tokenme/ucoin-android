@@ -88,15 +88,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="10dp">
-        <android.support.v7.widget.GridLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/entity_coin_header_border"
-            app:rowCount="1"
-            app:columnCount="3">
+            android:weightSum="3"
+            android:background="@drawable/entity_coin_header_border">
             <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:gravity="center">
                 <TextView
@@ -113,8 +113,9 @@
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:gravity="center">
                 <TextView
@@ -131,8 +132,9 @@
                     android:textSize="16sp" />
             </LinearLayout>
             <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:gravity="center">
                 <TextView
@@ -148,6 +150,6 @@
                     android:textColor="@color/colorGeneralText"
                     android:textSize="16sp" />
             </LinearLayout>
-        </android.support.v7.widget.GridLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -33,6 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
+                    android:lines="1"
                     android:id="@+id/activity_login_telephone"
                     android:hint="手机号:"
                     android:inputType="number|numberDecimal"
@@ -48,9 +49,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     app:ccp_textSize="16sp"
-                    app:ccp_defaultLanguage="CHINESE_SIMPLIFIED"/>
+                    app:ccp_autoDetectCountry="true"
+                    app:ccp_autoDetectLanguage="true"
+                    app:ccp_defaultLanguage="ENGLISH"/>
             </RelativeLayout>
             <EditText
+                android:lines="1"
                 android:id="@+id/activity_login_password"
                 android:hint="密码:"
                 android:layout_width="match_parent"
@@ -68,7 +72,16 @@
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
                 android:layout_marginTop="40dp"
-                android:background="@drawable/activity_register_submit_button_border_radius"/>
+                android:background="@drawable/activity_login_submit_button_border_radius"/>
+            <Button
+                android:id="@+id/activity_login_go_to_register"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="@string/activity_register"
+                android:textColor="@color/colorGeneralText"
+                android:textSize="16sp"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/activity_login_register_button_border_radius"/>
         </LinearLayout>
 
     </ScrollView>

@@ -42,5 +42,6 @@ dependencies {
     implementation 'cn.bingoogolapple:bga-qrcode-zxing:1.2.2'
     implementation 'com.jph.takephoto:takephoto_library:4.0.3'
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.qiniu:qiniu-android-sdk:7.3.+'
     implementation 'com.hbb20:ccp:2.2.2'
 }

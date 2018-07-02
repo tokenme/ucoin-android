@@ -25,7 +25,7 @@ import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 public class CoinTaskActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
-    private Intent intent;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,24 +45,24 @@ public class CoinTaskActivity extends AppCompatActivity {
         getTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.setClass(CoinTaskActivity.this, CoinTaskDetailActivity.class);
-                startActivity(intent);
+                mIntent.setClass(CoinTaskActivity.this, CoinTaskDetailActivity.class);
+                startActivity(mIntent);
             }
         });
     }
 
     @SuppressLint("ResourceAsColor")
     private void initView() {
-        intent = getIntent();
-        String title = intent.getStringExtra("title");
-        String desc = intent.getStringExtra("desc");
-        String coinName = intent.getStringExtra("coin_name");
-        String coinPic = intent.getStringExtra("coin_pic");
-        String userName = intent.getStringExtra("user_name");
-        String userAvatar = intent.getStringExtra("user_avatar");
-        String pic = intent.getStringExtra("pic");
-        String startDate = intent.getStringExtra("start_date");
-        String endDate = intent.getStringExtra("end_date");
+        mIntent = getIntent();
+        String title = mIntent.getStringExtra("title");
+        String desc = mIntent.getStringExtra("desc");
+        String coinName = mIntent.getStringExtra("coin_name");
+        String coinPic = mIntent.getStringExtra("coin_pic");
+        String userName = mIntent.getStringExtra("user_name");
+        String userAvatar = mIntent.getStringExtra("user_avatar");
+        String pic = mIntent.getStringExtra("pic");
+        String startDate = mIntent.getStringExtra("start_date");
+        String endDate = mIntent.getStringExtra("end_date");
 
         TextView userNameView = findViewById(R.id.activity_coin_task_user_name);
         userNameView.setText(userName);

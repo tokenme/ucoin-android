@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.hbb20.CountryCodePicker;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
@@ -38,8 +40,9 @@ import okhttp3.Response;
 public class RegisterActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
-    private boolean isSendingVerifyCode = false;
-    private int counter = 60;
+    private CountryCodePicker mCcp;
+    private boolean mIsSendingVerifyCode = false;
+    private int mCounter = 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +70,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String password = passwordView.getText().toString();
                 EditText repasswordView = findViewById(R.id.activity_register_repassword);
                 String repassword = repasswordView.getText().toString();
+                int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
 
-                if (telephone.equals("") || verifyCode.equals("") || password.equals("") || repassword.equals("")) {
+                if (TextUtils.isEmpty(telephone) || TextUtils.isEmpty(verifyCode) || TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)) {
                     new MaterialDialog.Builder(RegisterActivity.this)
                         .title(R.string.dialog_tip_title)
                         .content("请填写相关信息")
@@ -78,11 +82,11 @@ public class RegisterActivity extends AppCompatActivity {
                     JSONObject params = new JSONObject();
                     try {
                         params.put("mobile", telephone);
-                        params.put("country_code", 86);
+                        params.put("country_code", countryCode);
                         params.put("passwd", password);
                         params.put("repasswd", repassword);
                         params.put("verify_code", verifyCode);
-                        Api.request("register", "POST", params, RegisterActivity.this, new Callback() {
+                        Api.request("register", "POST", params, false,RegisterActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 Logger.e(String.valueOf(e));
@@ -91,27 +95,40 @@ public class RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
                                 String jsonStr = response.body().string();
-                                try {
-                                    JSONObject data = new JSONObject(jsonStr);
-                                    final Object msg = data.opt("message");
-                                    if (msg != null && String.valueOf(msg).equals("ok")) {
-                                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        RegisterActivity.this.runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                new MaterialDialog.Builder(RegisterActivity.this)
+                                if (jsonStr.isEmpty()) {
+                                    RegisterActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new MaterialDialog.Builder(RegisterActivity.this)
                                                     .title(R.string.dialog_tip_title)
-                                                    .content(String.valueOf(msg))
+                                                    .content(R.string.dialog_unknow_err_tip)
                                                     .positiveText(R.string.dialog_positive)
                                                     .show();
-                                            }
-                                        });
+                                        }
+                                    });
+                                } else {
+                                    try {
+                                        JSONObject data = new JSONObject(jsonStr);
+                                        final Object msg = data.opt("message");
+                                        if (msg != null && String.valueOf(msg).equals("ok")) {
+                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            RegisterActivity.this.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    new MaterialDialog.Builder(RegisterActivity.this)
+                                                            .title(R.string.dialog_tip_title)
+                                                            .content(String.valueOf(msg))
+                                                            .positiveText(R.string.dialog_positive)
+                                                            .show();
+                                                }
+                                            });
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
                             }
                         });
@@ -128,14 +145,14 @@ public class RegisterActivity extends AppCompatActivity {
         sendVerifyCodeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isSendingVerifyCode) {
+                if (mIsSendingVerifyCode) {
                     return;
                 }
                 EditText telephoneView = findViewById(R.id.activity_register_telephone);
                 String telephone = telephoneView.getText().toString();
-                if (telephone != null && ! telephone.equals("")) {
+                if ( ! TextUtils.isEmpty(telephone)) {
                     sendVerifyCodeView.setBackgroundColor(ContextCompat.getColor(RegisterActivity.this, R.color.colorGeneralBg));
-                    isSendingVerifyCode = true;
+                    mIsSendingVerifyCode = true;
                     final Timer timer = new Timer();
                     timer.scheduleAtFixedRate(new TimerTask() {
                         @Override
@@ -144,16 +161,16 @@ public class RegisterActivity extends AppCompatActivity {
                                 @RequiresApi(api = Build.VERSION_CODES.M)
                                 @Override
                                 public void run() {
-                                    if (counter <= 0) {
-                                        counter = 60;
+                                    if (mCounter <= 0) {
+                                        mCounter = 60;
                                         sendVerifyCodeView.setText(R.string.activity_register_send_verify_code);
                                         sendVerifyCodeView.setBackgroundColor(ContextCompat.getColor(RegisterActivity.this, R.color.icon));
-                                        isSendingVerifyCode = false;
+                                        mIsSendingVerifyCode = false;
                                         timer.cancel();
                                         return;
                                     }
-                                    sendVerifyCodeView.setText("重新发送(" + counter + "秒)");
-                                    counter --;
+                                    sendVerifyCodeView.setText("重新发送(" + mCounter + "秒)");
+                                    mCounter --;
                                 }
                             });
                         }
@@ -163,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity {
                     try {
                         params.put("mobile", telephone);
                         params.put("country", 86);
-                        Api.request("sendVerificationCode", "POST", params, RegisterActivity.this, new Callback() {
+                        Api.request("sendVerificationCode", "POST", params, false,RegisterActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
 
@@ -171,7 +188,39 @@ public class RegisterActivity extends AppCompatActivity {
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
-                                Logger.i(String.valueOf(response));
+                                String jsonStr = response.body().string();
+                                Logger.i(jsonStr);
+                                if (jsonStr.isEmpty()) {
+                                    RegisterActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new MaterialDialog.Builder(RegisterActivity.this)
+                                                .title(R.string.dialog_tip_title)
+                                                .content(R.string.dialog_unknow_err_tip)
+                                                .positiveText(R.string.dialog_positive)
+                                                .show();
+                                        }
+                                    });
+                                } else {
+                                    try {
+                                        JSONObject data = new JSONObject(jsonStr);
+                                        final Object msg = data.opt("message");
+                                        if (msg != null) {
+                                            RegisterActivity.this.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    new MaterialDialog.Builder(RegisterActivity.this)
+                                                            .title(R.string.dialog_tip_title)
+                                                            .content(String.valueOf(msg))
+                                                            .positiveText(R.string.dialog_positive)
+                                                            .show();
+                                                }
+                                            });
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                         });
                     } catch (IOException e) {
@@ -191,7 +240,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initView() {
-
+        mCcp = findViewById(R.id.activity_login_ccp);
     }
 
     private void initTitleBar() {

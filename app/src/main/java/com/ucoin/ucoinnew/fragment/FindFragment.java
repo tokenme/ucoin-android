@@ -151,7 +151,7 @@ public class FindFragment extends Fragment {
                 mCurrentPage = 1;
             }
             params.put("page", mCurrentPage);
-            Api.request("getItemList", "GET", params, mMainActivity, new Callback() {
+            Api.request("getItemList", "GET", params, false, mMainActivity, new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
                     Logger.e("onFailure: " + e.getMessage());
@@ -168,19 +168,19 @@ public class FindFragment extends Fragment {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject e = data.getJSONObject(i);
                                 FindEntity entity = new FindEntity();
-                                String title = e.getString("title");
-                                String desc = e.getString("desc");
-                                String pic = e.getString("pic");
-                                String coinName = e.getString("coin_name");
-                                String coinPic = e.getString("coin_pic");
-                                Double coinNum = e.getDouble("coin_num");
-                                String startDate = e.getString("start_date");
-                                String endDate = e.getString("end_date");
-                                String userName = e.getString("user_name");
-                                String userAvatar = e.getString("user_avatar");
-                                int exchangeNum = e.getInt("exchange_num");
-                                int likeNum = e.getInt("like_num");
-                                JSONArray tags = e.getJSONArray("tags");
+                                String title = e.optString("title");
+                                String desc = e.optString("desc");
+                                String pic = e.optString("pic");
+                                String coinName = e.optString("coin_name");
+                                String coinPic = e.optString("coin_pic");
+                                Double coinNum = e.optDouble("coin_num");
+                                String startDate = e.optString("start_date");
+                                String endDate = e.optString("end_date");
+                                String userName = e.optString("user_name");
+                                String userAvatar = e.optString("user_avatar");
+                                int exchangeNum = e.optInt("exchange_num");
+                                int likeNum = e.optInt("like_num");
+                                JSONArray tags = e.optJSONArray("tags");
                                 entity.setTitle(title);
                                 entity.setDesc(desc);
                                 entity.setPic(pic);

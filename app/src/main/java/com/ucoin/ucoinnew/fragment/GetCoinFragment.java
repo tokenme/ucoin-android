@@ -136,7 +136,7 @@ public class GetCoinFragment extends Fragment {
                 mCurrentPage = 1;
             }
             params.put("page", mCurrentPage);
-            Api.request("getTaskList", "GET", params, mMainActivity, new Callback() {
+            Api.request("getTaskList", "GET", params, false, mMainActivity, new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
                     Logger.e("onFailure: " + e.getMessage());
@@ -153,14 +153,14 @@ public class GetCoinFragment extends Fragment {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject e = data.getJSONObject(i);
                                 TaskEntity entity = new TaskEntity();
-                                String title = e.getString("title");
-                                String desc = e.getString("desc");
-                                String coinName = e.getString("coin_name");
-                                String coinPic = e.getString("coin_pic");
-                                Double coinNum = e.getDouble("coin_num");
-                                String startDate = e.getString("start_date");
-                                String endDate = e.getString("end_date");
-                                JSONArray pics = e.getJSONArray("pics");
+                                String title = e.optString("title");
+                                String desc = e.optString("desc");
+                                String coinName = e.optString("coin_name");
+                                String coinPic = e.optString("coin_pic");
+                                Double coinNum = e.optDouble("coin_num");
+                                String startDate = e.optString("start_date");
+                                String endDate = e.optString("end_date");
+                                JSONArray pics = e.optJSONArray("pics");
                                 entity.setTitle(title);
                                 entity.setDesc(desc);
                                 entity.setPics(pics);

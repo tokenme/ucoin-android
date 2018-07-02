@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,7 @@ import okhttp3.Response;
 public class LoginActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
-    private CountryCodePicker ccp;
+    private CountryCodePicker mCcp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +54,9 @@ public class LoginActivity extends AppCompatActivity {
                 String telephone = telephoneView.getText().toString();
                 EditText passwordView = findViewById(R.id.activity_login_password);
                 String password = passwordView.getText().toString();
-                int countryCode = Integer.valueOf(ccp.getSelectedCountryCode());
+                int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
 
-                if (telephone.equals("") || password.equals("")) {
+                if (TextUtils.isEmpty(telephone) || TextUtils.isEmpty(password)) {
                     new MaterialDialog.Builder(LoginActivity.this)
                             .title(R.string.dialog_tip_title)
                             .content("请填写相关信息")
@@ -67,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                         params.put("mobile", telephone);
                         params.put("country_code", countryCode);
                         params.put("password", password);
-                        Api.request("login", "POST", params, LoginActivity.this, new Callback() {
+                        Api.request("login", "POST", params, false,LoginActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 Logger.e(String.valueOf(e));
@@ -77,27 +78,40 @@ public class LoginActivity extends AppCompatActivity {
                             public void onResponse(Call call, Response response) throws IOException {
                                 String jsonStr = response.body().string();
                                 Logger.i(jsonStr);
-                                try {
-                                    JSONObject data = new JSONObject(jsonStr);
-                                    final Object msg = data.opt("message");
-                                    final Object token = data.opt("token");
-                                    if (msg != null) {
-                                        LoginActivity.this.runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                new MaterialDialog.Builder(LoginActivity.this)
-                                                    .title(R.string.dialog_tip_title).content(String.valueOf(msg))
-                                                    .content(String.valueOf(msg))
-                                                    .positiveText(R.string.dialog_positive)
-                                                    .show();
-                                            }
-                                        });
-                                    } else if (token != null && ! String.valueOf(token).equals("")) {
-                                        Util.setSP("userToken", String.valueOf(token));
-                                        finish();
+                                if (jsonStr.isEmpty()) {
+                                    LoginActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new MaterialDialog.Builder(LoginActivity.this)
+                                                .title(R.string.dialog_tip_title)
+                                                .content(R.string.dialog_unknow_err_tip)
+                                                .positiveText(R.string.dialog_positive)
+                                                .show();
+                                        }
+                                    });
+                                } else {
+                                    try {
+                                        JSONObject data = new JSONObject(jsonStr);
+                                        final Object msg = data.opt("message");
+                                        final Object token = data.opt("token");
+                                        if (msg != null) {
+                                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    new MaterialDialog.Builder(LoginActivity.this)
+                                                        .title(R.string.dialog_tip_title).content(String.valueOf(msg))
+                                                        .content(String.valueOf(msg))
+                                                        .positiveText(R.string.dialog_positive)
+                                                        .show();
+                                                }
+                                            });
+                                        } else if (!TextUtils.isEmpty(String.valueOf(token))) {
+                                            Util.setSP("userToken", String.valueOf(token));
+                                            finish();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
                                 }
                             }
                         });
@@ -109,11 +123,19 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final Button registerView = findViewById(R.id.activity_login_go_to_register);
+        registerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-    @SuppressLint("ResourceAsColor")
     private void initView() {
-        ccp = findViewById(R.id.activity_login_ccp);
+        mCcp = findViewById(R.id.activity_login_ccp);
     }
 
     private void initTitleBar() {

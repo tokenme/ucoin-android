@@ -33,8 +33,8 @@ import java.util.ArrayList;
 public class MakeTaskActivity extends TakePhotoActivity {
 
     private CommonTitleBar mTitleBar;
-    private ArrayList<TImage> uploadImages = new ArrayList<>();
-    final private int imageLimit = 6;
+    private ArrayList<TImage> mUploadImages = new ArrayList<>();
+    final private int sImageLimit = 6;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +68,7 @@ public class MakeTaskActivity extends TakePhotoActivity {
             final android.support.v7.widget.GridLayout ll = findViewById(R.id.activity_make_task_upload_images);
             int uploadImageWidth = findViewById(R.id.activity_make_task_take_photo).getWidth();
             for (final TImage image : tmpImages) {
-                uploadImages.add(image);
+                mUploadImages.add(image);
                 SimpleDraweeView imgDraweeView = new SimpleDraweeView(MakeTaskActivity.this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 0);
                 layoutParams.width = uploadImageWidth;
@@ -86,7 +86,7 @@ public class MakeTaskActivity extends TakePhotoActivity {
                                     @Override
                                     public void onClick(MaterialDialog dialog, DialogAction which) {
                                         ll.removeView(v);
-                                        uploadImages.remove(image);
+                                        mUploadImages.remove(image);
                                         dialog.dismiss();
                                     }
                                 })
@@ -160,9 +160,9 @@ public class MakeTaskActivity extends TakePhotoActivity {
                             public void onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
                                 TakePhoto takePhoto = getTakePhoto();
                                 CompressConfig compressConfig = new CompressConfig.Builder()
-                                        .setMaxSize(800 * 800)
-                                        .setMaxPixel(800)
-                                        .create();
+                                    .setMaxSize(800 * 800)
+                                    .setMaxPixel(800)
+                                    .create();
                                 takePhoto.onEnableCompress(compressConfig,true);
                                 switch (which) {
                                     case 0:
@@ -174,7 +174,7 @@ public class MakeTaskActivity extends TakePhotoActivity {
                                         takePhoto.onPickFromCapture(imageUri);
                                         break;
                                     case 1:
-                                        takePhoto.onPickMultiple(imageLimit - uploadImages.size());
+                                        takePhoto.onPickMultiple(sImageLimit - mUploadImages.size());
                                         break;
                                 }
                                 dialog.dismiss();

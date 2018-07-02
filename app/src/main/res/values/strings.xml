@@ -65,4 +65,7 @@
     <string name="activity_register">注册</string>
     <string name="activity_register_send_verify_code">获取验证码</string>
     <string name="dialog_tip_title">提示</string>
+    <string name="activity_create_coin_title">设置权益币</string>
+    <string name="activity_create_coin_upload_logo">上传LOGO</string>
+    <string name="dialog_unknow_err_tip">未知错误，请稍后再试</string>
 </resources>
