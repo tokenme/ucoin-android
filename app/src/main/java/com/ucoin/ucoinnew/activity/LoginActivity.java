@@ -1,20 +1,23 @@
 package com.ucoin.ucoinnew.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.hbb20.CountryCodePicker;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
+import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.Util;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
@@ -27,10 +30,13 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
+
 public class LoginActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
     private CountryCodePicker mCcp;
+    private AwesomeValidation mAwesomeValidation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,37 +53,36 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initClick() {
         final Button submitView = findViewById(R.id.activity_login_submit);
+        TextInputLayout telephoneView = findViewById(R.id.activity_login_telephone);
+        TextInputLayout passwordView = findViewById(R.id.activity_login_password);
+        mAwesomeValidation.addValidation(LoginActivity.this, telephoneView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_login_validation_telephone);
+        mAwesomeValidation.addValidation(LoginActivity.this, passwordView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_login_validation_password);
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText telephoneView = findViewById(R.id.activity_login_telephone);
-                String telephone = telephoneView.getText().toString();
-                EditText passwordView = findViewById(R.id.activity_login_password);
-                String password = passwordView.getText().toString();
-                int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
-
-                if (TextUtils.isEmpty(telephone) || TextUtils.isEmpty(password)) {
-                    new MaterialDialog.Builder(LoginActivity.this)
-                            .title(R.string.dialog_tip_title)
-                            .content("请填写相关信息")
-                            .negativeText(R.string.dialog_positive)
-                            .show();
-                } else {
+                if (mAwesomeValidation.validate()) {
+                    TextInputEditText telephoneContentView = findViewById(R.id.activity_login_telephone_content);
+                    TextInputEditText passwordContentView = findViewById(R.id.activity_login_password_content);
+                    String telephone = telephoneContentView.getText().toString();
+                    String password = passwordContentView.getText().toString();
+                    int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
                     JSONObject params = new JSONObject();
                     try {
                         params.put("mobile", telephone);
                         params.put("country_code", countryCode);
                         params.put("password", password);
+                        UiUtil.showLoading(LoginActivity.this);
                         Api.request("login", "POST", params, false,LoginActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 Logger.e(String.valueOf(e));
+                                UiUtil.hideLoading();
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
                                 String jsonStr = response.body().string();
-                                Logger.i(jsonStr);
+                                UiUtil.hideLoading();
                                 if (jsonStr.isEmpty()) {
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         @Override
@@ -136,6 +141,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initView() {
         mCcp = findViewById(R.id.activity_login_ccp);
+        mAwesomeValidation = new AwesomeValidation(TEXT_INPUT_LAYOUT);
     }
 
     private void initTitleBar() {

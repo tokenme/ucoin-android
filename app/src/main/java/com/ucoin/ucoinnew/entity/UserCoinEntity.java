@@ -20,7 +20,7 @@ public class UserCoinEntity {
     }
 
     public void setAddress(String address) {
-        this.mAddress = mAddress;
+        this.mAddress = address;
     }
 
     public String getOwner() {

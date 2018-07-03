@@ -4,11 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/entity_coin_border"
+    android:background="@drawable/entity_user_coin_border"
     android:layout_marginHorizontal="10dp"
     android:paddingVertical="10dp">
     <LinearLayout
-        android:id="@+id/entity_coin_container"
+        android:id="@+id/entity_user_coin_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="3"

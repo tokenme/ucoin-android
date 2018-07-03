@@ -1,19 +1,20 @@
 package com.ucoin.ucoinnew.activity;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
@@ -28,34 +29,40 @@ import com.jph.takephoto.compress.CompressConfig;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
 import com.orhanobut.logger.Logger;
-import com.qiniu.android.common.AutoZone;
-import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
+import com.qiniu.android.utils.StringUtils;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.util.UiUtil;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class CreateCoinActivity extends TakePhotoActivity {
+public class CreateCoinProductActivity extends TakePhotoActivity {
 
     private CommonTitleBar mTitleBar;
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
-    private String mUploadImageUrl = "";
-    final private int mImageLimit = 1;
+    private HashMap<String, String> mUploadImageMaps = new HashMap<>();
+    private String mTokenAddress = "";
+    private String mTokenName = "";
+    private String mTokenLogo = "";
+    final private int mImageLimit = 3;
 
     @Override
     public void takeCancel() {
@@ -74,17 +81,46 @@ public class CreateCoinActivity extends TakePhotoActivity {
         ArrayList<TImage> tmpImages = new ArrayList<>();
         tmpImages = result.getImages();
         if (tmpImages.size() > 0) {
-            final android.support.v7.widget.GridLayout ll = findViewById(R.id.activity_create_coin_upload_logo);
-            int uploadImageWidth = findViewById(R.id.activity_create_coin_take_photo).getWidth();
+            final android.support.v7.widget.GridLayout ll = findViewById(R.id.activity_create_coin_product_upload_logo);
+            int uploadImageWidth = findViewById(R.id.activity_create_coin_product_take_photo).getWidth();
+            ArrayList<File> files = new ArrayList<>();
             for (final TImage image : tmpImages) {
                 mUploadImages.add(image);
-                SimpleDraweeView imgDraweeView = new SimpleDraweeView(CreateCoinActivity.this);
+                SimpleDraweeView imgDraweeView = new SimpleDraweeView(CreateCoinProductActivity.this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 0);
                 layoutParams.width = uploadImageWidth;
                 layoutParams.height = layoutParams.width;
                 imgDraweeView.setLayoutParams(layoutParams);
                 RoundingParams roundingParams = RoundingParams.fromCornersRadius(10f);
                 imgDraweeView.getHierarchy().setRoundingParams(roundingParams);
+                imgDraweeView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                                .autoDismiss(false)
+                                .canceledOnTouchOutside(false)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        ll.removeView(v);
+                                        File imgFile = new File(image.getOriginalPath());
+                                        mUploadImages.remove(image);
+                                        mUploadImageMaps.remove(imgFile.getName());
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .title(R.string.activity_make_task_remove_upload_pic_dialog_title)
+                                .positiveText(R.string.dialog_positive)
+                                .negativeText(R.string.dialog_negative)
+                                .show();
+                    }
+                });
                 File file = new File(image.getOriginalPath());
                 ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.fromFile(file))
                         .setResizeOptions(new ResizeOptions(uploadImageWidth, uploadImageWidth))
@@ -95,17 +131,17 @@ public class CreateCoinActivity extends TakePhotoActivity {
                         .build();
                 imgDraweeView.setController(controller);
                 UiUtil.setMargins(imgDraweeView, 5, 0, 5, 10);
-                ll.removeAllViews();
                 ll.addView(imgDraweeView);
-                uploadLogo(file);
+                files.add(file);
             }
+            uploadImages(files);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_coin);
+        setContentView(R.layout.activity_create_coin_product);
         init();
     }
 
@@ -116,10 +152,12 @@ public class CreateCoinActivity extends TakePhotoActivity {
         initClick();
     }
 
-    private void uploadLogo(final File file) {
+    private void uploadImages(final List<File> files) {
         JSONObject params = new JSONObject();
         try {
-            Api.request("uploadCoinLogo", "POST", params, false,CreateCoinActivity.this, new Callback() {
+            params.put("token", mTokenAddress);
+            params.put("amount", mUploadImages.size());
+            Api.request("uploadCoinProductImages", "POST", params, false,CreateCoinProductActivity.this, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Logger.e(String.valueOf(e));
@@ -128,12 +166,13 @@ public class CreateCoinActivity extends TakePhotoActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String jsonStr = response.body().string();
+
                     Logger.i(jsonStr);
                     if (TextUtils.isEmpty(jsonStr)) {
-                        CreateCoinActivity.this.runOnUiThread(new Runnable() {
+                        CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new MaterialDialog.Builder(CreateCoinActivity.this)
+                                new MaterialDialog.Builder(CreateCoinProductActivity.this)
                                     .title(R.string.dialog_tip_title)
                                     .content(R.string.dialog_unknow_err_tip)
                                     .positiveText(R.string.dialog_positive)
@@ -142,25 +181,29 @@ public class CreateCoinActivity extends TakePhotoActivity {
                         });
                     } else {
                         try {
-                            JSONObject data = new JSONObject(jsonStr);
-                            final String qiniuKey = data.optString("key");
-                            final String qiniuUpToken = data.optString("uptoken");
-                            final String qiniuLink = data.optString("link");
-                            if ( ! TextUtils.isEmpty(qiniuKey) && ! TextUtils.isEmpty(qiniuUpToken) && ! TextUtils.isEmpty(qiniuLink)) {
-                                Configuration qiniuConfig = new Configuration.Builder().build();
-                                UploadManager uploadManager = new UploadManager(qiniuConfig);
-                                uploadManager.put(file, qiniuKey, qiniuUpToken, new UpCompletionHandler() {
-                                    @Override
-                                    public void complete(String key, ResponseInfo info, JSONObject res) {
-                                        if(info.isOK()) {
-                                            Logger.i("qiniu Upload Success");
-                                            mUploadImageUrl = qiniuLink;
-                                        } else {
-                                            Logger.i("qiniu Upload Fail");
+                            JSONArray data = new JSONArray(jsonStr);
+                            for (int i = 0; i < data.length(); i ++) {
+                                final File file = files.get(i);
+                                JSONObject d = data.getJSONObject(i);
+                                final String qiniuKey = d.optString("key");
+                                final String qiniuUpToken = d.optString("uptoken");
+                                final String qiniuLink = d.optString("link");
+                                if ( ! TextUtils.isEmpty(qiniuKey) && ! TextUtils.isEmpty(qiniuUpToken) && ! TextUtils.isEmpty(qiniuLink)) {
+                                    Configuration qiniuConfig = new Configuration.Builder().build();
+                                    UploadManager uploadManager = new UploadManager(qiniuConfig);
+                                    uploadManager.put(file, String.valueOf(qiniuKey), String.valueOf(qiniuUpToken), new UpCompletionHandler() {
+                                        @Override
+                                        public void complete(String key, ResponseInfo info, JSONObject res) {
+                                            if(info.isOK()) {
+                                                Logger.i("qiniu Upload Success");
+                                                mUploadImageMaps.put(file.getName(), qiniuLink);
+                                            } else {
+                                                Logger.i("qiniu Upload Fail");
+                                            }
+                                            Logger.i("qiniu" + key + ",\r\n " + info + ",\r\n " + res);
                                         }
-                                        Logger.i("qiniu" + key + ",\r\n " + info + ",\r\n " + res);
-                                    }
-                                }, null);
+                                    }, null);
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -176,21 +219,15 @@ public class CreateCoinActivity extends TakePhotoActivity {
     }
 
     private void initClick() {
-        final Button submitView = findViewById(R.id.activity_create_coin_submit);
+        final Button submitView = findViewById(R.id.activity_create_coin_product_submit);
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText nameView = findViewById(R.id.activity_create_coin_name);
-                String name = nameView.getText().toString();
-                EditText symbolView = findViewById(R.id.activity_create_coin_symbol);
-                String symbol = symbolView.getText().toString();
-                EditText totalSupplyView = findViewById(R.id.activity_create_coin_total_supply);
-                String totalSupply = totalSupplyView.getText().toString();
-                EditText decimalsView = findViewById(R.id.activity_create_coin_decimals);
-                String decimals = decimalsView.getText().toString();
+                EditText titleView = findViewById(R.id.activity_create_coin_product_title);
+                String title = titleView.getText().toString();
 
-                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(symbol) || TextUtils.isEmpty(totalSupply) || TextUtils.isEmpty(decimals)) {
-                    new MaterialDialog.Builder(CreateCoinActivity.this)
+                if (TextUtils.isEmpty(title)) {
+                    new MaterialDialog.Builder(CreateCoinProductActivity.this)
                         .title(R.string.dialog_tip_title)
                         .content("请填写相关信息")
                         .negativeText(R.string.dialog_positive)
@@ -198,12 +235,10 @@ public class CreateCoinActivity extends TakePhotoActivity {
                 } else {
                     JSONObject params = new JSONObject();
                     try {
-                        params.put("name", name);
-                        params.put("symbol", symbol);
-                        params.put("total_supply", Integer.valueOf(totalSupply));
-                        params.put("decimals", Integer.valueOf(decimals));
-                        params.put("logo", mUploadImageUrl);
-                        Api.request("createCoin", "POST", params, false,CreateCoinActivity.this, new Callback() {
+                        String[] imagesStringArr = (String[]) mUploadImageMaps.values().toArray();
+                        params.put("title", title);
+                        params.put("images", StringUtils.join(imagesStringArr, ","));
+                        Api.request("createCoinProduct", "POST", params, false,CreateCoinProductActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 Logger.e(String.valueOf(e));
@@ -214,10 +249,10 @@ public class CreateCoinActivity extends TakePhotoActivity {
                                 String jsonStr = response.body().string();
                                 Logger.i(jsonStr);
                                 if (jsonStr.isEmpty()) {
-                                    CreateCoinActivity.this.runOnUiThread(new Runnable() {
+                                    CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            new MaterialDialog.Builder(CreateCoinActivity.this)
+                                            new MaterialDialog.Builder(CreateCoinProductActivity.this)
                                                 .title(R.string.dialog_tip_title)
                                                 .content(R.string.dialog_unknow_err_tip)
                                                 .positiveText(R.string.dialog_positive)
@@ -229,10 +264,10 @@ public class CreateCoinActivity extends TakePhotoActivity {
                                         JSONObject data = new JSONObject(jsonStr);
                                         final String msg = data.optString("message");
                                         if (msg != null) {
-                                            CreateCoinActivity.this.runOnUiThread(new Runnable() {
+                                            CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    new MaterialDialog.Builder(CreateCoinActivity.this)
+                                                    new MaterialDialog.Builder(CreateCoinProductActivity.this)
                                                         .title(R.string.dialog_tip_title)
                                                         .content(msg)
                                                         .positiveText(R.string.dialog_positive)
@@ -254,9 +289,50 @@ public class CreateCoinActivity extends TakePhotoActivity {
                 }
             }
         });
+
+        LinearLayout startDatePickerView = findViewById(R.id.activity_create_coin_product_start_date_picker);
+        startDatePickerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar ca = Calendar.getInstance();
+                int year = ca.get(Calendar.YEAR);
+                int month = ca.get(Calendar.MONTH);
+                int day = ca.get(Calendar.DAY_OF_MONTH);
+                new DatePickerDialog(CreateCoinProductActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        TextView startDateView = findViewById(R.id.activity_create_coin_product_start_date);
+                        startDateView.setText(String.format("%d-%d-%d", i, i1, i2));
+                    }
+                }, year, month, day).show();
+            }
+        });
+
+        LinearLayout endDatePickerView = findViewById(R.id.activity_create_coin_product_end_date_picker);
+        endDatePickerView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar ca = Calendar.getInstance();
+                int year = ca.get(Calendar.YEAR);
+                int month = ca.get(Calendar.MONTH);
+                int day = ca.get(Calendar.DAY_OF_MONTH);
+                new DatePickerDialog(CreateCoinProductActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        TextView endDateView = findViewById(R.id.activity_create_coin_product_end_date);
+                        endDateView.setText(String.format("%d-%d-%d", i, i1, i2));
+                    }
+                }, year, month, day).show();
+            }
+        });
     }
 
     private void initView() {
+        Intent intent = getIntent();
+        mTokenAddress = intent.getStringExtra("token_address");
+        mTokenName = intent.getStringExtra("token_name");
+        mTokenLogo = intent.getStringExtra("token_logo");
+        Logger.i(mTokenAddress);
     }
 
     private void initTitleBar() {
@@ -271,12 +347,12 @@ public class CreateCoinActivity extends TakePhotoActivity {
     }
 
     private void initTakePhoto() {
-        View view = findViewById(R.id.activity_create_coin_take_photo);
+        View view = findViewById(R.id.activity_create_coin_product_take_photo);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String[] stringItems = {"拍照", "相册"};
-                new MaterialDialog.Builder(CreateCoinActivity.this)
+                new MaterialDialog.Builder(CreateCoinProductActivity.this)
                         .autoDismiss(false)
                         .canceledOnTouchOutside(false)
                         .title(R.string.activity_make_task_choose_pic_dialog_title)

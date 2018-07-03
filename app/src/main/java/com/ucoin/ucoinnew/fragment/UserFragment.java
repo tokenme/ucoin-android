@@ -27,6 +27,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.activity.CreateCoinActivity;
+import com.ucoin.ucoinnew.activity.CreateCoinProductActivity;
 import com.ucoin.ucoinnew.activity.GetCoinQrcodeActivity;
 import com.ucoin.ucoinnew.activity.LoginActivity;
 import com.ucoin.ucoinnew.activity.MainActivity;
@@ -85,8 +86,26 @@ public class UserFragment extends Fragment {
         }
         refresh();
         // loadMore();
+        initClick();
 
         return mView;
+    }
+
+    private void initClick() {
+        mUserCoinAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Intent intent = new Intent(mMainActivity, CreateCoinProductActivity.class);
+                UserCoinEntity uce = (UserCoinEntity) adapter.getItem(position);
+                String address = uce.getAddress();
+                String name = uce.getName();
+                String logo = uce.getLogo();
+                intent.putExtra("token_name", name);
+                intent.putExtra("token_address", address);
+                intent.putExtra("token_logo", logo);
+                startActivity(intent);
+            }
+        });
     }
 
     @SuppressLint("ResourceAsColor")
@@ -127,7 +146,6 @@ public class UserFragment extends Fragment {
                 @Override
                 public void onResponse(@NonNull Call call, Response response) throws IOException {
                     final String jsonStr = response.body().string();
-                    Logger.i(jsonStr);
                     if (!TextUtils.isEmpty(jsonStr)) {
                         mMainActivity.runOnUiThread(new Runnable() {
                             @Override
@@ -195,13 +213,11 @@ public class UserFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
                     Logger.e(String.valueOf(e));
-
                 }
 
                 @Override
                 public void onResponse(@NonNull Call call, Response response) throws IOException {
                     final String jsonStr = response.body().string();
-                    Logger.i(jsonStr);
                     try {
                         JSONArray data = new JSONArray(jsonStr);
                         if (data.length() > 0) {
@@ -209,10 +225,12 @@ public class UserFragment extends Fragment {
                             for (int i = 0; i < data.length(); i++) {
                                 JSONObject e = data.getJSONObject(i);
                                 UserCoinEntity entity = new UserCoinEntity();
+                                String address = e.optString("address");
                                 String name = e.optString("name");
                                 String logo = e.optString("logo");
                                 Double balance = e.optDouble("balance");
                                 Double totalSupply = e.optDouble("total_supply");
+                                entity.setAddress(address);
                                 entity.setName(name);
                                 entity.setLogo(logo);
                                 entity.setBalance(balance);

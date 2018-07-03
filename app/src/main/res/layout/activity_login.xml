@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
@@ -28,42 +27,54 @@
             android:layout_height="match_parent"
             android:paddingHorizontal="20dp"
             android:paddingVertical="20dp">
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <EditText
-                    android:lines="1"
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/activity_login_telephone"
-                    android:hint="手机号:"
-                    android:inputType="number|numberDecimal"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme"
-                    android:textSize="16sp"
-                    android:paddingBottom="20dp"
-                    android:textColor="@color/colorGeneralText"/>
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:lines="1"
+                        android:id="@+id/activity_login_telephone_content"
+                        android:hint="@string/activity_login_telephone"
+                        android:inputType="number|numberDecimal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/EditTextTheme"
+                        android:textSize="16sp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/colorGeneralText"/>
+                </android.support.design.widget.TextInputLayout>
                 <com.hbb20.CountryCodePicker
                     android:id="@+id/activity_login_ccp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_marginTop="12dp"
                     app:ccp_textSize="16sp"
                     app:ccp_autoDetectCountry="true"
                     app:ccp_autoDetectLanguage="true"
                     app:ccp_defaultLanguage="ENGLISH"/>
             </RelativeLayout>
-            <EditText
-                android:lines="1"
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/activity_login_password"
-                android:hint="密码:"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:theme="@style/EditTextTheme"
-                android:textSize="16sp"
-                android:paddingBottom="20dp"
-                android:textColor="@color/colorGeneralText"
-                android:layout_marginTop="10dp" />
+                app:passwordToggleEnabled="true">
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/activity_login_password_content"
+                    android:lines="1"
+                    android:hint="@string/activity_login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:theme="@style/EditTextTheme"
+                    android:textSize="16sp"
+                    android:paddingBottom="20dp"
+                    android:textColor="@color/colorGeneralText"
+                    android:layout_marginTop="10dp" />
+            </android.support.design.widget.TextInputLayout>
             <Button
                 android:id="@+id/activity_login_submit"
                 android:layout_width="match_parent"
@@ -83,6 +94,5 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/activity_login_register_button_border_radius"/>
         </LinearLayout>
-
     </ScrollView>
 </LinearLayout>

@@ -15,6 +15,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.util.Util;
 
@@ -23,7 +24,7 @@ import org.json.JSONObject;
 
 public class Api {
 
-    private static final int mTimeout = 10;
+    private static final int sTimeout = 30;
 
     protected static OkHttpClient sClient;
     protected static HashMap<String, String> sRequestUrls = new HashMap<String,String>(){{
@@ -36,14 +37,16 @@ public class Api {
         put("getUserInfo", "/user/info");
         put("getUserCoinList", "/token/owned/list");
         put("getCoinProductList", "/token/product/list");
-        put("createCoin", "/token/create");
         put("uploadCoinLogo", "/qiniu/token/logo");
+        put("createCoin", "/token/create");
+        put("uploadCoinProductImages", "/qiniu/token/product");
+        put("createCoinProduct", "/token/product/create");
     }};
 
-    public static void request(String name, String method, JSONObject params, Boolean isForm, Context context, Callback cb) throws IOException, JSONException {
+    public static void request(String name, String method, JSONObject params, Boolean isForm, final Context context, final Callback cb) throws IOException, JSONException {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        builder.readTimeout(mTimeout, TimeUnit.SECONDS);
-        builder.writeTimeout(mTimeout, TimeUnit.SECONDS);
+        builder.readTimeout(sTimeout, TimeUnit.SECONDS);
+        builder.writeTimeout(sTimeout, TimeUnit.SECONDS);
         sClient = builder.build();
 
         String url = Util.getProperty("APIRequestHost", context);
@@ -91,6 +94,7 @@ public class Api {
                         body = RequestBody.create(JSON, params.toString());
                     }
                 }
+
                 request.url(url);
                 request.post(body);
                 break;

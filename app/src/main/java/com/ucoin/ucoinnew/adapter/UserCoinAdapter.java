@@ -21,7 +21,6 @@ public class UserCoinAdapter extends BaseQuickAdapter<UserCoinEntity, BaseViewHo
         helper.setText(R.id.entity_user_coin_balance, String.valueOf(entity.getBalance()));
         helper.setText(R.id.entity_user_coin_total_supply, String.valueOf(entity.getTotalSupply()));
         helper.setText(R.id.entity_user_coin_index, String.valueOf(helper.getAdapterPosition()));
-
         /*
         String logo = entity.getLogo();
         Uri logoUri = Uri.parse(logo);
