@@ -6,16 +6,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.generic.RoundingParams;
@@ -37,6 +39,7 @@ import com.qiniu.android.utils.StringUtils;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.util.UiUtil;
+import com.ucoin.ucoinnew.util.DTUtil;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONArray;
@@ -45,14 +48,19 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
+
+import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
 
 public class CreateCoinProductActivity extends TakePhotoActivity {
 
@@ -62,6 +70,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     private String mTokenAddress = "";
     private String mTokenName = "";
     private String mTokenLogo = "";
+    private AwesomeValidation mAwesomeValidation;
     final private int mImageLimit = 3;
 
     @Override
@@ -220,32 +229,65 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
 
     private void initClick() {
         final Button submitView = findViewById(R.id.activity_create_coin_product_submit);
+        TextInputLayout titleView = findViewById(R.id.activity_create_coin_product_title);
+        TextInputLayout descView = findViewById(R.id.activity_create_coin_product_desc);
+        TextInputLayout priceView = findViewById(R.id.activity_create_coin_product_price);
+        TextInputLayout amountView = findViewById(R.id.activity_create_coin_product_amount);
+        TextInputLayout startDateView = findViewById(R.id.activity_create_coin_product_start_date_picker);
+        TextInputLayout endDateView = findViewById(R.id.activity_create_coin_product_end_date_picker);
+        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, titleView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_title);
+        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, descView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_desc);
+        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, priceView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_price);
+        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, amountView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_amount);
+        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, startDateView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_start_date);
+        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, endDateView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_end_date);
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText titleView = findViewById(R.id.activity_create_coin_product_title);
-                String title = titleView.getText().toString();
-
-                if (TextUtils.isEmpty(title)) {
-                    new MaterialDialog.Builder(CreateCoinProductActivity.this)
-                        .title(R.string.dialog_tip_title)
-                        .content("请填写相关信息")
-                        .negativeText(R.string.dialog_positive)
-                        .show();
-                } else {
-                    JSONObject params = new JSONObject();
+                if (mAwesomeValidation.validate()) {
+                    TextInputEditText titleContentView = findViewById(R.id.activity_create_coin_product_title_content);
+                    TextInputEditText descContentView = findViewById(R.id.activity_create_coin_product_desc_content);
+                    TextInputEditText priceContentView = findViewById(R.id.activity_create_coin_product_price_content);
+                    TextInputEditText tagsContentView = findViewById(R.id.activity_create_coin_product_tags_content);
+                    TextInputEditText amountContentView = findViewById(R.id.activity_create_coin_product_amount_content);
+                    TextInputEditText startDateContentView = findViewById(R.id.activity_create_coin_product_start_date_picker_content);
+                    TextInputEditText endDateContentView = findViewById(R.id.activity_create_coin_product_end_date_picker_content);
+                    String title = titleContentView.getText().toString();
+                    String desc = descContentView.getText().toString();
+                    String price = priceContentView.getText().toString();
+                    String tags = tagsContentView.getText().toString();
+                    String amount = amountContentView.getText().toString();
+                    String startDate = startDateContentView.getText().toString();
+                    String endDate = endDateContentView.getText().toString();
                     try {
-                        String[] imagesStringArr = (String[]) mUploadImageMaps.values().toArray();
+                        UiUtil.showLoading(CreateCoinProductActivity.this);
+                        JSONObject params = new JSONObject();
+                        Object[] imagesValues = mUploadImageMaps.values().toArray();
+                        String[] imagesStringArr = new String[0];
+                        for (int i = 0; i < imagesValues.length; i++) {
+                            imagesStringArr[i] = String.valueOf(imagesValues[i]);
+                        }
+                        Date startDateObj = DTUtil.dateParse(startDate, DTUtil.DATE_PATTERN);
+                        Date endDateObj = DTUtil.dateParse(endDate, DTUtil.DATE_PATTERN);
+                        params.put("token", mTokenAddress);
                         params.put("title", title);
+                        params.put("desc", desc);
+                        params.put("amount", Integer.valueOf(amount));
+                        params.put("price", Double.valueOf(price));
+                        params.put("tags", tags);
+                        params.put("start_date", DTUtil.dateFormat(startDateObj, "yyyy-MM-dd'T'HH:mm:ssZ"));
+                        params.put("end_date", DTUtil.dateFormat(endDateObj, "yyyy-MM-dd'T'HH:mm:ssZ"));
                         params.put("images", StringUtils.join(imagesStringArr, ","));
                         Api.request("createCoinProduct", "POST", params, false,CreateCoinProductActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
+                                UiUtil.hideLoading();
                                 Logger.e(String.valueOf(e));
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
+                                UiUtil.hideLoading();
                                 String jsonStr = response.body().string();
                                 Logger.i(jsonStr);
                                 if (jsonStr.isEmpty()) {
@@ -263,7 +305,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                                     try {
                                         JSONObject data = new JSONObject(jsonStr);
                                         final String msg = data.optString("message");
-                                        if (msg != null) {
+                                        if (!TextUtils.isEmpty(msg)) {
                                             CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -274,6 +316,8 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                                                         .show();
                                                 }
                                             });
+                                        } else {
+                                            finish();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -282,15 +326,20 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                             }
                         });
                     } catch (IOException e) {
+                        UiUtil.hideLoading();
                         e.printStackTrace();
                     } catch (JSONException e) {
+                        UiUtil.hideLoading();
+                        e.printStackTrace();
+                    } catch (ParseException e) {
+                        UiUtil.hideLoading();
                         e.printStackTrace();
                     }
                 }
             }
         });
 
-        LinearLayout startDatePickerView = findViewById(R.id.activity_create_coin_product_start_date_picker);
+        final TextInputEditText startDatePickerView = findViewById(R.id.activity_create_coin_product_start_date_picker_content);
         startDatePickerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -301,14 +350,13 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                 new DatePickerDialog(CreateCoinProductActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        TextView startDateView = findViewById(R.id.activity_create_coin_product_start_date);
-                        startDateView.setText(String.format("%d-%d-%d", i, i1, i2));
+                        startDatePickerView.setText(String.format("%d-%s-%s", i, (i1 < 10 ? "0" + i1 : i1), (i2 < 10 ? "0" + i2 : i2)));
                     }
                 }, year, month, day).show();
             }
         });
 
-        LinearLayout endDatePickerView = findViewById(R.id.activity_create_coin_product_end_date_picker);
+        final TextInputEditText endDatePickerView = findViewById(R.id.activity_create_coin_product_end_date_picker_content);
         endDatePickerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -319,8 +367,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                 new DatePickerDialog(CreateCoinProductActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        TextView endDateView = findViewById(R.id.activity_create_coin_product_end_date);
-                        endDateView.setText(String.format("%d-%d-%d", i, i1, i2));
+                        endDatePickerView.setText(String.format("%d-%s-%s", i, (i1 < 10 ? "0" + i1 : i1), (i2 < 10 ? "0" + i2 : i2)));
                     }
                 }, year, month, day).show();
             }
@@ -332,7 +379,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
         mTokenAddress = intent.getStringExtra("token_address");
         mTokenName = intent.getStringExtra("token_name");
         mTokenLogo = intent.getStringExtra("token_logo");
-        Logger.i(mTokenAddress);
+        mAwesomeValidation = new AwesomeValidation(TEXT_INPUT_LAYOUT);
     }
 
     private void initTitleBar() {

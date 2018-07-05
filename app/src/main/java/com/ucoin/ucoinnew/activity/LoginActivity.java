@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -66,23 +65,23 @@ public class LoginActivity extends AppCompatActivity {
                     String telephone = telephoneContentView.getText().toString();
                     String password = passwordContentView.getText().toString();
                     int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
-                    JSONObject params = new JSONObject();
                     try {
+                        UiUtil.showLoading(LoginActivity.this);
+                        JSONObject params = new JSONObject();
                         params.put("mobile", telephone);
                         params.put("country_code", countryCode);
                         params.put("password", password);
-                        UiUtil.showLoading(LoginActivity.this);
                         Api.request("login", "POST", params, false,LoginActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
-                                Logger.e(String.valueOf(e));
                                 UiUtil.hideLoading();
+                                Logger.e(String.valueOf(e));
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
-                                String jsonStr = response.body().string();
                                 UiUtil.hideLoading();
+                                String jsonStr = response.body().string();
                                 if (jsonStr.isEmpty()) {
                                     LoginActivity.this.runOnUiThread(new Runnable() {
                                         @Override

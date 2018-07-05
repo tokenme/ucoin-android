@@ -38,48 +38,68 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
                 android:orientation="vertical">
-                <EditText
-                    android:lines="1"
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/activity_create_coin_name"
-                    android:hint="全称:"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme"
-                    android:textSize="16sp"
-                    android:paddingBottom="20dp"
-                    android:textColor="@color/colorGeneralText"/>
-                <EditText
-                    android:lines="1"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/activity_create_coin_name_content"
+                        android:lines="1"
+                        android:hint="@string/activity_create_coin_name_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/EditTextTheme"
+                        android:textSize="16sp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/colorGeneralText"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/activity_create_coin_symbol"
-                    android:hint="缩写:"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme"
-                    android:textSize="16sp"
-                    android:paddingBottom="20dp"
-                    android:textColor="@color/colorGeneralText"/>
-                <EditText
-                    android:lines="1"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:lines="1"
+                        android:id="@+id/activity_create_coin_symbol_content"
+                        android:hint="@string/activity_create_coin_symbol_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/EditTextTheme"
+                        android:textSize="16sp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/colorGeneralText"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/activity_create_coin_total_supply"
-                    android:hint="发行量:"
-                    android:inputType="number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme"
-                    android:textSize="16sp"
-                    android:paddingBottom="20dp"
-                    android:textColor="@color/colorGeneralText"/>
-                <EditText
-                    android:lines="1"
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/activity_create_coin_total_supply_content"
+                        android:lines="1"
+                        android:hint="@string/activity_create_coin_total_supply_title"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/EditTextTheme"
+                        android:textSize="16sp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/colorGeneralText"/>
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/activity_create_coin_decimals"
-                    android:hint="小数位:"
-                    android:inputType="number"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:theme="@style/EditTextTheme"
-                    android:textSize="16sp"
-                    android:paddingBottom="20dp"
-                    android:textColor="@color/colorGeneralText"/>
+                    android:layout_height="wrap_content">
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/activity_create_coin_decimals_content"
+                        android:lines="1"
+                        android:hint="@string/activity_create_coin_decimals_title"
+                        android:inputType="number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/EditTextTheme"
+                        android:textSize="16sp"
+                        android:paddingBottom="20dp"
+                        android:textColor="@color/colorGeneralText"/>
+                </android.support.design.widget.TextInputLayout>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -115,7 +135,7 @@
                     android:id="@+id/activity_create_coin_submit"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:text="确定"
+                    android:text="@string/activity_create_coin_submit"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"
                     android:layout_marginTop="20dp"

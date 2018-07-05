@@ -21,16 +21,16 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"/>
-        <android.support.v7.widget.GridLayout
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            app:rowCount="1"
-            app:columnCount="3">
+            android:paddingTop="10dp">
             <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:layout_width="80dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
@@ -44,9 +44,9 @@
                     android:text="9,999UC"/>
             </LinearLayout>
             <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:layout_width="5dp"
+                android:layout_weight="0.2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
@@ -55,9 +55,10 @@
                     android:text="@string/vertical_line"/>
             </LinearLayout>
             <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:layout_width="80dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:gravity="center">
                 <TextView
                     android:layout_width="wrap_content"
@@ -70,7 +71,7 @@
                     android:textColor="@color/colorWhite"
                     android:text="1334UC"/>
             </LinearLayout>
-        </android.support.v7.widget.GridLayout>
+        </LinearLayout>
     </LinearLayout>
     <android.support.v7.widget.GridLayout
         android:layout_width="match_parent"

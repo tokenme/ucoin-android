@@ -41,6 +41,7 @@ public class Api {
         put("createCoin", "/token/create");
         put("uploadCoinProductImages", "/qiniu/token/product");
         put("createCoinProduct", "/token/product/create");
+        put("getCoinProductList", "/token/product/list");
     }};
 
     public static void request(String name, String method, JSONObject params, Boolean isForm, final Context context, final Callback cb) throws IOException, JSONException {

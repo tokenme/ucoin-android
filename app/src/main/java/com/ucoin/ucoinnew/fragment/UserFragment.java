@@ -1,6 +1,7 @@
 package com.ucoin.ucoinnew.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -23,9 +24,11 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.orhanobut.logger.Logger;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.ucoin.ucoinnew.R;
+import com.ucoin.ucoinnew.activity.CoinManageActivity;
 import com.ucoin.ucoinnew.activity.CreateCoinActivity;
 import com.ucoin.ucoinnew.activity.CreateCoinProductActivity;
 import com.ucoin.ucoinnew.activity.GetCoinQrcodeActivity;
@@ -91,15 +94,35 @@ public class UserFragment extends Fragment {
         return mView;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Logger.i(String.valueOf(requestCode));
+        Logger.i(String.valueOf(resultCode));
+        switch (requestCode) {
+            case 204:
+                if (resultCode == Activity.RESULT_OK) {
+                    // RefreshLayout refreshLayout = mView.findViewById(R.id.refreshLayout);
+                    // refreshLayout.autoRefresh();
+                    try {
+                        getUserCoinEntity(true);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+    }
+
     private void initClick() {
         mUserCoinAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Intent intent = new Intent(mMainActivity, CreateCoinProductActivity.class);
+                Intent intent = new Intent(mMainActivity, CoinManageActivity.class);
                 UserCoinEntity uce = (UserCoinEntity) adapter.getItem(position);
                 String address = uce.getAddress();
                 String name = uce.getName();
                 String logo = uce.getLogo();
+                Logger.i(logo);
                 intent.putExtra("token_name", name);
                 intent.putExtra("token_address", address);
                 intent.putExtra("token_logo", logo);
@@ -130,7 +153,7 @@ public class UserFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mMainActivity, CreateCoinActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, 204);
                 }
             });
             mUserCoinAdapter.addHeaderView(view);
@@ -179,7 +202,7 @@ public class UserFragment extends Fragment {
         }
     }
 
-    private void refresh() {
+    public void refresh() {
         mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
@@ -218,6 +241,7 @@ public class UserFragment extends Fragment {
                 @Override
                 public void onResponse(@NonNull Call call, Response response) throws IOException {
                     final String jsonStr = response.body().string();
+                    Logger.i(jsonStr);
                     try {
                         JSONArray data = new JSONArray(jsonStr);
                         if (data.length() > 0) {

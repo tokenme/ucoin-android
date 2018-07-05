@@ -1,10 +1,13 @@
 package com.ucoin.ucoinnew.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -15,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.generic.RoundingParams;
@@ -50,11 +55,14 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
+
 public class CreateCoinActivity extends TakePhotoActivity {
 
     private CommonTitleBar mTitleBar;
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
     private String mUploadImageUrl = "";
+    private AwesomeValidation mAwesomeValidation;
     final private int mImageLimit = 1;
 
     @Override
@@ -177,27 +185,30 @@ public class CreateCoinActivity extends TakePhotoActivity {
 
     private void initClick() {
         final Button submitView = findViewById(R.id.activity_create_coin_submit);
+        TextInputLayout nameView = findViewById(R.id.activity_create_coin_name);
+        TextInputLayout symbolView = findViewById(R.id.activity_create_coin_symbol);
+        TextInputLayout totalSupplyView = findViewById(R.id.activity_create_coin_total_supply);
+        TextInputLayout decimalsView = findViewById(R.id.activity_create_coin_decimals);
+        mAwesomeValidation.addValidation(CreateCoinActivity.this, nameView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_name);
+        mAwesomeValidation.addValidation(CreateCoinActivity.this, symbolView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_symbol);
+        mAwesomeValidation.addValidation(CreateCoinActivity.this, totalSupplyView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_total_supply);
+        mAwesomeValidation.addValidation(CreateCoinActivity.this, decimalsView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_decimals);
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText nameView = findViewById(R.id.activity_create_coin_name);
-                String name = nameView.getText().toString();
-                EditText symbolView = findViewById(R.id.activity_create_coin_symbol);
-                String symbol = symbolView.getText().toString();
-                EditText totalSupplyView = findViewById(R.id.activity_create_coin_total_supply);
-                String totalSupply = totalSupplyView.getText().toString();
-                EditText decimalsView = findViewById(R.id.activity_create_coin_decimals);
-                String decimals = decimalsView.getText().toString();
+                if (mAwesomeValidation.validate()) {
+                    TextInputEditText nameContentView = findViewById(R.id.activity_create_coin_name_content);
+                    TextInputEditText symbolContentView = findViewById(R.id.activity_create_coin_symbol_content);
+                    TextInputEditText totalSupplyContentView = findViewById(R.id.activity_create_coin_total_supply_content);
+                    TextInputEditText decimalsContentView = findViewById(R.id.activity_create_coin_decimals_content);
+                    String name = nameContentView.getText().toString();
+                    String symbol = symbolContentView.getText().toString();
+                    String totalSupply = totalSupplyContentView.getText().toString();
+                    String decimals = decimalsContentView.getText().toString();
 
-                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(symbol) || TextUtils.isEmpty(totalSupply) || TextUtils.isEmpty(decimals)) {
-                    new MaterialDialog.Builder(CreateCoinActivity.this)
-                        .title(R.string.dialog_tip_title)
-                        .content("请填写相关信息")
-                        .negativeText(R.string.dialog_positive)
-                        .show();
-                } else {
-                    JSONObject params = new JSONObject();
                     try {
+                        UiUtil.showLoading(CreateCoinActivity.this);
+                        JSONObject params = new JSONObject();
                         params.put("name", name);
                         params.put("symbol", symbol);
                         params.put("total_supply", Integer.valueOf(totalSupply));
@@ -206,11 +217,13 @@ public class CreateCoinActivity extends TakePhotoActivity {
                         Api.request("createCoin", "POST", params, false,CreateCoinActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
+                                UiUtil.hideLoading();
                                 Logger.e(String.valueOf(e));
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
+                                UiUtil.hideLoading();
                                 String jsonStr = response.body().string();
                                 Logger.i(jsonStr);
                                 if (jsonStr.isEmpty()) {
@@ -228,7 +241,7 @@ public class CreateCoinActivity extends TakePhotoActivity {
                                     try {
                                         JSONObject data = new JSONObject(jsonStr);
                                         final String msg = data.optString("message");
-                                        if (msg != null) {
+                                        if (!TextUtils.isEmpty(msg)) {
                                             CreateCoinActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -239,6 +252,9 @@ public class CreateCoinActivity extends TakePhotoActivity {
                                                         .show();
                                                 }
                                             });
+                                        } else {
+                                            setResult(Activity.RESULT_OK);
+                                            finish();
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -247,8 +263,10 @@ public class CreateCoinActivity extends TakePhotoActivity {
                             }
                         });
                     } catch (IOException e) {
+                        UiUtil.hideLoading();
                         e.printStackTrace();
                     } catch (JSONException e) {
+                        UiUtil.hideLoading();
                         e.printStackTrace();
                     }
                 }
@@ -257,6 +275,7 @@ public class CreateCoinActivity extends TakePhotoActivity {
     }
 
     private void initView() {
+        mAwesomeValidation = new AwesomeValidation(TEXT_INPUT_LAYOUT);
     }
 
     private void initTitleBar() {

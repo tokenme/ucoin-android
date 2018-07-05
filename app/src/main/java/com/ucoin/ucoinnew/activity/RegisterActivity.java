@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -17,12 +19,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.basgeekball.awesomevalidation.AwesomeValidation;
+import com.basgeekball.awesomevalidation.utility.RegexTemplate;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.hbb20.CountryCodePicker;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
+import com.ucoin.ucoinnew.util.UiUtil;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONArray;
@@ -37,11 +42,14 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
+
 public class RegisterActivity extends AppCompatActivity {
 
     private CommonTitleBar mTitleBar;
     private CountryCodePicker mCcp;
     private boolean mIsSendingVerifyCode = false;
+    private AwesomeValidation mAwesomeValidation;
     private int mCounter = 60;
 
     @Override
@@ -59,28 +67,31 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initClick() {
         final Button submitView = findViewById(R.id.activity_register_submit);
+        TextInputLayout telephoneView = findViewById(R.id.activity_register_telephone);
+        TextInputLayout verifyCodeView = findViewById(R.id.activity_register_verify_code);
+        TextInputLayout passwordView = findViewById(R.id.activity_register_password);
+        TextInputLayout rePasswordView = findViewById(R.id.activity_register_repassword);
+        mAwesomeValidation.addValidation(RegisterActivity.this, telephoneView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_register_validation_telephone);
+        mAwesomeValidation.addValidation(RegisterActivity.this, verifyCodeView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_register_validation_verify_code);
+        mAwesomeValidation.addValidation(RegisterActivity.this, passwordView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_register_validation_password);
+        mAwesomeValidation.addValidation(RegisterActivity.this, rePasswordView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_register_validation_repassword);
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText telephoneView = findViewById(R.id.activity_register_telephone);
-                String telephone = telephoneView.getText().toString();
-                EditText verifyCodeView = findViewById(R.id.activity_register_verify_code);
-                String verifyCode = verifyCodeView.getText().toString();
-                EditText passwordView = findViewById(R.id.activity_register_password);
-                String password = passwordView.getText().toString();
-                EditText repasswordView = findViewById(R.id.activity_register_repassword);
-                String repassword = repasswordView.getText().toString();
-                int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
+                if (mAwesomeValidation.validate()) {
+                    TextInputEditText telephoneContentView = findViewById(R.id.activity_register_telephone_content);
+                    TextInputEditText verifyCodeContentView = findViewById(R.id.activity_register_verify_code_content);
+                    TextInputEditText passwordContentView = findViewById(R.id.activity_register_password_content);
+                    TextInputEditText rePasswordContentView = findViewById(R.id.activity_register_repassword_content);
+                    String telephone = telephoneContentView.getText().toString();
+                    String verifyCode = verifyCodeContentView.getText().toString();
+                    String password = passwordContentView.getText().toString();
+                    String repassword = rePasswordContentView.getText().toString();
+                    int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
 
-                if (TextUtils.isEmpty(telephone) || TextUtils.isEmpty(verifyCode) || TextUtils.isEmpty(password) || TextUtils.isEmpty(repassword)) {
-                    new MaterialDialog.Builder(RegisterActivity.this)
-                        .title(R.string.dialog_tip_title)
-                        .content("请填写相关信息")
-                        .negativeText(R.string.dialog_positive)
-                        .show();
-                } else {
-                    JSONObject params = new JSONObject();
                     try {
+                        UiUtil.showLoading(RegisterActivity.this);
+                        JSONObject params = new JSONObject();
                         params.put("mobile", telephone);
                         params.put("country_code", countryCode);
                         params.put("passwd", password);
@@ -89,11 +100,13 @@ public class RegisterActivity extends AppCompatActivity {
                         Api.request("register", "POST", params, false,RegisterActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
+                                UiUtil.hideLoading();
                                 Logger.e(String.valueOf(e));
                             }
 
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
+                                UiUtil.hideLoading();
                                 String jsonStr = response.body().string();
                                 if (jsonStr.isEmpty()) {
                                     RegisterActivity.this.runOnUiThread(new Runnable() {
@@ -109,22 +122,24 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     try {
                                         JSONObject data = new JSONObject(jsonStr);
-                                        final Object msg = data.opt("message");
-                                        if (msg != null && String.valueOf(msg).equals("ok")) {
-                                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        } else {
-                                            RegisterActivity.this.runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    new MaterialDialog.Builder(RegisterActivity.this)
-                                                            .title(R.string.dialog_tip_title)
-                                                            .content(String.valueOf(msg))
-                                                            .positiveText(R.string.dialog_positive)
-                                                            .show();
-                                                }
-                                            });
+                                        final String msg = data.optString("message");
+                                        if (!TextUtils.isEmpty(msg)) {
+                                            if (msg.equals("ok")) {
+                                                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else {
+                                                RegisterActivity.this.runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        new MaterialDialog.Builder(RegisterActivity.this)
+                                                                .title(R.string.dialog_tip_title)
+                                                                .content(String.valueOf(msg))
+                                                                .positiveText(R.string.dialog_positive)
+                                                                .show();
+                                                    }
+                                                });
+                                            }
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -148,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (mIsSendingVerifyCode) {
                     return;
                 }
-                EditText telephoneView = findViewById(R.id.activity_register_telephone);
+                TextInputEditText telephoneView = findViewById(R.id.activity_register_telephone_content);
                 String telephone = telephoneView.getText().toString();
                 if ( ! TextUtils.isEmpty(telephone)) {
                     sendVerifyCodeView.setBackgroundColor(ContextCompat.getColor(RegisterActivity.this, R.color.colorGeneralBg));
@@ -178,8 +193,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                     JSONObject params = new JSONObject();
                     try {
+                        int countryCode = Integer.valueOf(mCcp.getSelectedCountryCode());
                         params.put("mobile", telephone);
-                        params.put("country", 86);
+                        params.put("country", countryCode);
                         Api.request("sendVerificationCode", "POST", params, false,RegisterActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
@@ -204,14 +220,14 @@ public class RegisterActivity extends AppCompatActivity {
                                 } else {
                                     try {
                                         JSONObject data = new JSONObject(jsonStr);
-                                        final Object msg = data.opt("message");
-                                        if (msg != null) {
+                                        final String msg = data.optString("message");
+                                        if (!TextUtils.isEmpty(msg) && !msg.equals("ok")) {
                                             RegisterActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
                                                     new MaterialDialog.Builder(RegisterActivity.this)
                                                             .title(R.string.dialog_tip_title)
-                                                            .content(String.valueOf(msg))
+                                                            .content(msg)
                                                             .positiveText(R.string.dialog_positive)
                                                             .show();
                                                 }
@@ -241,6 +257,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void initView() {
         mCcp = findViewById(R.id.activity_login_ccp);
+        mAwesomeValidation = new AwesomeValidation(TEXT_INPUT_LAYOUT);
     }
 
     private void initTitleBar() {
