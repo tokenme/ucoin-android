@@ -2,16 +2,15 @@ package com.ucoin.ucoinnew.entity;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
-
-public class CoinProductEntity {
+public class CoinTaskEntity {
     private String mTitle;
     private String mDesc;
     private String mStartDate;
     private String mEndDate;
-    private int mPrice;
+    private int mBonus;
     private Double mAmount;
     private JSONArray mImages;
+    private int mNeedEvidence;
     private Class<?> mActivity;
 
     public String getTitle() {
@@ -46,12 +45,20 @@ public class CoinProductEntity {
         this.mEndDate = endDate;
     }
 
-    public int getPrice() {
-        return mPrice;
+    public int getBonus() {
+        return mBonus;
     }
 
-    public void setPrice(int price) {
-        this.mPrice = price;
+    public void setBonus(int bonus) {
+        this.mBonus = bonus;
+    }
+
+    public int getNeedEvidence() {
+        return mNeedEvidence;
+    }
+
+    public void setNeedEvidence(int needEvidence) {
+        this.mNeedEvidence = needEvidence;
     }
 
     public Double getAmount() {

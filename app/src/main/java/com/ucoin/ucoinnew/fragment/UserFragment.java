@@ -99,7 +99,8 @@ public class UserFragment extends Fragment {
         Logger.i(String.valueOf(requestCode));
         Logger.i(String.valueOf(resultCode));
         switch (requestCode) {
-            case 204:
+            // 第4个tab刷新
+            case 401:
                 if (resultCode == Activity.RESULT_OK) {
                     // RefreshLayout refreshLayout = mView.findViewById(R.id.refreshLayout);
                     // refreshLayout.autoRefresh();
@@ -153,7 +154,7 @@ public class UserFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mMainActivity, CreateCoinActivity.class);
-                    startActivityForResult(intent, 204);
+                    startActivityForResult(intent, 401);
                 }
             });
             mUserCoinAdapter.addHeaderView(view);

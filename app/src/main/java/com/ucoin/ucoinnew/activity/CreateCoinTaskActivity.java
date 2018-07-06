@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,8 +39,8 @@ import com.qiniu.android.storage.UploadManager;
 import com.qiniu.android.utils.StringUtils;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
-import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.DTUtil;
+import com.ucoin.ucoinnew.util.UiUtil;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONArray;
@@ -49,7 +50,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,7 +62,7 @@ import okhttp3.Response;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
 
-public class CreateCoinProductActivity extends TakePhotoActivity {
+public class CreateCoinTaskActivity extends TakePhotoActivity {
 
     private CommonTitleBar mTitleBar;
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
@@ -91,12 +91,12 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
         ArrayList<TImage> tmpImages = new ArrayList<>();
         tmpImages = result.getImages();
         if (tmpImages.size() > 0) {
-            final android.support.v7.widget.GridLayout ll = findViewById(R.id.activity_create_coin_product_upload_logo);
-            int uploadImageWidth = findViewById(R.id.activity_create_coin_product_take_photo).getWidth();
+            final android.support.v7.widget.GridLayout ll = findViewById(R.id.activity_create_coin_task_upload_logo);
+            int uploadImageWidth = findViewById(R.id.activity_create_coin_task_take_photo).getWidth();
             ArrayList<File> files = new ArrayList<>();
             for (final TImage image : tmpImages) {
                 mUploadImages.add(image);
-                SimpleDraweeView imgDraweeView = new SimpleDraweeView(CreateCoinProductActivity.this);
+                SimpleDraweeView imgDraweeView = new SimpleDraweeView(CreateCoinTaskActivity.this);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, 0);
                 layoutParams.width = uploadImageWidth;
                 layoutParams.height = layoutParams.width;
@@ -106,7 +106,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                 imgDraweeView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(final View v) {
-                        new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                        new MaterialDialog.Builder(CreateCoinTaskActivity.this)
                                 .autoDismiss(false)
                                 .canceledOnTouchOutside(false)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -151,7 +151,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_coin_product);
+        setContentView(R.layout.activity_create_coin_task);
         init();
     }
 
@@ -168,7 +168,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
         try {
             params.put("token", mTokenAddress);
             params.put("amount", mUploadImages.size());
-            Api.request("uploadCoinProductImages", "POST", params, false,CreateCoinProductActivity.this, new Callback() {
+            Api.request("uploadCoinTaskImages", "POST", params, false,CreateCoinTaskActivity.this, new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     Logger.e(String.valueOf(e));
@@ -180,10 +180,10 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
 
                     Logger.i(jsonStr);
                     if (TextUtils.isEmpty(jsonStr)) {
-                        CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
+                        CreateCoinTaskActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                                new MaterialDialog.Builder(CreateCoinTaskActivity.this)
                                     .title(R.string.dialog_tip_title)
                                     .content(R.string.dialog_unknow_err_tip)
                                     .positiveText(R.string.dialog_positive)
@@ -233,28 +233,28 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     }
 
     private void initClick() {
-        final Button submitView = findViewById(R.id.activity_create_coin_product_submit);
-        TextInputLayout titleView = findViewById(R.id.activity_create_coin_product_title);
-        TextInputLayout descView = findViewById(R.id.activity_create_coin_product_desc);
-        TextInputLayout priceView = findViewById(R.id.activity_create_coin_product_price);
-        TextInputLayout amountView = findViewById(R.id.activity_create_coin_product_amount);
-        TextInputLayout startDateView = findViewById(R.id.activity_create_coin_product_start_date_picker);
-        TextInputLayout endDateView = findViewById(R.id.activity_create_coin_product_end_date_picker);
-        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, titleView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_title);
-        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, descView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_desc);
-        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, priceView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_price);
-        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, amountView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_amount);
-        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, startDateView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_start_date);
-        mAwesomeValidation.addValidation(CreateCoinProductActivity.this, endDateView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_product_end_date);
+        final Button submitView = findViewById(R.id.activity_create_coin_task_submit);
+        TextInputLayout titleView = findViewById(R.id.activity_create_coin_task_title);
+        TextInputLayout descView = findViewById(R.id.activity_create_coin_task_desc);
+        TextInputLayout bonusView = findViewById(R.id.activity_create_coin_task_bonus);
+        TextInputLayout amountView = findViewById(R.id.activity_create_coin_task_amount);
+        TextInputLayout startDateView = findViewById(R.id.activity_create_coin_task_start_date_picker);
+        TextInputLayout endDateView = findViewById(R.id.activity_create_coin_task_end_date_picker);
+        mAwesomeValidation.addValidation(CreateCoinTaskActivity.this, titleView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_task_title);
+        mAwesomeValidation.addValidation(CreateCoinTaskActivity.this, descView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_task_desc);
+        mAwesomeValidation.addValidation(CreateCoinTaskActivity.this, bonusView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_task_bonus);
+        mAwesomeValidation.addValidation(CreateCoinTaskActivity.this, amountView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_task_amount);
+        mAwesomeValidation.addValidation(CreateCoinTaskActivity.this, startDateView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_task_start_date);
+        mAwesomeValidation.addValidation(CreateCoinTaskActivity.this, endDateView.getId(), RegexTemplate.NOT_EMPTY, R.string.activity_create_coin_task_end_date);
         submitView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAwesomeValidation.validate()) {
                     if (mUploadedImagesNum > 0) {
-                        CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
+                        CreateCoinTaskActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                                new MaterialDialog.Builder(CreateCoinTaskActivity.this)
                                         .title(R.string.dialog_tip_title)
                                         .content(R.string.dialog_tip_uploading_image)
                                         .positiveText(R.string.dialog_positive)
@@ -263,22 +263,23 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                         });
                         return;
                     }
-                    TextInputEditText titleContentView = findViewById(R.id.activity_create_coin_product_title_content);
-                    TextInputEditText descContentView = findViewById(R.id.activity_create_coin_product_desc_content);
-                    TextInputEditText priceContentView = findViewById(R.id.activity_create_coin_product_price_content);
-                    TextInputEditText tagsContentView = findViewById(R.id.activity_create_coin_product_tags_content);
-                    TextInputEditText amountContentView = findViewById(R.id.activity_create_coin_product_amount_content);
-                    TextInputEditText startDateContentView = findViewById(R.id.activity_create_coin_product_start_date_picker_content);
-                    TextInputEditText endDateContentView = findViewById(R.id.activity_create_coin_product_end_date_picker_content);
+                    TextInputEditText titleContentView = findViewById(R.id.activity_create_coin_task_title_content);
+                    TextInputEditText descContentView = findViewById(R.id.activity_create_coin_task_desc_content);
+                    TextInputEditText bonusContentView = findViewById(R.id.activity_create_coin_task_bonus_content);
+                    TextInputEditText tagsContentView = findViewById(R.id.activity_create_coin_task_tags_content);
+                    TextInputEditText amountContentView = findViewById(R.id.activity_create_coin_task_amount_content);
+                    TextInputEditText startDateContentView = findViewById(R.id.activity_create_coin_task_start_date_picker_content);
+                    TextInputEditText endDateContentView = findViewById(R.id.activity_create_coin_task_end_date_picker_content);
+                    RadioButton needEvidenceView = findViewById(R.id.activity_create_coin_task_need_evidence_content);
                     String title = titleContentView.getText().toString();
                     String desc = descContentView.getText().toString();
-                    String price = priceContentView.getText().toString();
+                    String bonus = bonusContentView.getText().toString();
                     String tags = tagsContentView.getText().toString();
                     String amount = amountContentView.getText().toString();
                     String startDate = startDateContentView.getText().toString();
                     String endDate = endDateContentView.getText().toString();
                     try {
-                        UiUtil.showLoading(CreateCoinProductActivity.this);
+                        UiUtil.showLoading(CreateCoinTaskActivity.this);
                         JSONObject params = new JSONObject();
                         Object[] imagesValues = mUploadImageMaps.values().toArray();
                         String[] imagesStringArr = new String[mUploadImageMaps.size()];
@@ -292,12 +293,13 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                         params.put("title", title);
                         params.put("desc", desc);
                         params.put("amount", Integer.valueOf(amount));
-                        params.put("price", Double.valueOf(price));
+                        params.put("bonus", Double.valueOf(bonus));
                         params.put("tags", tags);
                         params.put("start_date", DTUtil.dateFormat(startDateObj, DTUtil.DATE_TIME_API_PATTERN));
                         params.put("end_date", DTUtil.dateFormat(endDateObj, DTUtil.DATE_TIME_API_PATTERN));
                         params.put("images", StringUtils.join(imagesStringArr, ","));
-                        Api.request("createCoinProduct", "POST", params, false,CreateCoinProductActivity.this, new Callback() {
+                        params.put("need_evidence", needEvidenceView.isChecked() ? 1 : -1);
+                        Api.request("createCoinTask", "POST", params, false,CreateCoinTaskActivity.this, new Callback() {
                             @Override
                             public void onFailure(Call call, IOException e) {
                                 UiUtil.hideLoading();
@@ -310,10 +312,10 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                                 String jsonStr = response.body().string();
                                 Logger.i(jsonStr);
                                 if (jsonStr.isEmpty()) {
-                                    CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
+                                    CreateCoinTaskActivity.this.runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                                            new MaterialDialog.Builder(CreateCoinTaskActivity.this)
                                                 .title(R.string.dialog_tip_title)
                                                 .content(R.string.dialog_unknow_err_tip)
                                                 .positiveText(R.string.dialog_positive)
@@ -325,10 +327,10 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                                         JSONObject data = new JSONObject(jsonStr);
                                         final String msg = data.optString("message");
                                         if (!TextUtils.isEmpty(msg)) {
-                                            CreateCoinProductActivity.this.runOnUiThread(new Runnable() {
+                                            CreateCoinTaskActivity.this.runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                                                    new MaterialDialog.Builder(CreateCoinTaskActivity.this)
                                                         .title(R.string.dialog_tip_title)
                                                         .content(msg)
                                                         .positiveText(R.string.dialog_positive)
@@ -358,7 +360,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
             }
         });
 
-        final TextInputEditText startDatePickerView = findViewById(R.id.activity_create_coin_product_start_date_picker_content);
+        final TextInputEditText startDatePickerView = findViewById(R.id.activity_create_coin_task_start_date_picker_content);
         startDatePickerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -366,7 +368,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                 int year = ca.get(Calendar.YEAR);
                 int month = ca.get(Calendar.MONTH);
                 int day = ca.get(Calendar.DAY_OF_MONTH);
-                new DatePickerDialog(CreateCoinProductActivity.this, new DatePickerDialog.OnDateSetListener() {
+                new DatePickerDialog(CreateCoinTaskActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         startDatePickerView.setText(String.format("%d-%s-%s", i, (i1 < 10 ? "0" + (i1 + 1) : i1 + 1), (i2 < 10 ? "0" + i2 : i2)));
@@ -375,7 +377,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
             }
         });
 
-        final TextInputEditText endDatePickerView = findViewById(R.id.activity_create_coin_product_end_date_picker_content);
+        final TextInputEditText endDatePickerView = findViewById(R.id.activity_create_coin_task_end_date_picker_content);
         endDatePickerView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -383,7 +385,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                 int year = ca.get(Calendar.YEAR);
                 int month = ca.get(Calendar.MONTH);
                 int day = ca.get(Calendar.DAY_OF_MONTH);
-                new DatePickerDialog(CreateCoinProductActivity.this, new DatePickerDialog.OnDateSetListener() {
+                new DatePickerDialog(CreateCoinTaskActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                         endDatePickerView.setText(String.format("%d-%s-%s", i, (i1 < 10 ? "0" + (i1 + 1) : i1 + 1), (i2 < 10 ? "0" + i2 : i2)));
@@ -413,12 +415,12 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     }
 
     private void initTakePhoto() {
-        View view = findViewById(R.id.activity_create_coin_product_take_photo);
+        View view = findViewById(R.id.activity_create_coin_task_take_photo);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String[] stringItems = {"拍照", "相册"};
-                new MaterialDialog.Builder(CreateCoinProductActivity.this)
+                new MaterialDialog.Builder(CreateCoinTaskActivity.this)
                         .autoDismiss(false)
                         .canceledOnTouchOutside(false)
                         .title(R.string.activity_make_task_choose_pic_dialog_title)

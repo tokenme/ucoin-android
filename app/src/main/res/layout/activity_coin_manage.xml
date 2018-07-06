@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tab_user"
     android:orientation="vertical">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -58,13 +57,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
                     <LinearLayout
-                        android:id="@+id/tab_coin_task"
+                        android:id="@+id/activity_coin_manage_tab_task"
                         android:orientation="vertical"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center">
                         <TextView
+                            android:id="@+id/activity_coin_manage_tab_task_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="任务列表"
@@ -82,13 +82,14 @@
                             android:text="@string/vertical_line"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/tab_coin_product"
+                        android:id="@+id/activity_coin_manage_tab_product"
                         android:orientation="vertical"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center">
                         <TextView
+                            android:id="@+id/activity_coin_manage_tab_product_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="权益列表"
@@ -106,13 +107,14 @@
                             android:text="@string/vertical_line"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/tab_coin_trade"
+                        android:id="@+id/activity_coin_manage_tab_trade"
                         android:orientation="vertical"
                         android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:gravity="center">
                         <TextView
+                            android:id="@+id/activity_coin_manage_tab_trade_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="交易管理"

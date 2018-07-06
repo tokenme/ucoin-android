@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/entity_coin_product_border_radius"
+    android:background="@drawable/entity_coin_task_border_radius"
     android:layout_margin="10dp"
     android:padding="16dp">
     <LinearLayout
@@ -18,7 +18,7 @@
             android:textSize="16sp"
             android:textColor="@color/colorGeneralText"/>
         <TextView
-            android:id="@+id/entity_coin_product_title"
+            android:id="@+id/entity_coin_task_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -35,7 +35,7 @@
             android:layout_marginRight="6dp"
             android:textColor="@color/colorGeneralText"/>
         <TextView
-            android:id="@+id/entity_coin_product_desc"
+            android:id="@+id/entity_coin_task_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -47,12 +47,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="价格:"
+            android:text="奖励:"
             android:textSize="16sp"
             android:layout_marginRight="6dp"
             android:textColor="@color/colorGeneralText"/>
         <TextView
-            android:id="@+id/entity_coin_product_price"
+            android:id="@+id/entity_coin_task_bonus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -69,7 +69,7 @@
             android:layout_marginRight="6dp"
             android:textColor="@color/colorGeneralText"/>
         <TextView
-            android:id="@+id/entity_coin_product_amount"
+            android:id="@+id/entity_coin_task_amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -86,7 +86,7 @@
             android:layout_marginRight="6dp"
             android:textColor="@color/colorGeneralText"/>
         <TextView
-            android:id="@+id/entity_coin_product_start_date"
+            android:id="@+id/entity_coin_task_start_date"
             android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
             android:layout_marginHorizontal="2dp"
             android:text="@string/midline"/>
         <TextView
-            android:id="@+id/entity_coin_product_end_date"
+            android:id="@+id/entity_coin_task_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
@@ -111,7 +111,7 @@
         android:layout_marginTop="10dp">
     </LinearLayout>
     <android.support.v7.widget.GridLayout
-        android:id="@+id/entity_coin_product_images"
+        android:id="@+id/entity_coin_task_images"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="10dp"

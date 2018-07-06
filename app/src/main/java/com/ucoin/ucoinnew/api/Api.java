@@ -28,20 +28,22 @@ public class Api {
 
     protected static OkHttpClient sClient;
     protected static HashMap<String, String> sRequestUrls = new HashMap<String,String>(){{
-        put("getItemList", "/getItemList");
-        put("getTaskList", "/getTaskList");
-        put("getCoinList", "/getCoinList");
-        put("sendVerificationCode", "/auth/send");
-        put("register", "/user/create");
-        put("login", "/auth/login");
-        put("getUserInfo", "/user/info");
-        put("getUserCoinList", "/token/owned/list");
-        put("getCoinProductList", "/token/product/list");
-        put("uploadCoinLogo", "/qiniu/token/logo");
-        put("createCoin", "/token/create");
-        put("uploadCoinProductImages", "/qiniu/token/product");
-        put("createCoinProduct", "/token/product/create");
-        put("getCoinProductList", "/token/product/list");
+        put("getItemList",              "/getItemList");
+        put("getTaskList",              "/getTaskList");
+        put("getCoinList",              "/getCoinList");
+        put("sendVerificationCode",     "/auth/send");
+        put("register",                 "/user/create");
+        put("login",                    "/auth/login");
+        put("getUserInfo",              "/user/info");
+        put("getUserCoinList",          "/token/owned/list");
+        put("getCoinProductList",       "/token/product/list");
+        put("getCoinTaskList",          "/token/task/list");
+        put("uploadCoinLogo",           "/qiniu/token/logo");
+        put("createCoin",               "/token/create");
+        put("uploadCoinProductImages",  "/qiniu/token/product");
+        put("createCoinProduct",        "/token/product/create");
+        put("uploadCoinTaskImages",     "/qiniu/token/task");
+        put("createCoinTask",           "/token/task/create");
     }};
 
     public static void request(String name, String method, JSONObject params, Boolean isForm, final Context context, final Callback cb) throws IOException, JSONException {
@@ -55,8 +57,7 @@ public class Api {
             url = Util.getProperty("APIRequestHostTest", context);
         }
         url = url + sRequestUrls.get(name);
-        Logger.d(url);
-        Logger.i(params.toString());
+        Logger.i("APIRequest: %s, Url: %s, Params: %s", name, url, params.toString());
         Request.Builder request = new Request.Builder();
         String userToken = Util.getSP("userToken");
         if (userToken != null) {

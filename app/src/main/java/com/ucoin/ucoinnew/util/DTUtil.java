@@ -9,6 +9,8 @@ import java.util.Date;
 
 public class DTUtil {
 
+    public static final String DATE_TIME_API_PATTERN = "yyyy-MM-dd'T'HH:mm:ssZ";
+    public static final String DATE_TIME_API_PARSE_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_TIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
     public static final String MINUTE_PATTERN = "yyyy-MM-dd HH:mm";
     public static final String HOUR_PATTERN = "yyyy-MM-dd HH:mm:ss";

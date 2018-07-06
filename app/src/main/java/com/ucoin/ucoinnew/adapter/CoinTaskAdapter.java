@@ -14,8 +14,7 @@ import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.ucoin.ucoinnew.R;
-import com.ucoin.ucoinnew.entity.CoinEntity;
-import com.ucoin.ucoinnew.entity.CoinProductEntity;
+import com.ucoin.ucoinnew.entity.CoinTaskEntity;
 import com.ucoin.ucoinnew.util.DTUtil;
 import com.ucoin.ucoinnew.util.UiUtil;
 
@@ -23,22 +22,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class CoinProductAdapter extends BaseQuickAdapter<CoinProductEntity, BaseViewHolder> {
-    public CoinProductAdapter(int layoutResId, List data) {
+public class CoinTaskAdapter extends BaseQuickAdapter<CoinTaskEntity, BaseViewHolder> {
+    public CoinTaskAdapter(int layoutResId, List data) {
         super(layoutResId, data);
     }
 
     @SuppressLint("ResourceAsColor")
     @Override
-    protected void convert(BaseViewHolder helper, CoinProductEntity entity) {
-        helper.setText(R.id.entity_coin_product_title, entity.getTitle());
-        helper.setText(R.id.entity_coin_product_desc, entity.getDesc());
-        helper.setText(R.id.entity_coin_product_price, String.valueOf(entity.getPrice()));
-        helper.setText(R.id.entity_coin_product_amount, String.valueOf(entity.getAmount()));
+    protected void convert(BaseViewHolder helper, CoinTaskEntity entity) {
+        helper.setText(R.id.entity_coin_task_title, entity.getTitle());
+        helper.setText(R.id.entity_coin_task_desc, entity.getDesc());
+        helper.setText(R.id.entity_coin_task_bonus, String.valueOf(entity.getBonus()));
+        helper.setText(R.id.entity_coin_task_amount, String.valueOf(entity.getAmount()));
 
         String startDateStr = entity.getStartDate();
         String endDateStr = entity.getEndDate();
@@ -46,8 +44,8 @@ public class CoinProductAdapter extends BaseQuickAdapter<CoinProductEntity, Base
         try {
             Date startDate = DTUtil.dateParse(startDateStr.replace("T", " ").replace("Z", ""), DTUtil.DATE_TIME_API_PARSE_PATTERN);
             Date endDate = DTUtil.dateParse(endDateStr.replace("T", " ").replace("Z", ""), DTUtil.DATE_TIME_API_PARSE_PATTERN);
-            helper.setText(R.id.entity_coin_product_start_date, DTUtil.dateFormat(startDate, DTUtil.DATE_PATTERN));
-            helper.setText(R.id.entity_coin_product_end_date, DTUtil.dateFormat(endDate, DTUtil.DATE_PATTERN));
+            helper.setText(R.id.entity_coin_task_start_date, DTUtil.dateFormat(startDate, DTUtil.DATE_PATTERN));
+            helper.setText(R.id.entity_coin_task_end_date, DTUtil.dateFormat(endDate, DTUtil.DATE_PATTERN));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -55,7 +53,7 @@ public class CoinProductAdapter extends BaseQuickAdapter<CoinProductEntity, Base
         JSONArray images = entity.getImages();
         int screenWidth = UiUtil.getScreenWidth(mContext);
         if (images != null && images.length() > 0) {
-            android.support.v7.widget.GridLayout imagesWrapper = helper.getView(R.id.entity_coin_product_images);
+            android.support.v7.widget.GridLayout imagesWrapper = helper.getView(R.id.entity_coin_task_images);
             imagesWrapper.removeAllViews();
             for (int i = 0; i < images.length(); i ++) {
                 try {

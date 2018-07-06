@@ -1,6 +1,8 @@
 package com.ucoin.ucoinnew.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -29,6 +31,10 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
     private LinearLayout mTabCoinProduct;
     private LinearLayout mTabCoinTrade;
 
+    private TextView mTabTextTask;
+    private TextView mTabTextProduct;
+    private TextView mTabTextTrade;
+
     private Fragment mFragCoinTask;
     private Fragment mFragCoinProduct;
     private Fragment mFragCoinTrade;
@@ -47,13 +53,13 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         supportInvalidateOptionsMenu();
         mCurrentTab = v.getId();
         switch (v.getId()) {
-            case R.id.tab_coin_task:
+            case R.id.activity_coin_manage_tab_task:
                 selectTab(0);
                 break;
-            case R.id.tab_coin_product:
+            case R.id.activity_coin_manage_tab_product:
                 selectTab(1);
                 break;
-            case R.id.tab_coin_trade:
+            case R.id.activity_coin_manage_tab_trade:
                 selectTab(2);
                 break;
         }
@@ -85,9 +91,13 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initTabViews() {
-        mTabCoinTask = findViewById(R.id.tab_coin_task);
-        mTabCoinProduct = findViewById(R.id.tab_coin_product);
-        mTabCoinTrade = findViewById(R.id.tab_coin_trade);
+        mTabCoinTask = findViewById(R.id.activity_coin_manage_tab_task);
+        mTabCoinProduct = findViewById(R.id.activity_coin_manage_tab_product);
+        mTabCoinTrade = findViewById(R.id.activity_coin_manage_tab_trade);
+
+        mTabTextTask = findViewById(R.id.activity_coin_manage_tab_task_text);
+        mTabTextProduct = findViewById(R.id.activity_coin_manage_tab_product_text);
+        mTabTextTrade = findViewById(R.id.activity_coin_manage_tab_trade_text);
 
         selectTab(0);
     }
@@ -113,6 +123,7 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         hideFragments(transaction);
         Bundle bundle = new Bundle();
         bundle.putString("token_address", mTokenAddress);
+        tabColor(i);
         switch (i) {
             case 0:
                 if (mFragCoinTask == null) {
@@ -143,6 +154,27 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
                 break;
         }
         transaction.commitAllowingStateLoss();
+    }
+
+    @SuppressLint("ResourceType")
+    private void tabColor (int i ) {
+        int defaultC = Color.parseColor(getString(R.color.colorWhite));
+        mTabTextTask.setTextColor(defaultC);
+        mTabTextProduct.setTextColor(defaultC);
+        mTabTextTrade.setTextColor(defaultC);
+
+        int c = Color.parseColor(getString(R.color.colorGeneralText));
+        switch (i) {
+            case 0:
+                mTabTextTask.setTextColor(c);
+                break;
+            case 1:
+                mTabTextProduct.setTextColor(c);
+                break;
+            case 2:
+                mTabTextTrade.setTextColor(c);
+                break;
+        }
     }
 
     private void hideFragments(FragmentTransaction transaction) {

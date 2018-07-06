@@ -23,6 +23,7 @@
         <activity android:name=".activity.CoinActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CreateCoinActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CreateCoinProductActivity" android:windowSoftInputMode="adjustResize"></activity>
+        <activity android:name=".activity.CreateCoinTaskActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CoinManageActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CoinTaskActivity" android:windowSoftInputMode="adjustResize"></activity>
         <activity android:name=".activity.CoinTaskDetailActivity" android:windowSoftInputMode="adjustResize"></activity>

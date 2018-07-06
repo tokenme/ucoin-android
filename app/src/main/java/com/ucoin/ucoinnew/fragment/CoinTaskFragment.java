@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.activity.CoinManageActivity;
-import com.ucoin.ucoinnew.activity.RightActivity;
-import com.ucoin.ucoinnew.adapter.FindAdapter;
+import com.ucoin.ucoinnew.activity.CreateCoinTaskActivity;
+import com.ucoin.ucoinnew.adapter.CoinTaskAdapter;
 import com.ucoin.ucoinnew.api.Api;
-import com.ucoin.ucoinnew.entity.FindEntity;
+import com.ucoin.ucoinnew.entity.CoinTaskEntity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,33 +35,41 @@ import okhttp3.Response;
 
 public class CoinTaskFragment extends Fragment {
     private View mView;
+    private View mFooterView;
+    private View mNoDataView;
     private CoinManageActivity mCoinManageActivity;
-    private ArrayList<FindEntity> mDataList;
-    private BaseQuickAdapter mFindAdapter;
+    private ArrayList<CoinTaskEntity> mDataList;
+    private BaseQuickAdapter mCoinTaskAdapter;
     private RecyclerView mRecyclerView;
-    private int mCurrentPage = 1;
+    private int mCurrentPage = 0;
+    private String mTokenAddress;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mCoinManageActivity = (CoinManageActivity) context;
+        Bundle bundle = getArguments();
+        mTokenAddress = bundle.getString("token_address");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.tab_coin_task, container, false);
+        mNoDataView = inflater.inflate(R.layout.view_rv_list_no_data, container, false);
 
         mRecyclerView = mView.findViewById(R.id.rv_coin_task_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mCoinManageActivity));
 
-        mFindAdapter = new FindAdapter(R.layout.entity_find, mDataList);
+        mCoinTaskAdapter = new CoinTaskAdapter(R.layout.entity_coin_task, mDataList);
         View loadingView = inflater.inflate(R.layout.view_loading, (ViewGroup) mRecyclerView.getParent(), false);
-        mFindAdapter.setEmptyView(loadingView);
-        mRecyclerView.setAdapter(mFindAdapter);
+        mCoinTaskAdapter.setEmptyView(loadingView);
+
+        mRecyclerView.setAdapter(mCoinTaskAdapter);
+        mFooterView = inflater.inflate(R.layout.tab_coin_task_footer, container, false);
 
         try {
-            getFindEntity(false);
+            getCoinTaskEntity(false);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -71,60 +80,41 @@ public class CoinTaskFragment extends Fragment {
     }
 
     private void click() {
-        mFindAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+        mCoinTaskAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
-                final FindEntity fe = (FindEntity) adapter.getItem(position);
+                final CoinTaskEntity fe = (CoinTaskEntity) adapter.getItem(position);
                 switch (view.getId()) {
-                    case R.id.entity_find_title:
-                    case R.id.entity_find_pic:
-                        Intent intent = new Intent(mCoinManageActivity, RightActivity.class);
-                        String title = fe.getTitle();
-                        String pic = fe.getPic();
-                        String desc = fe.getDesc();
-                        String coinName = fe.getCoinName();
-                        String coinPic = fe.getCoinPic();
-                        Double coinNum = fe.getCoinNum();
-                        String startDate = fe.getStartDate();
-                        String endDate = fe.getEndDate();
-                        String userAvatar = fe.getUserAvatar();
-                        String userName = fe.getUserName();
-                        int exchangeNum = fe.getExchangeNum();
-                        int likeNum = fe.getLikeNum();
-
-                        intent.putExtra("title", title);
-                        intent.putExtra("desc", desc);
-                        intent.putExtra("pic", pic);
-                        intent.putExtra("coin_name", coinName);
-                        intent.putExtra("coin_pic", coinPic);
-                        intent.putExtra("coin_num", coinNum);
-                        intent.putExtra("start_date", startDate);
-                        intent.putExtra("end_date", endDate);
-                        intent.putExtra("user_avatar", userAvatar);
-                        intent.putExtra("user_name", userName);
-                        intent.putExtra("exchange_num", exchangeNum);
-                        intent.putExtra("like_num", likeNum);
-                        startActivity(intent);
+                    case R.id.entity_coin_task_title:
                         break;
                 }
+            }
+        });
+
+        mFooterView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mCoinManageActivity, CreateCoinTaskActivity.class);
+                intent.putExtra("token_address", mTokenAddress);
+                startActivityForResult(intent, 601);
             }
         });
     }
 
     private void refresh() {
         try {
-            getFindEntity(true);
+            getCoinTaskEntity(true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private void loadMore() {
-        mFindAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
+        mCoinTaskAdapter.setOnLoadMoreListener(new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
                 try {
-                    getFindEntity(false);
+                    getCoinTaskEntity(false);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -132,14 +122,15 @@ public class CoinTaskFragment extends Fragment {
         }, mRecyclerView);
     }
 
-    private void getFindEntity(final boolean isRefresh) throws JSONException {
+    private void getCoinTaskEntity(final boolean isRefresh) throws JSONException {
         try {
             JSONObject params = new JSONObject();
             if (isRefresh) {
-                mCurrentPage = 1;
+                mCurrentPage = 0;
             }
             params.put("page", mCurrentPage);
-            Api.request("getItemList", "GET", params, false, mCoinManageActivity, new Callback() {
+            params.put("token", mTokenAddress);
+            Api.request("getCoinTaskList", "GET", params, false, mCoinManageActivity, new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
                     Logger.e("onFailure: " + e.getMessage());
@@ -148,65 +139,83 @@ public class CoinTaskFragment extends Fragment {
                 @Override
                 public void onResponse(@NonNull Call call, Response response) throws IOException {
                     String jsonStr = response.body().string();
-                    Logger.d(jsonStr);
-                    try {
-                        JSONArray data = new JSONArray(jsonStr);
-                        if (data.length() > 0) {
-                            mDataList = new ArrayList<>();
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject e = data.getJSONObject(i);
-                                FindEntity entity = new FindEntity();
-                                String title = e.optString("title");
-                                String desc = e.optString("desc");
-                                String pic = e.optString("pic");
-                                String coinName = e.optString("coin_name");
-                                String coinPic = e.optString("coin_pic");
-                                Double coinNum = e.optDouble("coin_num");
-                                String startDate = e.optString("start_date");
-                                String endDate = e.optString("end_date");
-                                String userName = e.optString("user_name");
-                                String userAvatar = e.optString("user_avatar");
-                                int exchangeNum = e.optInt("exchange_num");
-                                int likeNum = e.optInt("like_num");
-                                JSONArray tags = e.optJSONArray("tags");
-                                entity.setTitle(title);
-                                entity.setDesc(desc);
-                                entity.setPic(pic);
-                                entity.setCoinName(coinName);
-                                entity.setCoinPic(coinPic);
-                                entity.setCoinNum(coinNum);
-                                entity.setStartDate(startDate);
-                                entity.setEndDate(endDate);
-                                entity.setUserName(userName);
-                                entity.setUserAvatar(userAvatar);
-                                entity.setExchangeNum(exchangeNum);
-                                entity.setLikeNum(likeNum);
-                                entity.setTags(tags);
-                                mDataList.add(entity);
-                            }
-                            mCoinManageActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (isRefresh) {
-                                        mFindAdapter.setNewData(mDataList);
-                                    } else {
-                                        mFindAdapter.addData(mDataList);
-                                        mFindAdapter.loadMoreComplete();
+                    Logger.i(jsonStr);
+                    if (!jsonStr.equals("null") && !TextUtils.isEmpty(jsonStr)) {
+                        try {
+                            JSONArray data = new JSONArray(jsonStr);
+                            if (data.length() > 0) {
+                                mDataList = new ArrayList<>();
+                                for (int i = 0; i < data.length(); i++) {
+                                    JSONObject e = data.getJSONObject(i);
+                                    CoinTaskEntity entity = new CoinTaskEntity();
+                                    String title = e.optString("title");
+                                    String desc = e.optString("desc");
+                                    String startDate = e.optString("start_date");
+                                    String endDate = e.optString("end_date");
+                                    int bonus = e.optInt("bonus");
+                                    Double amount = e.optDouble("amount");
+                                    int needEvidence = e.optInt("need_evidence");
+                                    JSONArray images = e.optJSONArray("images");
+                                    entity.setTitle(title);
+                                    entity.setDesc(desc);
+                                    entity.setStartDate(startDate);
+                                    entity.setEndDate(endDate);
+                                    entity.setBonus(bonus);
+                                    entity.setAmount(amount);
+                                    entity.setNeedEvidence(needEvidence);
+                                    entity.setImages(images);
+                                    mDataList.add(entity);
+                                }
+                                mCoinManageActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (isRefresh) {
+                                            mCoinTaskAdapter.setNewData(mDataList);
+                                        } else {
+                                            mCoinTaskAdapter.addData(mDataList);
+                                            mCoinTaskAdapter.loadMoreComplete();
+                                        }
+                                        if (mCurrentPage == 0 && mFooterView.getParent() == null) {
+                                            mCoinTaskAdapter.addFooterView(mFooterView);
+                                        }
+                                        mCurrentPage += 1;
                                     }
-                                    mCurrentPage += 1;
-                                }
-                            });
-                        } else {
+                                });
+                            } else {
+                                mCoinManageActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (mFooterView.getParent() == null) {
+                                            mCoinTaskAdapter.setEmptyView(mFooterView);
+                                        }
+                                        // mCoinTaskAdapter.setEmptyView(mNoDataView);
+                                        mCoinTaskAdapter.loadMoreEnd();
+                                        mCoinTaskAdapter.setEnableLoadMore(false);
+                                    }
+                                });
+                            }
+                        } catch (JSONException e) {
                             mCoinManageActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mFindAdapter.loadMoreComplete();
-                                    mFindAdapter.setEnableLoadMore(false);
+                                    if (mFooterView.getParent() == null) {
+                                        mCoinTaskAdapter.setEmptyView(mFooterView);
+                                    }
+                                    mCoinTaskAdapter.loadMoreEnd();
                                 }
                             });
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
+                        mCoinManageActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (mFooterView.getParent() == null) {
+                                    mCoinTaskAdapter.setEmptyView(mFooterView);
+                                }
+                                mCoinTaskAdapter.loadMoreEnd();
+                            }
+                        });
                     }
                 }
             });
