@@ -4,73 +4,108 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/entity_user_coin_border"
-    android:layout_marginHorizontal="10dp"
     android:paddingVertical="10dp">
     <LinearLayout
         android:id="@+id/entity_user_coin_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3"
         android:paddingLeft="10dp">
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:gravity="center"
-                android:background="#ff3b57">
-                <TextView
-                    android:id="@+id/entity_user_coin_index"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite" />
-            </LinearLayout>
-            <!--
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_weight="0.5">
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/entity_user_coin_logo"
-                android:layout_marginRight="3dp"
-                android:layout_width="20dp"
-                android:layout_height="20dp" />
-            -->
-            <TextView
-                android:textColor="@color/colorGeneralText"
-                android:id="@+id/entity_user_coin_name"
-                android:textStyle="bold"
-                android:layout_marginLeft="2dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="50dp"
+                android:layout_height="50dp" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/entity_user_coin_symbol"
+                    android:textColor="@color/colorGeneralText"
+                    android:textSize="16sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/entity_user_coin_name"
+                    android:textColor="@color/colorEntityUserCoinSymbol"
+                    android:textSize="11sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textColor="@color/colorEntityUserCoinTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:text="@string/entity_user_coin_total_transfers"/>
+                    <TextView
+                        android:id="@+id/entity_user_coin_total_transfers"
+                        android:textColor="@color/colorEntityUserCoinTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:layout_marginLeft="2dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="80dp">
+                    <TextView
+                        android:textColor="@color/colorEntityUserCoinTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:text="@string/entity_user_coin_total_holders"/>
+                    <TextView
+                        android:id="@+id/entity_user_coin_total_holders"
+                        android:textColor="@color/colorEntityUserCoinTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="11sp"
+                        android:layout_marginLeft="2dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:paddingRight="30dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/rmb"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical|right">
             <TextView
                 android:textColor="@color/colorGeneralText"
                 android:id="@+id/entity_user_coin_balance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingRight="20dp"
-            android:orientation="horizontal">
-            <TextView
-                android:textColor="@color/colorGeneralText"
-                android:id="@+id/entity_user_coin_total_supply"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGeneralLine"
+        android:layout_marginTop="10dp">
+    </View>
 </LinearLayout>

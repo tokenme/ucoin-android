@@ -18,16 +18,18 @@
         app:leftCustomView="@layout/view_title_bar_left_back"
         app:leftType="customView" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:orientation="vertical"
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:paddingHorizontal="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:overScrollMode="never">
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/activity_create_coin_product_title"
                 android:layout_width="match_parent"
@@ -180,5 +182,5 @@
                 android:layout_marginVertical="20dp"
                 android:background="@drawable/activity_create_coin_product_submit_button_border_radius"/>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

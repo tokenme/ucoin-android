@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="main_bg">#ffffff</color>
+    <color name="main_bg">#FFFFFF</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
@@ -8,18 +8,20 @@
     <color name="colorBlack">#000000</color>
     <color name="icon">#0099ff</color>
     <color name="txtColor">#1D1E1E</color>
-    <color name="tabDefault">#666666</color>
+    <color name="tabDefault">#A1A1A1</color>
     <color name="borderDefault">#CCCCCC</color>
-    <color name="findTag">#ff9372</color>
+    <color name="findTag">#FF9372</color>
     <color name="colorGray">#525252</color>
-    <color name="colorTaskCoinAward">#f85347</color>
-    <color name="colorEntityTaskButton">#0099ff</color>
-    <color name="colorEntityCoinIncrease">#42cc52</color>
-    <color name="colorActivityCoinDashBoardMidLine">#dfdfdf</color>
-    <color name="colorActivityCoinDashBoardTop">#f01000</color>
-    <color name="colorGeneralLine">#e5e5e5</color>
-    <color name="colorGeneralCommentBg">#f2f2f2</color>
+    <color name="colorTaskCoinAward">#F85347</color>
+    <color name="colorEntityTaskButton">#0099FF</color>
+    <color name="colorEntityCoinIncrease">#42CC52</color>
+    <color name="colorActivityCoinDashBoardMidLine">#DFDFDF</color>
+    <color name="colorActivityCoinDashBoardTop">#F01000</color>
+    <color name="colorGeneralLine">#E5E5E5</color>
+    <color name="colorGeneralCommentBg">#F2F2F2</color>
     <color name="colorGeneralBg">#999999</color>
     <color name="colorGeneralText">#333333</color>
     <color name="colorFormLabel">#9E9E9E</color>
+    <color name="colorEntityUserCoinSymbol">#afafaf</color>
+    <color name="colorEntityUserCoinTotal">#555555</color>
 </resources>

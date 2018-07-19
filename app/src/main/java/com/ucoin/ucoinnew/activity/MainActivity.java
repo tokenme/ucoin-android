@@ -3,6 +3,7 @@ package com.ucoin.ucoinnew.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,11 +11,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hbb20.CountryCodePicker;
+import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.fragment.ChangeCoinFragment;
 import com.ucoin.ucoinnew.fragment.FindFragment;
@@ -22,7 +25,9 @@ import com.ucoin.ucoinnew.fragment.GetCoinFragment;
 import com.ucoin.ucoinnew.fragment.UserFragment;
 
 import com.mikepenz.iconics.view.IconicsTextView;
+import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.Util;
+import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
 import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -48,9 +53,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Fragment mFragUser;
 
     private long mExitTime = 0;
-    private int mCurrentTab;
 
+    private int mTitleBarHeight = 0;
     private CommonTitleBar mTitleBar;
+    private LinearLayout mNavigationFooter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         supportInvalidateOptionsMenu();
-        mCurrentTab = v.getId();
         switch (v.getId()) {
             case R.id.tab_find:
                 selectTab(0);
@@ -124,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().hide();
         }
         mTitleBar = findViewById(R.id.title_bar);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
+        }
+
         View leftCustomLayout = mTitleBar.getLeftCustomView();
         leftCustomLayout.findViewById(R.id.find_title_bar_scan).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(MainActivity.this, ScanQrcodeActivity.class));
             }
         });
+
     }
 
     private void initTabEvents() {
@@ -141,6 +151,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initTabViews() {
+        int softKeyHeight = UiUtil.getNavigationBarHeight(MainActivity.this);
+        if (softKeyHeight > 0) {
+            mNavigationFooter = findViewById(R.id.navigation_footer);
+            UiUtil.setMargins(mNavigationFooter, 0, 0, 0, softKeyHeight);
+        }
+
         mTabFind = findViewById(R.id.tab_find);
         mTabGetCoin = findViewById(R.id.tab_get_coin);
         mTabChangeCoin = findViewById(R.id.tab_change_coin);
@@ -165,9 +181,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FragmentTransaction transaction = manager.beginTransaction();
         hideFragments(transaction);
         iconActive(i);
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mTitleBar.getLayoutParams();
+        if (mTitleBarHeight > 0) {
+            layoutParams.height = mTitleBarHeight;
+        }
         switch (i) {
             case 0:
-                mTitleBar.setVisibility(View.VISIBLE);
                 if (mFragFind == null) {
                     mFragFind = new FindFragment();
                     transaction.add(R.id.id_content, mFragFind);
@@ -176,7 +195,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 1:
-                mTitleBar.setVisibility(View.VISIBLE);
                 if (mFragGetCoin == null) {
                     mFragGetCoin = new GetCoinFragment();
                     transaction.add(R.id.id_content, mFragGetCoin);
@@ -185,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 2:
-                mTitleBar.setVisibility(View.VISIBLE);
                 if (mFragChangeCoin == null) {
                     mFragChangeCoin = new ChangeCoinFragment();
                     transaction.add(R.id.id_content, mFragChangeCoin);
@@ -194,7 +211,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 3:
-                mTitleBar.setVisibility(View.GONE);
+                if (mTitleBarHeight == 0) {
+                    mTitleBarHeight = mTitleBar.getHeight();
+                }
+                layoutParams.height = StatusBarUtils.getStatusBarHeight(MainActivity.this);
                 if (mFragUser == null) {
                     mFragUser = new UserFragment();
                     transaction.add(R.id.id_content, mFragUser);
@@ -203,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+        mTitleBar.setLayoutParams(layoutParams);
         transaction.commitAllowingStateLoss();
     }
 

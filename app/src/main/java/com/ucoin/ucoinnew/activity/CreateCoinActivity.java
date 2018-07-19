@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TextInputEditText;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.utility.RegexTemplate;
@@ -50,6 +52,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -63,6 +66,7 @@ public class CreateCoinActivity extends TakePhotoActivity {
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
     private String mUploadImageUrl = "";
     private AwesomeValidation mAwesomeValidation;
+    private int mUploadedImagesNum = 0;
     final private int mImageLimit = 1;
 
     @Override
@@ -93,6 +97,32 @@ public class CreateCoinActivity extends TakePhotoActivity {
                 imgDraweeView.setLayoutParams(layoutParams);
                 RoundingParams roundingParams = RoundingParams.fromCornersRadius(10f);
                 imgDraweeView.getHierarchy().setRoundingParams(roundingParams);
+                imgDraweeView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        new MaterialDialog.Builder(CreateCoinActivity.this)
+                                .autoDismiss(false)
+                                .canceledOnTouchOutside(false)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        ll.removeView(v);
+                                        mUploadImageUrl = "";
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(MaterialDialog dialog, DialogAction which) {
+                                        dialog.dismiss();
+                                    }
+                                })
+                                .title(R.string.activity_make_task_remove_upload_pic_dialog_title)
+                                .positiveText(R.string.dialog_positive)
+                                .negativeText(R.string.dialog_negative)
+                                .show();
+                    }
+                });
                 File file = new File(image.getOriginalPath());
                 ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.fromFile(file))
                         .setResizeOptions(new ResizeOptions(uploadImageWidth, uploadImageWidth))
@@ -126,6 +156,7 @@ public class CreateCoinActivity extends TakePhotoActivity {
 
     private void uploadLogo(final File file) {
         JSONObject params = new JSONObject();
+        mUploadedImagesNum = 1;
         try {
             Api.request("uploadCoinLogo", "POST", params, false,CreateCoinActivity.this, new Callback() {
                 @Override
@@ -146,6 +177,7 @@ public class CreateCoinActivity extends TakePhotoActivity {
                                     .content(R.string.dialog_unknow_err_tip)
                                     .positiveText(R.string.dialog_positive)
                                     .show();
+                                mUploadedImagesNum = 0;
                             }
                         });
                     } else {
@@ -167,10 +199,12 @@ public class CreateCoinActivity extends TakePhotoActivity {
                                             Logger.i("qiniu Upload Fail");
                                         }
                                         Logger.i("qiniu" + key + ",\r\n " + info + ",\r\n " + res);
+                                        mUploadedImagesNum = 0;
                                     }
                                 }, null);
                             }
                         } catch (JSONException e) {
+                            mUploadedImagesNum = 0;
                             e.printStackTrace();
                         }
                     }
@@ -197,6 +231,19 @@ public class CreateCoinActivity extends TakePhotoActivity {
             @Override
             public void onClick(View view) {
                 if (mAwesomeValidation.validate()) {
+                    if (mUploadedImagesNum > 0) {
+                        CreateCoinActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new MaterialDialog.Builder(CreateCoinActivity.this)
+                                        .title(R.string.dialog_tip_title)
+                                        .content(R.string.dialog_tip_uploading_image)
+                                        .positiveText(R.string.dialog_positive)
+                                        .show();
+                            }
+                        });
+                        return;
+                    }
                     TextInputEditText nameContentView = findViewById(R.id.activity_create_coin_name_content);
                     TextInputEditText symbolContentView = findViewById(R.id.activity_create_coin_symbol_content);
                     TextInputEditText totalSupplyContentView = findViewById(R.id.activity_create_coin_total_supply_content);
@@ -280,6 +327,9 @@ public class CreateCoinActivity extends TakePhotoActivity {
 
     private void initTitleBar() {
         mTitleBar = findViewById(R.id.title_bar);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
+        }
         View leftCustomLayout = mTitleBar.getLeftCustomView();
         leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
             @Override

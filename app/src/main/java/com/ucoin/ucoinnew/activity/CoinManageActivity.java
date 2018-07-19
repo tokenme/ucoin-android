@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,32 +16,41 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
-import com.ucoin.ucoinnew.fragment.CoinProductFragment;
-import com.ucoin.ucoinnew.fragment.CoinTaskFragment;
-import com.ucoin.ucoinnew.fragment.CoinTradeFragment;
+import com.ucoin.ucoinnew.fragment.CoinManageProductFragment;
+import com.ucoin.ucoinnew.fragment.CoinManageTaskFragment;
+import com.ucoin.ucoinnew.fragment.CoinManageIntroFragment;
+import com.ucoin.ucoinnew.util.UiUtil;
+import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class CoinManageActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String mTokenAddress = "";
-    private String mTokenName = "";
-    private String mTokenLogo = "";
+    private String mCoinAddress = "";
+    private String mCoinSymbol = "";
+    private String mCoinName = "";
+    private String mCoinLogo = "";
+    private int mCoinTotalSupply = 0;
+    private int mCoinTotalHolders = 0;
+    private int mCoinDecimals = 0;
+    private int mCoinCirculatingSupply = 0;
+    private Double mCoinTotalTransfers = 0.0;
 
-    private LinearLayout mTabCoinTask;
+    private LinearLayout mTabCoinIntro;
     private LinearLayout mTabCoinProduct;
-    private LinearLayout mTabCoinTrade;
+    private LinearLayout mTabCoinTask;
 
-    private TextView mTabTextTask;
-    private TextView mTabTextProduct;
-    private TextView mTabTextTrade;
+    private TextView mTabCoinIntroTitle;
+    private TextView mTabCoinProductTitle;
+    private TextView mTabCoinTaskTitle;
 
+    private Fragment mFragCoinIntro;
     private Fragment mFragCoinTask;
     private Fragment mFragCoinProduct;
-    private Fragment mFragCoinTrade;
 
-    private int mCurrentTab;
+    private CommonTitleBar mTitleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +62,14 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         supportInvalidateOptionsMenu();
-        mCurrentTab = v.getId();
         switch (v.getId()) {
-            case R.id.activity_coin_manage_tab_task:
+            case R.id.activity_coin_manage_tab_intro:
                 selectTab(0);
                 break;
             case R.id.activity_coin_manage_tab_product:
                 selectTab(1);
                 break;
-            case R.id.activity_coin_manage_tab_trade:
+            case R.id.activity_coin_manage_tab_task:
                 selectTab(2);
                 break;
         }
@@ -68,15 +78,16 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
-        if (mFragCoinTask == null && fragment instanceof CoinTaskFragment) {
+        if (mFragCoinIntro == null && fragment instanceof CoinManageIntroFragment) {
+            mFragCoinIntro = fragment;
+        } else if (mFragCoinTask == null && fragment instanceof CoinManageTaskFragment) {
             mFragCoinTask = fragment;
-        } else if (mFragCoinProduct == null && fragment instanceof CoinProductFragment) {
+        } else if (mFragCoinProduct == null && fragment instanceof CoinManageProductFragment) {
             mFragCoinProduct = fragment;
-        } else if (mFragCoinTrade == null && fragment instanceof CoinTradeFragment) {
-            mFragCoinTrade = fragment;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void init() {
         initTitleBar();
         initView();
@@ -85,58 +96,83 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initTabEvents() {
+        mTabCoinIntro.setOnClickListener(this);
         mTabCoinTask.setOnClickListener(this);
         mTabCoinProduct.setOnClickListener(this);
-        mTabCoinTrade.setOnClickListener(this);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void initTabViews() {
+        mTabCoinIntro = findViewById(R.id.activity_coin_manage_tab_intro);
         mTabCoinTask = findViewById(R.id.activity_coin_manage_tab_task);
         mTabCoinProduct = findViewById(R.id.activity_coin_manage_tab_product);
-        mTabCoinTrade = findViewById(R.id.activity_coin_manage_tab_trade);
 
-        mTabTextTask = findViewById(R.id.activity_coin_manage_tab_task_text);
-        mTabTextProduct = findViewById(R.id.activity_coin_manage_tab_product_text);
-        mTabTextTrade = findViewById(R.id.activity_coin_manage_tab_trade_text);
+        mTabCoinIntroTitle = findViewById(R.id.activity_coin_manage_tab_intro_title);
+        mTabCoinProductTitle = findViewById(R.id.activity_coin_manage_tab_product_title);
+        mTabCoinTaskTitle = findViewById(R.id.activity_coin_manage_tab_task_title);
 
         selectTab(0);
     }
 
     private void initView() {
         Intent intent = getIntent();
-        mTokenAddress = intent.getStringExtra("token_address");
-        mTokenName = intent.getStringExtra("token_name");
-        mTokenLogo = intent.getStringExtra("token_logo");
-        if (!TextUtils.isEmpty(mTokenLogo)) {
-            Uri logoUri = Uri.parse(mTokenLogo);
+        mCoinAddress = intent.getStringExtra("coin_address");
+        mCoinSymbol = intent.getStringExtra("coin_symbol");
+        mCoinName = intent.getStringExtra("coin_name");
+        mCoinLogo = intent.getStringExtra("coin_logo");
+        mCoinTotalTransfers = intent.getDoubleExtra("coin_total_transfers", 0.0);
+        mCoinTotalSupply = intent.getIntExtra("coin_total_supply", 0);
+        mCoinTotalHolders = intent.getIntExtra("coin_total_holders", 0);
+        mCoinDecimals = intent.getIntExtra("coin_decimals", 0);
+        mCoinCirculatingSupply = intent.getIntExtra("coin_circulating_supply", 0);
+        if (!TextUtils.isEmpty(mCoinLogo)) {
+            Uri logoUri = Uri.parse(mCoinLogo);
             SimpleDraweeView logoDraweeView = findViewById(R.id.activity_coin_manage_logo);
+            RoundingParams roundingParams = RoundingParams.fromCornersRadius(5f);
+            roundingParams.setRoundAsCircle(true);
+            logoDraweeView.getHierarchy().setRoundingParams(roundingParams);
             logoDraweeView.setImageURI(logoUri);
         }
 
+        TextView coinSymbolView = findViewById(R.id.activity_coin_manage_coin_symbol);
+        coinSymbolView.setText(mCoinSymbol);
         TextView coinNameView = findViewById(R.id.activity_coin_manage_coin_name);
-        coinNameView.setText(mTokenName);
+        coinNameView.setText(mCoinName);
+        TextView coinTotalSupplyView = findViewById(R.id.activity_coin_manage_coin_total_supply);
+        if (mCoinDecimals > 0) {
+            coinTotalSupplyView.setText(String.valueOf(mCoinTotalSupply / Math.pow(10, mCoinDecimals)));
+        } else {
+            coinTotalSupplyView.setText(String.valueOf(mCoinTotalSupply));
+        }
+        TextView coinTotalHoldersView = findViewById(R.id.activity_coin_manage_coin_total_holders);
+        coinTotalHoldersView.setText(String.valueOf(mCoinTotalHolders));
+        TextView coinCirculatingSupplyView = findViewById(R.id.activity_coin_manage_coin_circulating_supply);
+        coinCirculatingSupplyView.setText(String.valueOf(mCoinCirculatingSupply));
+        TextView coinTotalTransfersView = findViewById(R.id.activity_coin_manage_coin_total_transfers);
+        coinTotalTransfersView.setText(String.valueOf(mCoinTotalTransfers));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void selectTab(int i) {
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         hideFragments(transaction);
         Bundle bundle = new Bundle();
-        bundle.putString("token_address", mTokenAddress);
+        bundle.putString("coin_address", mCoinAddress);
         tabColor(i);
         switch (i) {
             case 0:
-                if (mFragCoinTask == null) {
-                    mFragCoinTask = new CoinTaskFragment();
-                    transaction.add(R.id.id_content, mFragCoinTask);
+                if (mFragCoinIntro == null) {
+                    mFragCoinIntro = new CoinManageIntroFragment();
+                    transaction.add(R.id.id_content, mFragCoinIntro);
                 } else {
-                    transaction.show(mFragCoinTask);
+                    transaction.show(mFragCoinIntro);
                 }
-                mFragCoinTask.setArguments(bundle);
+                mFragCoinIntro.setArguments(bundle);
                 break;
             case 1:
                 if (mFragCoinProduct == null) {
-                    mFragCoinProduct = new CoinProductFragment();
+                    mFragCoinProduct = new CoinManageProductFragment();
                     transaction.add(R.id.id_content, mFragCoinProduct);
                 } else {
                     transaction.show(mFragCoinProduct);
@@ -144,13 +180,13 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
                 mFragCoinProduct.setArguments(bundle);
                 break;
             case 2:
-                if (mFragCoinTrade == null) {
-                    mFragCoinTrade = new CoinTradeFragment();
-                    transaction.add(R.id.id_content, mFragCoinTrade);
+                if (mFragCoinTask == null) {
+                    mFragCoinTask = new CoinManageTaskFragment();
+                    transaction.add(R.id.id_content, mFragCoinTask);
                 } else {
-                    transaction.show(mFragCoinTrade);
+                    transaction.show(mFragCoinTask);
                 }
-                mFragCoinTrade.setArguments(bundle);
+                mFragCoinTask.setArguments(bundle);
                 break;
         }
         transaction.commitAllowingStateLoss();
@@ -158,21 +194,28 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
 
     @SuppressLint("ResourceType")
     private void tabColor (int i ) {
-        int defaultC = Color.parseColor(getString(R.color.colorWhite));
-        mTabTextTask.setTextColor(defaultC);
-        mTabTextProduct.setTextColor(defaultC);
-        mTabTextTrade.setTextColor(defaultC);
+        int defaultC = Color.parseColor(getString(R.color.colorGeneralText));
+        mTabCoinIntroTitle.setTextColor(defaultC);
+        mTabCoinTaskTitle.setTextColor(defaultC);
+        mTabCoinProductTitle.setTextColor(defaultC);
+        mTabCoinIntroTitle.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        mTabCoinTaskTitle.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+        mTabCoinProductTitle.setBackgroundColor(getResources().getColor(R.color.colorWhite));
 
-        int c = Color.parseColor(getString(R.color.colorGeneralText));
+        int c = Color.parseColor(getString(R.color.colorWhite));
+
         switch (i) {
             case 0:
-                mTabTextTask.setTextColor(c);
+                UiUtil.setBackgroundDrawable(mTabCoinIntroTitle,CoinManageActivity.this, R.drawable.activity_coin_manage_tab_border_radius);
+                mTabCoinIntroTitle.setTextColor(c);
                 break;
             case 1:
-                mTabTextProduct.setTextColor(c);
+                UiUtil.setBackgroundDrawable(mTabCoinProductTitle,CoinManageActivity.this, R.drawable.activity_coin_manage_tab_border_radius);
+                mTabCoinProductTitle.setTextColor(c);
                 break;
             case 2:
-                mTabTextTrade.setTextColor(c);
+                UiUtil.setBackgroundDrawable(mTabCoinTaskTitle,CoinManageActivity.this, R.drawable.activity_coin_manage_tab_border_radius);
+                mTabCoinTaskTitle.setTextColor(c);
                 break;
         }
     }
@@ -184,12 +227,16 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         if (mFragCoinProduct != null) {
             transaction.hide(mFragCoinProduct);
         }
-        if (mFragCoinTrade != null) {
-            transaction.hide(mFragCoinTrade);
+        if (mFragCoinIntro != null) {
+            transaction.hide(mFragCoinIntro);
         }
     }
 
     private void initTitleBar() {
+        mTitleBar = findViewById(R.id.title_bar);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
+        }
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }

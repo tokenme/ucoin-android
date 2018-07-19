@@ -16,6 +16,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_coin_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:overScrollMode="never" />
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

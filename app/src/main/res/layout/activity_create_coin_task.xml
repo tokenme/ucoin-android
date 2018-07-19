@@ -18,11 +18,12 @@
         app:leftCustomView="@layout/view_title_bar_left_back"
         app:leftType="customView" />
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:orientation="vertical"
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -211,5 +212,5 @@
                 android:layout_marginVertical="20dp"
                 android:background="@drawable/activity_create_coin_task_submit_button_border_radius"/>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

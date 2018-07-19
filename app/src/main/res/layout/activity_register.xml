@@ -17,11 +17,12 @@
         app:centerText="@string/activity_register"
         app:leftCustomView="@layout/view_title_bar_left_back"
         app:leftType="customView" />
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:orientation="vertical"
         android:scrollbars="none"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -135,5 +136,5 @@
                 android:layout_marginTop="40dp"
                 android:background="@drawable/activity_register_submit_button_border_radius"/>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

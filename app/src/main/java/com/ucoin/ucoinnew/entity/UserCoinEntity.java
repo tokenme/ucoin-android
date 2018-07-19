@@ -6,11 +6,12 @@ public class UserCoinEntity {
     private String mName;
     private String mSymbol;
     private Double mInitialSupply;
-    private Double mTotalSupply;
     private Double mTotalTransfers;
-    private Double mTotalHolders;
     private Double mBalance;
-    private int mDeciamls;
+    private int mTotalSupply;
+    private int mTotalHolders;
+    private int mCirculatingSupply;
+    private int mDecimals;
     private int mTxStatus;
     private String mLogo;
     private Class<?> mActivity;
@@ -47,12 +48,12 @@ public class UserCoinEntity {
         this.mSymbol = symbol;
     }
 
-    public int getDeciamls() {
-        return mDeciamls;
+    public int getDecimals() {
+        return mDecimals;
     }
 
-    public void setDeciamls(int deciamls) {
-        this.mDeciamls = deciamls;
+    public void setDecimals(int decimals) {
+        this.mDecimals = decimals;
     }
 
     public Double getInitialSupply() {
@@ -63,11 +64,11 @@ public class UserCoinEntity {
         this.mInitialSupply = initialSupply;
     }
 
-    public Double getTotalSupply() {
+    public int getTotalSupply() {
         return mTotalSupply;
     }
 
-    public void setTotalSupply(Double totalSupply) {
+    public void setTotalSupply(int totalSupply) {
         this.mTotalSupply = totalSupply;
     }
 
@@ -79,12 +80,20 @@ public class UserCoinEntity {
         this.mTotalTransfers = totalTransfers;
     }
 
-    public Double getTotalHolders() {
+    public int getTotalHolders() {
         return mTotalHolders;
     }
 
-    public void setTotalHolders(Double totalHolders) {
+    public void setTotalHolders(int totalHolders) {
         this.mTotalHolders = totalHolders;
+    }
+
+    public int getCirculatingSupply() {
+        return mCirculatingSupply;
+    }
+
+    public void setCirculatingSupply(int circulatingSupply) {
+        this.mCirculatingSupply = circulatingSupply;
     }
 
     public Double getBalance() {

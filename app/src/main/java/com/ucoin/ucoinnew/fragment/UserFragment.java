@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,6 +45,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import okhttp3.Call;
@@ -75,8 +77,10 @@ public class UserFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mMainActivity));
 
         mUserCoinAdapter = new UserCoinAdapter(R.layout.entity_user_coin, mDataList);
-        View loadingView = inflater.inflate(R.layout.view_loading, (ViewGroup) mRecyclerView.getParent(), false);
+        /*
+        View loadingView = inflater.inflate(R.layout.view_loading, mRecyclerView, false);
         mUserCoinAdapter.setEmptyView(loadingView);
+        */
         mRecyclerView.setAdapter(mUserCoinAdapter);
 
         mRefreshLayout = mView.findViewById(R.id.refreshLayout);
@@ -121,12 +125,21 @@ public class UserFragment extends Fragment {
                 Intent intent = new Intent(mMainActivity, CoinManageActivity.class);
                 UserCoinEntity uce = (UserCoinEntity) adapter.getItem(position);
                 String address = uce.getAddress();
+                String symbol = uce.getSymbol();
                 String name = uce.getName();
                 String logo = uce.getLogo();
-                Logger.i(logo);
-                intent.putExtra("token_name", name);
-                intent.putExtra("token_address", address);
-                intent.putExtra("token_logo", logo);
+                int decimals = uce.getDecimals();
+                int totalSupply = uce.getTotalSupply();
+                int totalHolders = uce.getTotalHolders();
+                Double totalTransfers = uce.getTotalTransfers();
+                intent.putExtra("coin_name", name);
+                intent.putExtra("coin_symbol", symbol);
+                intent.putExtra("coin_address", address);
+                intent.putExtra("coin_logo", logo);
+                intent.putExtra("coin_total_supply", totalSupply);
+                intent.putExtra("coin_total_holders", totalHolders);
+                intent.putExtra("coin_transfers", totalTransfers);
+                intent.putExtra("coin_decimals", decimals);
                 startActivity(intent);
             }
         });
@@ -150,7 +163,7 @@ public class UserFragment extends Fragment {
                     mMainActivity.selectTab(0);
                 }
             });
-            view.findViewById(R.id.tab_user_header_go_to_create_coin).setOnClickListener(new View.OnClickListener() {
+            view.findViewById(R.id.tab_user_header_create_coin).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mMainActivity, CreateCoinActivity.class);
@@ -170,6 +183,7 @@ public class UserFragment extends Fragment {
                 @Override
                 public void onResponse(@NonNull Call call, Response response) throws IOException {
                     final String jsonStr = response.body().string();
+                    Logger.i(jsonStr);
                     if (!TextUtils.isEmpty(jsonStr)) {
                         mMainActivity.runOnUiThread(new Runnable() {
                             @Override
@@ -185,6 +199,9 @@ public class UserFragment extends Fragment {
                                     roundingParams.setBorder(ContextCompat.getColor(mMainActivity, R.color.colorWhite), 5.0f);
                                     roundingParams.setRoundAsCircle(true);
                                     avatarDraweeView.getHierarchy().setRoundingParams(roundingParams);
+
+                                    avatarDraweeView.getHierarchy().setPlaceholderImage(R.drawable.default_avatar);
+                                    avatarDraweeView.getHierarchy().setFailureImage(R.drawable.default_avatar);
 
                                     TextView userNameView = view.findViewById(R.id.tab_user_header_user_name);
                                     userNameView.setText(userName);
@@ -209,7 +226,7 @@ public class UserFragment extends Fragment {
             public void onRefresh(RefreshLayout refreshlayout) {
                 try {
                     getUserCoinEntity(true);
-                    initHeaderView(true);
+                    // initHeaderView(true);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -243,113 +260,78 @@ public class UserFragment extends Fragment {
                 public void onResponse(@NonNull Call call, Response response) throws IOException {
                     final String jsonStr = response.body().string();
                     Logger.i(jsonStr);
-                    try {
-                        JSONArray data = new JSONArray(jsonStr);
-                        if (data.length() > 0) {
-                            mDataList = new ArrayList<>();
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject e = data.getJSONObject(i);
-                                UserCoinEntity entity = new UserCoinEntity();
-                                String address = e.optString("address");
-                                String name = e.optString("name");
-                                String logo = e.optString("logo");
-                                Double balance = e.optDouble("balance");
-                                Double totalSupply = e.optDouble("total_supply");
-                                entity.setAddress(address);
-                                entity.setName(name);
-                                entity.setLogo(logo);
-                                entity.setBalance(balance);
-                                entity.setTotalSupply(totalSupply);
-                                mDataList.add(entity);
-                            }
-                            mMainActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (isRefresh) {
-                                        mUserCoinAdapter.setNewData(mDataList);
-                                        mRefreshLayout.finishRefresh();
-                                    } else {
-                                        mUserCoinAdapter.addData(mDataList);
-                                        mUserCoinAdapter.loadMoreComplete();
+                    if (!jsonStr.equals("null") && !TextUtils.isEmpty(jsonStr)) {
+                        try {
+                            JSONArray data = new JSONArray(jsonStr);
+                            if (data.length() > 0) {
+                                mDataList = new ArrayList<>();
+                                for (int i = 0; i < data.length(); i++) {
+                                    JSONObject e = data.getJSONObject(i);
+                                    UserCoinEntity entity = new UserCoinEntity();
+                                    String address = e.optString("address");
+                                    String symbol = e.optString("symbol");
+                                    String name = e.optString("name");
+                                    String logo = e.optString("logo");
+                                    int decimals = e.optInt("decimals");
+                                    int totalHolders = e.optInt("total_holders");
+                                    int circulatingSupply = e.optInt("circulating_supply");
+                                    Double totalTransfers = e.optDouble("total_transfers");
+                                    Double balance = e.optDouble("balance");
+                                    int totalSupply = e.optInt("total_supply");
+                                    if (totalTransfers.isNaN()) {
+                                        totalTransfers = 0.0;
                                     }
-                                    mCurrentPage += 1;
-                                }
-                            });
-                        } else {
-                            mMainActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mUserCoinAdapter.loadMoreComplete();
-                                    mUserCoinAdapter.setEnableLoadMore(false);
-                                }
-                            });
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            /*
-            JSONObject params = new JSONObject();
-            if (isRefresh) {
-                mCurrentPage = 1;
-            }
-            params.put("page", mCurrentPage);
-            Api.request("getCoinList", "GET", params, false, mMainActivity, new Callback() {
-                @Override
-                public void onFailure(@NonNull Call call, IOException e) {
-                    Logger.e("onFailure: " + e.getMessage());
-                }
 
-                @Override
-                public void onResponse(@NonNull Call call, Response response) throws IOException {
-                    String jsonStr = response.body().string();
-                    Logger.d(jsonStr);
-                    try {
-                        JSONArray data = new JSONArray(jsonStr);
-                        if (data.length() > 0) {
-                            mDataList = new ArrayList<>();
-                            for (int i = 0; i < data.length(); i++) {
-                                JSONObject e = data.getJSONObject(i);
-                                UserCoinEntity entity = new UserCoinEntity();
-                                String name = e.optString("name");
-                                String pic = e.optString("pic");
-                                String price = e.optString("price");
-                                String marcketValue = e.optString("market_value");
-                                entity.setName(name);
-                                entity.setPic(pic);
-                                entity.setPrice(price);
-                                entity.setMarcketValue(marcketValue);
-                                mDataList.add(entity);
-                            }
-                            mMainActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (isRefresh) {
-                                        mUserCoinAdapter.setNewData(mDataList);
-                                        mRefreshLayout.finishRefresh();
-                                    } else {
-                                        mUserCoinAdapter.addData(mDataList);
-                                        mUserCoinAdapter.loadMoreComplete();
+                                    entity.setAddress(address);
+                                    entity.setSymbol(symbol);
+                                    entity.setName(name);
+                                    entity.setLogo(logo);
+                                    entity.setDecimals(decimals);
+                                    entity.setTotalTransfers(totalTransfers);
+                                    entity.setTotalHolders(totalHolders);
+                                    entity.setBalance(balance);
+                                    entity.setTotalSupply(totalSupply);
+                                    entity.setCirculatingSupply(circulatingSupply);
+                                    mDataList.add(entity);
+                                }
+                                mMainActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (isRefresh) {
+                                            mUserCoinAdapter.setNewData(mDataList);
+                                            mRefreshLayout.finishRefresh();
+                                        } else {
+                                            mUserCoinAdapter.addData(mDataList);
+                                            mUserCoinAdapter.loadMoreComplete();
+                                        }
+                                        mCurrentPage += 1;
                                     }
-                                    mCurrentPage += 1;
-                                }
-                            });
-                        } else {
-                            mMainActivity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mUserCoinAdapter.loadMoreComplete();
-                                    mUserCoinAdapter.setEnableLoadMore(false);
-                                }
-                            });
+                                });
+                            } else {
+                                mMainActivity.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mUserCoinAdapter.loadMoreComplete();
+                                        mUserCoinAdapter.setEnableLoadMore(false);
+                                        mRefreshLayout.finishRefresh();
+                                    }
+                                });
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    } else {
+                        mMainActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mUserCoinAdapter.loadMoreComplete();
+                                mUserCoinAdapter.setEnableLoadMore(false);
+                                mRefreshLayout.finishRefresh();
+                            }
+                        });
                     }
                 }
             });
-            */
         } catch (IOException e) {
             e.printStackTrace();
         }

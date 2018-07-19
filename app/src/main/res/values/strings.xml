@@ -20,11 +20,12 @@
     <string name="tab_user_header_total_value">资产总市值: </string>
     <string name="tab_user_header_available">可用: </string>
     <string name="tab_user_header_task">任务凭证</string>
+    <string name="tab_user_header_get_coin_code">收币码</string>
     <string name="tag_user_header_trade">交易</string>
     <string name="tab_user_header_bill">账单</string>
     <string name="tab_user_header_right">权益交换</string>
     <string name="tab_user_header_right_fav">权益收藏</string>
-    <string name="tab_user_header_qrcode">收付码</string>
+    <string name="tab_user_header_qrcode">扫码</string>
     <string name="tab_user_header_market_value">市值(UC)</string>
     <string name="tab_user_header_number">持有量</string>
     <string name="tab_user_header_coin_name">资产名称</string>
@@ -125,4 +126,11 @@
     <string name="activity_create_coin_task_submit">提交</string>
     <string name="activity_coin_manage_title">我发的币</string>
     <string name="dialog_tip_uploading_image">请稍等,正在上传图片</string>
+    <string name="tag_user_header_create_coin">造币</string>
+    <string name="entity_user_coin_total_transfers">交易量:</string>
+    <string name="entity_user_coin_total_holders">持有人:</string>
+    <string name="activity_coin_manage_coin_total_supply">发行量</string>
+    <string name="activity_coin_manage_coin_intro">代币介绍</string>
+    <string name="activity_coin_manage_coin_product">代币权益</string>
+    <string name="activity_coin_manage_coin_task">获取代币</string>
 </resources>

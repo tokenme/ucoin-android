@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TextInputEditText;
@@ -67,9 +68,9 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     private CommonTitleBar mTitleBar;
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
     private HashMap<String, String> mUploadImageMaps = new HashMap<>();
-    private String mTokenAddress = "";
-    private String mTokenName = "";
-    private String mTokenLogo = "";
+    private String mCoinAddress = "";
+    private String mCoinName = "";
+    private String mCoinLogo = "";
     private AwesomeValidation mAwesomeValidation;
     private int mUploadedImagesNum = 0;
     final private int mImageLimit = 3;
@@ -166,7 +167,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
         JSONObject params = new JSONObject();
         mUploadedImagesNum = files.size();
         try {
-            params.put("token", mTokenAddress);
+            params.put("token", mCoinAddress);
             params.put("amount", mUploadImages.size());
             Api.request("uploadCoinProductImages", "POST", params, false,CreateCoinProductActivity.this, new Callback() {
                 @Override
@@ -226,8 +227,10 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                 }
             });
         } catch (IOException e) {
+            mUploadedImagesNum = 0;
             e.printStackTrace();
         } catch (JSONException e) {
+            mUploadedImagesNum = 0;
             e.printStackTrace();
         }
     }
@@ -288,7 +291,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
                         Logger.i(StringUtils.join(imagesStringArr, ","));
                         Date startDateObj = DTUtil.dateParse(startDate, DTUtil.DATE_PATTERN);
                         Date endDateObj = DTUtil.dateParse(endDate, DTUtil.DATE_PATTERN);
-                        params.put("token", mTokenAddress);
+                        params.put("token", mCoinAddress);
                         params.put("title", title);
                         params.put("desc", desc);
                         params.put("amount", Integer.valueOf(amount));
@@ -395,14 +398,17 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
 
     private void initView() {
         Intent intent = getIntent();
-        mTokenAddress = intent.getStringExtra("token_address");
-        mTokenName = intent.getStringExtra("token_name");
-        mTokenLogo = intent.getStringExtra("token_logo");
+        mCoinAddress = intent.getStringExtra("coin_address");
+        mCoinName = intent.getStringExtra("coin_name");
+        mCoinLogo = intent.getStringExtra("coin_logo");
         mAwesomeValidation = new AwesomeValidation(TEXT_INPUT_LAYOUT);
     }
 
     private void initTitleBar() {
         mTitleBar = findViewById(R.id.title_bar);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
+        }
         View leftCustomLayout = mTitleBar.getLeftCustomView();
         leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
             @Override

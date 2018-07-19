@@ -4,189 +4,74 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@color/colorGeneralBg">
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/tab_user_header_avatar"
-            android:layout_width="60dp"
-            android:layout_height="60dp" />
-        <TextView
-            android:id="@+id/tab_user_header_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorWhite"/>
+        android:gravity="center">
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+            android:orientation="vertical"
+            android:gravity="center">
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/tab_user_header_avatar"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+            <TextView
+                android:id="@+id/tab_user_header_user_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/tab_user_header_total_value"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="9,999UC"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_weight="0.2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/vertical_line"/>
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="@string/tab_user_header_available"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:text="1334UC"/>
-            </LinearLayout>
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorGeneralText"/>
         </LinearLayout>
-    </LinearLayout>
-    <android.support.v7.widget.GridLayout
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="-20dp"
+            android:layout_marginRight="20dp">
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:text="{faw-cog}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icon"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="30dp"
-        app:rowCount="2"
-        app:columnCount="3">
+        android:layout_marginBottom="30dp">
         <LinearLayout
-            android:layout_width="80dp"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"
+            android:id="@+id/tab_user_header_create_coin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
             app:layout_gravity="center">
             <com.mikepenz.iconics.view.IconicsTextView
-                android:text="{faw-exchange-alt}"
+                android:text="{faw-cogs}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/icon"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:textColor="@color/colorGeneralText"
-                android:text="@string/tag_user_header_trade"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="80dp"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_gravity="center">
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:text="{faw-tasks}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icon"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/colorGeneralText"
-                android:text="@string/tab_user_header_task"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="80dp"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_gravity="center">
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:text="{faw-stack-exchange}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icon"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/colorGeneralText"
-                android:text="@string/tab_user_header_right"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:layout_width="80dp"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_gravity="center">
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:text="{faw-file-alt}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icon"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/colorGeneralText"
-                android:text="@string/tab_user_header_bill"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:layout_width="80dp"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            app:layout_gravity="center">
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:text="{faw-star}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/icon"
-                android:textSize="16sp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/colorGeneralText"
-                android:text="@string/tab_user_header_right_fav"/>
+                android:textSize="12sp"
+                android:text="@string/tag_user_header_create_coin"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/tab_user_header_qrcode"
-            android:layout_marginTop="30dp"
-            android:layout_width="80dp"
-            app:layout_columnWeight="1"
-            app:layout_rowWeight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical"
             android:gravity="center"
             app:layout_gravity="center">
@@ -195,109 +80,67 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/icon"
-                android:textSize="16sp" />
+                android:textSize="20sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:textColor="@color/colorGeneralText"
+                android:textSize="12sp"
                 android:text="@string/tab_user_header_qrcode"/>
         </LinearLayout>
-    </android.support.v7.widget.GridLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_gravity="center">
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:text="{faw-money-check-alt}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icon"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/colorGeneralText"
+                android:textSize="12sp"
+                android:text="@string/tab_user_header_get_coin_code"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            app:layout_gravity="center">
+            <com.mikepenz.iconics.view.IconicsTextView
+                android:text="{faw-wallet}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/icon"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/colorGeneralText"
+                android:textSize="12sp"
+                android:text="@string/tab_change_coin_header_asset"/>
+        </LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="10dp"
-        android:orientation="vertical">
-        <android.support.v7.widget.GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@drawable/entity_coin_header_border"
-            app:rowCount="1"
-            app:columnCount="3">
-            <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorGeneralText"
-                    android:text="@string/tab_user_header_coin_name"/>
-                <com.mikepenz.iconics.view.IconicsTextView
-                    android:text="{faw-sort-down}"
-                    android:textColor="@color/colorGeneralText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="16sp" />
-            </LinearLayout>
-            <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorGeneralText"
-                    android:text="@string/tab_user_header_number"/>
-                <com.mikepenz.iconics.view.IconicsTextView
-                    android:text="{faw-sort-down}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:textColor="@color/colorGeneralText"
-                    android:textSize="16sp" />
-            </LinearLayout>
-            <LinearLayout
-                app:layout_columnWeight="1"
-                app:layout_rowWeight="1"
-                android:orientation="horizontal"
-                android:gravity="center">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorGeneralText"
-                    android:text="@string/tab_user_header_market_value"/>
-                <com.mikepenz.iconics.view.IconicsTextView
-                    android:text="{faw-sort-down}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:textColor="@color/colorGeneralText"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </android.support.v7.widget.GridLayout>
-        <LinearLayout
-            android:id="@+id/tab_user_header_go_to_create_coin"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
+        android:paddingLeft="10dp">
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:background="@drawable/entity_coin_border"
-            android:paddingVertical="16dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="@string/tab_user_header_no_coin_tip"/>
-            <com.mikepenz.iconics.view.IconicsTextView
-                android:text="{faw-plus-circle}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="20sp"
-                android:textColor="@color/icon" />
-            <TextView
-                android:id="@+id/tab_user_header_create_coin"
-                android:text="@string/tab_user_header_create_coin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="14sp"
-                android:textColor="@color/icon" />
-        </LinearLayout>
+            android:textSize="16sp"
+            android:textColor="@color/colorGeneralText"
+            android:text="我创建的代币"/>
     </LinearLayout>
 </LinearLayout>

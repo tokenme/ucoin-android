@@ -14,11 +14,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         titlebar:titleBarHeight="50dp"
+        titlebar:statusBarColor="@color/colorWhite"
         titlebar:showBottomLine="true"
         titlebar:centerType="searchView"
         titlebar:centerSearchRightType="delete"
-        titlebar:leftCustomView="@layout/view_find_title_bar_left"
         titlebar:leftType="customView"
+        titlebar:leftCustomView="@layout/view_find_title_bar_left"
         titlebar:rightCustomView="@layout/view_find_title_bar_right"
         titlebar:rightType="customView" />
     <FrameLayout

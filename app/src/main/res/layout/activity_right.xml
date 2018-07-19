@@ -28,11 +28,12 @@
         <com.scwang.smartrefresh.layout.header.ClassicsHeader
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:orientation="vertical"
             android:scrollbars="none"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,6 +297,6 @@
                         android:text="@string/activity_right_suggestion_title" />
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

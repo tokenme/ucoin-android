@@ -33,7 +33,7 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class CoinTaskFragment extends Fragment {
+public class CoinManageTaskFragment extends Fragment {
     private View mView;
     private View mFooterView;
     private View mNoDataView;
@@ -42,23 +42,26 @@ public class CoinTaskFragment extends Fragment {
     private BaseQuickAdapter mCoinTaskAdapter;
     private RecyclerView mRecyclerView;
     private int mCurrentPage = 0;
-    private String mTokenAddress;
+    private String mCoinAddress;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mCoinManageActivity = (CoinManageActivity) context;
         Bundle bundle = getArguments();
-        mTokenAddress = bundle.getString("token_address");
+        mCoinAddress = bundle.getString("coin_address");
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.tab_coin_task, container, false);
+        mView = inflater.inflate(R.layout.tab_coin_manage_task, container, false);
         mNoDataView = inflater.inflate(R.layout.view_rv_list_no_data, container, false);
 
         mRecyclerView = mView.findViewById(R.id.rv_coin_task_list);
+        mRecyclerView.setNestedScrollingEnabled(false);
+        mRecyclerView.setFocusableInTouchMode(false);
+        mRecyclerView.requestFocus();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mCoinManageActivity));
 
         mCoinTaskAdapter = new CoinTaskAdapter(R.layout.entity_coin_task, mDataList);
@@ -66,7 +69,7 @@ public class CoinTaskFragment extends Fragment {
         mCoinTaskAdapter.setEmptyView(loadingView);
 
         mRecyclerView.setAdapter(mCoinTaskAdapter);
-        mFooterView = inflater.inflate(R.layout.tab_coin_task_footer, container, false);
+        mFooterView = inflater.inflate(R.layout.tab_coin_manage_task_footer, container, false);
 
         try {
             getCoinTaskEntity(false);
@@ -95,7 +98,7 @@ public class CoinTaskFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mCoinManageActivity, CreateCoinTaskActivity.class);
-                intent.putExtra("token_address", mTokenAddress);
+                intent.putExtra("coin_address", mCoinAddress);
                 startActivityForResult(intent, 601);
             }
         });
@@ -129,7 +132,7 @@ public class CoinTaskFragment extends Fragment {
                 mCurrentPage = 0;
             }
             params.put("page", mCurrentPage);
-            params.put("token", mTokenAddress);
+            params.put("token", mCoinAddress);
             Api.request("getCoinTaskList", "GET", params, false, mCoinManageActivity, new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
