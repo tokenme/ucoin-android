@@ -9,19 +9,7 @@
     android:background="@android:color/white"
     tools:context=".activity.MainActivity">
 
-    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        titlebar:titleBarHeight="50dp"
-        titlebar:statusBarColor="@color/colorWhite"
-        titlebar:showBottomLine="true"
-        titlebar:centerType="searchView"
-        titlebar:centerSearchRightType="delete"
-        titlebar:leftType="customView"
-        titlebar:leftCustomView="@layout/view_find_title_bar_left"
-        titlebar:rightCustomView="@layout/view_find_title_bar_right"
-        titlebar:rightType="customView" />
+    <include layout="@layout/view_toolbar" />
     <FrameLayout
         android:id="@+id/id_content"
         android:layout_width="match_parent"
@@ -30,5 +18,5 @@
         tools:ignore="Suspicious0dp">
     </FrameLayout>
 
-    <include layout="@layout/view_navigation"/>
+    <include layout="@layout/view_navigation" />
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,7 +29,6 @@ import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.util.UiUtil;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,13 +44,14 @@ import okhttp3.Response;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
-    private CommonTitleBar mTitleBar;
     private CountryCodePicker mCcp;
     private boolean mIsSendingVerifyCode = false;
     private AwesomeValidation mAwesomeValidation;
     private int mCounter = 60;
+
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,16 +262,14 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initTitleBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+        mToolbar = findViewById(R.id.view_toolbar);
+        TextView textView = mToolbar.findViewById(R.id.view_toolbar_title);
+        textView.setText("注册");
+        setSupportActionBar(mToolbar);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
-        mTitleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 }

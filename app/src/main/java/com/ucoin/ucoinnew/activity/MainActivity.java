@@ -8,16 +8,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.hbb20.CountryCodePicker;
-import com.orhanobut.logger.Logger;
+import com.jaeger.library.StatusBarUtil;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.fragment.ChangeCoinFragment;
 import com.ucoin.ucoinnew.fragment.FindFragment;
@@ -27,10 +29,8 @@ import com.ucoin.ucoinnew.fragment.UserFragment;
 import com.mikepenz.iconics.view.IconicsTextView;
 import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.Util;
-import com.wuhenzhizao.titlebar.statusbar.StatusBarUtils;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private LinearLayout mTabFind;
     private LinearLayout mTabGetCoin;
@@ -54,9 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private long mExitTime = 0;
 
-    private int mTitleBarHeight = 0;
-    private CommonTitleBar mTitleBar;
-    private LinearLayout mNavigationFooter;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.tab_user:
                 if ( ! Util.checkUserToken()) {
-                    iconActive(0);
                     startActivity(new Intent(this, LoginActivity.class));
                 } else {
                     selectTab(3);
@@ -124,23 +121,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initTabEvents();
     }
 
+    @SuppressLint("ResourceAsColor")
     private void initTitleBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+        mToolbar = findViewById(R.id.view_toolbar);
+        TextView textView = mToolbar.findViewById(R.id.view_toolbar_title);
+        textView.setText("Ucoin");
+        setSupportActionBar(mToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
-        mTitleBar = findViewById(R.id.title_bar);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
-        }
-
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.find_title_bar_scan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ScanQrcodeActivity.class));
-            }
-        });
-
     }
 
     private void initTabEvents() {
@@ -151,12 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initTabViews() {
-        int softKeyHeight = UiUtil.getNavigationBarHeight(MainActivity.this);
-        if (softKeyHeight > 0) {
-            mNavigationFooter = findViewById(R.id.navigation_footer);
-            UiUtil.setMargins(mNavigationFooter, 0, 0, 0, softKeyHeight);
-        }
-
         mTabFind = findViewById(R.id.tab_find);
         mTabGetCoin = findViewById(R.id.tab_get_coin);
         mTabChangeCoin = findViewById(R.id.tab_change_coin);
@@ -181,12 +166,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         FragmentTransaction transaction = manager.beginTransaction();
         hideFragments(transaction);
         iconActive(i);
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mTitleBar.getLayoutParams();
-        if (mTitleBarHeight > 0) {
-            layoutParams.height = mTitleBarHeight;
-        }
         switch (i) {
             case 0:
+                showToolbar(true);
                 if (mFragFind == null) {
                     mFragFind = new FindFragment();
                     transaction.add(R.id.id_content, mFragFind);
@@ -195,6 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 1:
+                showToolbar(true);
                 if (mFragGetCoin == null) {
                     mFragGetCoin = new GetCoinFragment();
                     transaction.add(R.id.id_content, mFragGetCoin);
@@ -203,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 2:
+                showToolbar(true);
                 if (mFragChangeCoin == null) {
                     mFragChangeCoin = new ChangeCoinFragment();
                     transaction.add(R.id.id_content, mFragChangeCoin);
@@ -211,10 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
             case 3:
-                if (mTitleBarHeight == 0) {
-                    mTitleBarHeight = mTitleBar.getHeight();
-                }
-                layoutParams.height = StatusBarUtils.getStatusBarHeight(MainActivity.this);
+                showToolbar(false);
                 if (mFragUser == null) {
                     mFragUser = new UserFragment();
                     transaction.add(R.id.id_content, mFragUser);
@@ -223,8 +204,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
-        mTitleBar.setLayoutParams(layoutParams);
         transaction.commitAllowingStateLoss();
+    }
+
+    private void showToolbar(boolean isShow) {
+        RelativeLayout toolbarParent = (RelativeLayout) mToolbar.getParent();
+        if (isShow) {
+            toolbarParent.setVisibility(View.VISIBLE);
+        } else {
+            toolbarParent.setVisibility(View.GONE);
+        }
     }
 
     private void resetIcons() {

@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.basgeekball.awesomevalidation.AwesomeValidation;
@@ -18,7 +20,6 @@ import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.Util;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,11 +32,12 @@ import okhttp3.Response;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
-    private CommonTitleBar mTitleBar;
     private CountryCodePicker mCcp;
     private AwesomeValidation mAwesomeValidation;
+
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,16 +146,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initTitleBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
+        mToolbar = findViewById(R.id.view_toolbar);
+        TextView textView = mToolbar.findViewById(R.id.view_toolbar_title);
+        textView.setText("登录");
+        setSupportActionBar(mToolbar);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
-        mTitleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 }

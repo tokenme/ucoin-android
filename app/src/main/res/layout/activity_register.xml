@@ -5,18 +5,11 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true">
 
-    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleBarHeight="50dp"
-        app:showBottomLine="true"
-        app:centerType="textView"
-        app:centerText="@string/activity_register"
-        app:leftCustomView="@layout/view_title_bar_left_back"
-        app:leftType="customView" />
+    <include layout="@layout/view_toolbar" />
     <android.support.v4.widget.NestedScrollView
         android:orientation="vertical"
         android:scrollbars="none"

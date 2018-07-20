@@ -13,7 +13,7 @@ import com.ucoin.ucoinnew.R;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
-public class ScanQrcodeActivity extends AppCompatActivity implements QRCodeView.Delegate {
+public class ScanQrcodeActivity extends BaseActivity implements QRCodeView.Delegate {
 
     private QRCodeView mQRCodeView;
 

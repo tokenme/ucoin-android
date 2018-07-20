@@ -18,11 +18,9 @@ import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.Util;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class RightActivity extends AppCompatActivity {
+public class RightActivity extends BaseActivity {
 
-    private CommonTitleBar mTitleBar;
     private Intent intent;
 
     @Override
@@ -153,16 +151,5 @@ public class RightActivity extends AppCompatActivity {
     }
 
     private void initTitleBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        mTitleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 }

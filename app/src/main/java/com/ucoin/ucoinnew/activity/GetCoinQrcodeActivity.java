@@ -5,11 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.ucoin.ucoinnew.R;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class GetCoinQrcodeActivity extends AppCompatActivity {
-
-    private CommonTitleBar mTitleBar;
+public class GetCoinQrcodeActivity extends BaseActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,17 +21,6 @@ public class GetCoinQrcodeActivity extends AppCompatActivity {
     }
 
     private void initTitleBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        mTitleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     private void initView() {

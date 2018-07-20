@@ -133,4 +133,6 @@
     <string name="activity_coin_manage_coin_intro">代币介绍</string>
     <string name="activity_coin_manage_coin_product">代币权益</string>
     <string name="activity_coin_manage_coin_task">获取代币</string>
+    <string name="tab_coin_manage_intro_add_button">去添加</string>
+    <string name="coin_manage_intro_add_tip">您还没有添加代币描述</string>
 </resources>

@@ -35,7 +35,6 @@ import okhttp3.Response;
 
 public class CoinManageTaskFragment extends Fragment {
     private View mView;
-    private View mFooterView;
     private View mNoDataView;
     private CoinManageActivity mCoinManageActivity;
     private ArrayList<CoinTaskEntity> mDataList;
@@ -69,7 +68,6 @@ public class CoinManageTaskFragment extends Fragment {
         mCoinTaskAdapter.setEmptyView(loadingView);
 
         mRecyclerView.setAdapter(mCoinTaskAdapter);
-        mFooterView = inflater.inflate(R.layout.tab_coin_manage_task_footer, container, false);
 
         try {
             getCoinTaskEntity(false);
@@ -94,7 +92,7 @@ public class CoinManageTaskFragment extends Fragment {
             }
         });
 
-        mFooterView.setOnClickListener(new View.OnClickListener() {
+        mView.findViewById(R.id.tab_coin_manage_task_add).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mCoinManageActivity, CreateCoinTaskActivity.class);
@@ -178,9 +176,6 @@ public class CoinManageTaskFragment extends Fragment {
                                             mCoinTaskAdapter.addData(mDataList);
                                             mCoinTaskAdapter.loadMoreComplete();
                                         }
-                                        if (mCurrentPage == 0 && mFooterView.getParent() == null) {
-                                            mCoinTaskAdapter.addFooterView(mFooterView);
-                                        }
                                         mCurrentPage += 1;
                                     }
                                 });
@@ -188,10 +183,7 @@ public class CoinManageTaskFragment extends Fragment {
                                 mCoinManageActivity.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (mFooterView.getParent() == null) {
-                                            mCoinTaskAdapter.setEmptyView(mFooterView);
-                                        }
-                                        // mCoinTaskAdapter.setEmptyView(mNoDataView);
+                                        mCoinTaskAdapter.setEmptyView(mNoDataView);
                                         mCoinTaskAdapter.loadMoreEnd();
                                         mCoinTaskAdapter.setEnableLoadMore(false);
                                     }
@@ -201,9 +193,7 @@ public class CoinManageTaskFragment extends Fragment {
                             mCoinManageActivity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (mFooterView.getParent() == null) {
-                                        mCoinTaskAdapter.setEmptyView(mFooterView);
-                                    }
+                                    mCoinTaskAdapter.setEmptyView(mNoDataView);
                                     mCoinTaskAdapter.loadMoreEnd();
                                 }
                             });
@@ -213,9 +203,7 @@ public class CoinManageTaskFragment extends Fragment {
                         mCoinManageActivity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (mFooterView.getParent() == null) {
-                                    mCoinTaskAdapter.setEmptyView(mFooterView);
-                                }
+                                mCoinTaskAdapter.setEmptyView(mNoDataView);
                                 mCoinTaskAdapter.loadMoreEnd();
                             }
                         });

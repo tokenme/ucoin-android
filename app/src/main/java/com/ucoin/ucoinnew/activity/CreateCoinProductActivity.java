@@ -4,16 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,9 +29,15 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.jph.takephoto.app.TakePhoto;
 import com.jph.takephoto.app.TakePhotoActivity;
+import com.jph.takephoto.app.TakePhotoImpl;
 import com.jph.takephoto.compress.CompressConfig;
+import com.jph.takephoto.model.InvokeParam;
+import com.jph.takephoto.model.TContextWrap;
 import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
+import com.jph.takephoto.permission.InvokeListener;
+import com.jph.takephoto.permission.PermissionManager;
+import com.jph.takephoto.permission.TakePhotoInvocationHandler;
 import com.orhanobut.logger.Logger;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.Configuration;
@@ -41,7 +48,6 @@ import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.api.Api;
 import com.ucoin.ucoinnew.util.UiUtil;
 import com.ucoin.ucoinnew.util.DTUtil;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,11 +69,12 @@ import okhttp3.Response;
 
 import static com.basgeekball.awesomevalidation.ValidationStyle.TEXT_INPUT_LAYOUT;
 
-public class CreateCoinProductActivity extends TakePhotoActivity {
+public class CreateCoinProductActivity extends BaseActivity implements TakePhoto.TakeResultListener,InvokeListener {
 
-    private CommonTitleBar mTitleBar;
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
     private HashMap<String, String> mUploadImageMaps = new HashMap<>();
+    private TakePhoto mTakePhoto;
+    private InvokeParam mInvokeParam;
     private String mCoinAddress = "";
     private String mCoinName = "";
     private String mCoinLogo = "";
@@ -75,20 +82,48 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     private int mUploadedImagesNum = 0;
     final private int mImageLimit = 3;
 
+    private Toolbar mToolbar;
+
     @Override
-    public void takeCancel() {
-        super.takeCancel();
+    protected void onSaveInstanceState(Bundle outState) {
+        getTakePhoto().onSaveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        getTakePhoto().onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.TPermissionType type = PermissionManager.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionManager.handlePermissionsResult(CreateCoinProductActivity.this, type, mInvokeParam,CreateCoinProductActivity.this);
+    }
+
+    @Override
+    public PermissionManager.TPermissionType invoke(InvokeParam invokeParam) {
+        PermissionManager.TPermissionType type = PermissionManager.checkPermission(TContextWrap.of(CreateCoinProductActivity.this),invokeParam.getMethod());
+        if(PermissionManager.TPermissionType.WAIT.equals(type)){
+            CreateCoinProductActivity.this.mInvokeParam = invokeParam;
+        }
+        return type;
     }
 
     @Override
     public void takeFail(TResult result, String msg) {
-        super.takeFail(result, msg);
+
+    }
+
+    @Override
+    public void takeCancel() {
+
     }
 
     @SuppressLint("ResourceType")
     @Override
     public void takeSuccess(TResult result) {
-        super.takeSuccess(result);
         ArrayList<TImage> tmpImages = new ArrayList<>();
         tmpImages = result.getImages();
         if (tmpImages.size() > 0) {
@@ -151,6 +186,7 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getTakePhoto().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_coin_product);
         init();
@@ -161,6 +197,13 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
         initTakePhoto();
         initView();
         initClick();
+    }
+
+    public TakePhoto getTakePhoto() {
+        if (mTakePhoto == null){
+            mTakePhoto = (TakePhoto) TakePhotoInvocationHandler.of(this).bind(new TakePhotoImpl(this,this));
+        }
+        return mTakePhoto;
     }
 
     private void uploadImages(final List<File> files) {
@@ -405,17 +448,15 @@ public class CreateCoinProductActivity extends TakePhotoActivity {
     }
 
     private void initTitleBar() {
-        mTitleBar = findViewById(R.id.title_bar);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
+        mToolbar = findViewById(R.id.view_toolbar);
+        TextView textView = mToolbar.findViewById(R.id.view_toolbar_title);
+        textView.setText("新建权益");
+        setSupportActionBar(mToolbar);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
         }
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     private void initTakePhoto() {

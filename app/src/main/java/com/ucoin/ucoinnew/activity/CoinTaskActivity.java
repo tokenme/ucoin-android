@@ -20,11 +20,9 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.orhanobut.logger.Logger;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.util.UiUtil;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
-public class CoinTaskActivity extends AppCompatActivity {
+public class CoinTaskActivity extends BaseActivity {
 
-    private CommonTitleBar mTitleBar;
     private Intent mIntent;
 
     @Override
@@ -125,16 +123,5 @@ public class CoinTaskActivity extends AppCompatActivity {
     }
 
     private void initTitleBar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
-        mTitleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 }

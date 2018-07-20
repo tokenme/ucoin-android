@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="介绍"/>
+        android:gravity="center">
+        <TextView
+            android:id="@+id/tab_coin_manage_intro_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorGeneralText" />
+        <Button
+            android:id="@+id/tab_coin_manage_intro_desc_add"
+            android:layout_width="60dp"
+            android:layout_height="26dp"
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:text="@string/tab_coin_manage_intro_add_button"
+            android:textColor="@color/colorWhite"
+            android:textSize="12sp"
+            android:background="@drawable/tab_coin_manage_intro_button_border_radius"/>
+    </LinearLayout>
 </LinearLayout>

@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -23,15 +24,15 @@ import com.ucoin.ucoinnew.fragment.CoinManageProductFragment;
 import com.ucoin.ucoinnew.fragment.CoinManageTaskFragment;
 import com.ucoin.ucoinnew.fragment.CoinManageIntroFragment;
 import com.ucoin.ucoinnew.util.UiUtil;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-public class CoinManageActivity extends AppCompatActivity implements View.OnClickListener {
+public class CoinManageActivity extends BaseActivity implements View.OnClickListener {
 
     private String mCoinAddress = "";
     private String mCoinSymbol = "";
     private String mCoinName = "";
     private String mCoinLogo = "";
+    private String mCoinDesc = "";
     private int mCoinTotalSupply = 0;
     private int mCoinTotalHolders = 0;
     private int mCoinDecimals = 0;
@@ -50,7 +51,7 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
     private Fragment mFragCoinTask;
     private Fragment mFragCoinProduct;
 
-    private CommonTitleBar mTitleBar;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +96,19 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         initTabEvents();
     }
 
+    private void initTitleBar() {
+        mToolbar = findViewById(R.id.view_toolbar);
+        TextView textView = mToolbar.findViewById(R.id.view_toolbar_title);
+        textView.setText(mCoinName);
+        setSupportActionBar(mToolbar);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+        findViewById(R.id.view_toolbar_bottom_line).setVisibility(View.GONE);
+    }
+
     private void initTabEvents() {
         mTabCoinIntro.setOnClickListener(this);
         mTabCoinTask.setOnClickListener(this);
@@ -119,10 +133,11 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         mCoinAddress = intent.getStringExtra("coin_address");
         mCoinSymbol = intent.getStringExtra("coin_symbol");
         mCoinName = intent.getStringExtra("coin_name");
+        mCoinDesc = intent.getStringExtra("coin_desc");
         mCoinLogo = intent.getStringExtra("coin_logo");
         mCoinTotalTransfers = intent.getDoubleExtra("coin_total_transfers", 0.0);
         mCoinTotalSupply = intent.getIntExtra("coin_total_supply", 0);
-        mCoinTotalHolders = intent.getIntExtra("coin_total_holders", 0);
+        mCoinTotalHolders = intent.getIntExtra("coin_total_holders", 1);
         mCoinDecimals = intent.getIntExtra("coin_decimals", 0);
         mCoinCirculatingSupply = intent.getIntExtra("coin_circulating_supply", 0);
         if (!TextUtils.isEmpty(mCoinLogo)) {
@@ -145,7 +160,7 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
             coinTotalSupplyView.setText(String.valueOf(mCoinTotalSupply));
         }
         TextView coinTotalHoldersView = findViewById(R.id.activity_coin_manage_coin_total_holders);
-        coinTotalHoldersView.setText(String.valueOf(mCoinTotalHolders));
+        coinTotalHoldersView.setText(String.valueOf(mCoinTotalHolders + 1));
         TextView coinCirculatingSupplyView = findViewById(R.id.activity_coin_manage_coin_circulating_supply);
         coinCirculatingSupplyView.setText(String.valueOf(mCoinCirculatingSupply));
         TextView coinTotalTransfersView = findViewById(R.id.activity_coin_manage_coin_total_transfers);
@@ -159,6 +174,7 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         hideFragments(transaction);
         Bundle bundle = new Bundle();
         bundle.putString("coin_address", mCoinAddress);
+        bundle.putString("coin_desc", mCoinDesc);
         tabColor(i);
         switch (i) {
             case 0:
@@ -229,16 +245,6 @@ public class CoinManageActivity extends AppCompatActivity implements View.OnClic
         }
         if (mFragCoinIntro != null) {
             transaction.hide(mFragCoinIntro);
-        }
-    }
-
-    private void initTitleBar() {
-        mTitleBar = findViewById(R.id.title_bar);
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mTitleBar.setStatusBarColor(getResources().getColor(R.color.colorGeneralBg));
-        }
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
         }
     }
 }

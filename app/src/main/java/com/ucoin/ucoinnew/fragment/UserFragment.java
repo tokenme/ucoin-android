@@ -128,11 +128,13 @@ public class UserFragment extends Fragment {
                 String symbol = uce.getSymbol();
                 String name = uce.getName();
                 String logo = uce.getLogo();
+                String desc = uce.getDesc();
                 int decimals = uce.getDecimals();
                 int totalSupply = uce.getTotalSupply();
                 int totalHolders = uce.getTotalHolders();
                 Double totalTransfers = uce.getTotalTransfers();
                 intent.putExtra("coin_name", name);
+                intent.putExtra("coin_desc", desc);
                 intent.putExtra("coin_symbol", symbol);
                 intent.putExtra("coin_address", address);
                 intent.putExtra("coin_logo", logo);
@@ -271,6 +273,7 @@ public class UserFragment extends Fragment {
                                     String address = e.optString("address");
                                     String symbol = e.optString("symbol");
                                     String name = e.optString("name");
+                                    String desc = e.optString("desc");
                                     String logo = e.optString("logo");
                                     int decimals = e.optInt("decimals");
                                     int totalHolders = e.optInt("total_holders");
@@ -285,6 +288,7 @@ public class UserFragment extends Fragment {
                                     entity.setAddress(address);
                                     entity.setSymbol(symbol);
                                     entity.setName(name);
+                                    entity.setDesc(desc);
                                     entity.setLogo(logo);
                                     entity.setDecimals(decimals);
                                     entity.setTotalTransfers(totalTransfers);

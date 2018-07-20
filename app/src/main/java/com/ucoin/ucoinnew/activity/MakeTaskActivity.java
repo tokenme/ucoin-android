@@ -25,14 +25,12 @@ import com.jph.takephoto.model.TImage;
 import com.jph.takephoto.model.TResult;
 import com.ucoin.ucoinnew.R;
 import com.ucoin.ucoinnew.util.UiUtil;
-import com.wuhenzhizao.titlebar.widget.CommonTitleBar;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class MakeTaskActivity extends TakePhotoActivity {
 
-    private CommonTitleBar mTitleBar;
     private ArrayList<TImage> mUploadImages = new ArrayList<>();
     final private int sImageLimit = 6;
 
@@ -117,14 +115,6 @@ public class MakeTaskActivity extends TakePhotoActivity {
     }
 
     private void initTitleBar() {
-        mTitleBar = findViewById(R.id.title_bar);
-        View leftCustomLayout = mTitleBar.getLeftCustomView();
-        leftCustomLayout.findViewById(R.id.title_bar_left_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
     }
 
     private void initView() {

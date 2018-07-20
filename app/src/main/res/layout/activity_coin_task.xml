@@ -7,17 +7,6 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
-        android:id="@+id/title_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleBarHeight="50dp"
-        app:showBottomLine="true"
-        app:centerType="textView"
-        app:centerText="@string/activity_coin_task_title"
-        app:leftCustomView="@layout/view_title_bar_left_back"
-        app:leftType="customView" />
-
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"

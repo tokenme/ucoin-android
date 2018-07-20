@@ -35,7 +35,6 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     implementation 'com.facebook.fresco:fresco:1.9.0'
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-    implementation 'com.wuhenzhizao:titlebar:1.0.8'
     implementation "com.mikepenz:iconics-core:3.0.4@aar"
     implementation "com.mikepenz:iconics-views:3.0.4@aar"
     implementation 'com.mikepenz:fontawesome-typeface:5.0.13.0@aar'
@@ -45,5 +44,6 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.qiniu:qiniu-android-sdk:7.3.+'
     implementation 'com.hbb20:ccp:2.2.2'
+    implementation 'com.jaeger.statusbarutil:library:1.4.0'
     implementation 'com.basgeekball:awesome-validation:4.1'
 }

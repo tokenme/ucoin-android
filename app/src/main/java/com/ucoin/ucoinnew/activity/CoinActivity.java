@@ -15,7 +15,7 @@ import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.ucoin.ucoinnew.R;
 
-public class CoinActivity extends AppCompatActivity {
+public class CoinActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

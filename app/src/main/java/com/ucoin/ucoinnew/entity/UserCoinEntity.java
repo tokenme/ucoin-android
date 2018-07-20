@@ -4,6 +4,7 @@ public class UserCoinEntity {
     private String mAddress;
     private String mOwner;
     private String mName;
+    private String mDesc;
     private String mSymbol;
     private Double mInitialSupply;
     private Double mTotalTransfers;
@@ -38,6 +39,14 @@ public class UserCoinEntity {
 
     public void setName(String name) {
         this.mName = name;
+    }
+
+    public String getDesc() {
+        return mDesc;
+    }
+
+    public void setDesc(String desc) {
+        this.mDesc = desc;
     }
 
     public String getSymbol() {
