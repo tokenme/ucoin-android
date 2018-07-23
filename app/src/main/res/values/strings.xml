@@ -135,4 +135,11 @@
     <string name="activity_coin_manage_coin_task">获取代币</string>
     <string name="tab_coin_manage_intro_add_button">去添加</string>
     <string name="coin_manage_intro_add_tip">您还没有添加代币描述</string>
+    <string name="entity_coin_task_date_range">有效期:</string>
+    <string name="entity_coin_task_bonus">奖励代币</string>
+    <string name="entity_coin_task_amount">人数限制</string>
+    <string name="entity_coin_product_date_range">有效期:</string>
+    <string name="entity_coin_product_price">消耗代币</string>
+    <string name="entity_coin_product_amount">限制人数</string>
+    <string name="entity_coin_product_sales">销量</string>
 </resources>

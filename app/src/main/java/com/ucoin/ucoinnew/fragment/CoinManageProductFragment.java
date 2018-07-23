@@ -80,6 +80,20 @@ public class CoinManageProductFragment extends Fragment {
     }
 
     private void click() {
+        mCoinProductAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                CoinProductEntity fe = (CoinProductEntity) adapter.getItem(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", fe.getTitle());
+                bundle.putString("desc", fe.getDesc());
+                bundle.putString("start_date", fe.getStartDate());
+                bundle.putString("end_date", fe.getEndDate());
+                bundle.putInt("price", fe.getPrice());
+                bundle.putInt("amount", fe.getAmount());
+            }
+        });
+        /*
         mCoinProductAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
             @Override
             public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
@@ -90,6 +104,7 @@ public class CoinManageProductFragment extends Fragment {
                 }
             }
         });
+        */
 
         mView.findViewById(R.id.tab_coin_manage_product_add).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,13 +167,15 @@ public class CoinManageProductFragment extends Fragment {
                                     String desc = e.optString("desc");
                                     String startDate = e.optString("start_date");
                                     String endDate = e.optString("end_date");
+                                    int totalSupply = e.optInt("total_supply");
                                     int price = e.optInt("price");
-                                    Double amount = e.optDouble("amount");
+                                    int amount = e.optInt("amount");
                                     JSONArray images = e.optJSONArray("images");
                                     entity.setTitle(title);
                                     entity.setDesc(desc);
                                     entity.setStartDate(startDate);
                                     entity.setEndDate(endDate);
+                                    entity.setTotalSupply(totalSupply);
                                     entity.setPrice(price);
                                     entity.setAmount(amount);
                                     entity.setImages(images);

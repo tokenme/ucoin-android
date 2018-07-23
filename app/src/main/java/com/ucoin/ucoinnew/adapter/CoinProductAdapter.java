@@ -18,6 +18,7 @@ import com.ucoin.ucoinnew.entity.CoinEntity;
 import com.ucoin.ucoinnew.entity.CoinProductEntity;
 import com.ucoin.ucoinnew.util.DTUtil;
 import com.ucoin.ucoinnew.util.UiUtil;
+import com.ucoin.ucoinnew.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,9 +37,9 @@ public class CoinProductAdapter extends BaseQuickAdapter<CoinProductEntity, Base
     @Override
     protected void convert(BaseViewHolder helper, CoinProductEntity entity) {
         helper.setText(R.id.entity_coin_product_title, entity.getTitle());
-        helper.setText(R.id.entity_coin_product_desc, entity.getDesc());
         helper.setText(R.id.entity_coin_product_price, String.valueOf(entity.getPrice()));
         helper.setText(R.id.entity_coin_product_amount, String.valueOf(entity.getAmount()));
+        helper.setText(R.id.entity_coin_product_total_supply, String.valueOf(entity.getmTotalSupply()));
 
         String startDateStr = entity.getStartDate();
         String endDateStr = entity.getEndDate();
@@ -66,7 +67,7 @@ public class CoinProductAdapter extends BaseQuickAdapter<CoinProductEntity, Base
 
                     GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
 
-                    int w = (int) Math.round(screenWidth / 4);
+                    int w = (int) Math.round(screenWidth / 3) - 18;
                     layoutParams.width = Integer.valueOf(w);
                     layoutParams.height = layoutParams.width;
                     picView.setLayoutParams(layoutParams);

@@ -34,7 +34,6 @@ public class CoinTaskAdapter extends BaseQuickAdapter<CoinTaskEntity, BaseViewHo
     @Override
     protected void convert(BaseViewHolder helper, CoinTaskEntity entity) {
         helper.setText(R.id.entity_coin_task_title, entity.getTitle());
-        helper.setText(R.id.entity_coin_task_desc, entity.getDesc());
         helper.setText(R.id.entity_coin_task_bonus, String.valueOf(entity.getBonus()));
         helper.setText(R.id.entity_coin_task_amount, String.valueOf(entity.getAmount()));
 
@@ -64,7 +63,7 @@ public class CoinTaskAdapter extends BaseQuickAdapter<CoinTaskEntity, BaseViewHo
 
                     GridLayout.LayoutParams layoutParams = new GridLayout.LayoutParams();
 
-                    int w = (int) Math.round(screenWidth / 4);
+                    int w = (int) Math.round(screenWidth / 3) - 18;
                     layoutParams.width = Integer.valueOf(w);
                     layoutParams.height = layoutParams.width;
                     picView.setLayoutParams(layoutParams);

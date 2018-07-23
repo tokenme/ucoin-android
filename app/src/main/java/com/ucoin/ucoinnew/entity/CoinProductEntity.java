@@ -9,8 +9,9 @@ public class CoinProductEntity {
     private String mDesc;
     private String mStartDate;
     private String mEndDate;
+    private int mTotalSupply;
     private int mPrice;
-    private Double mAmount;
+    private int mAmount;
     private JSONArray mImages;
     private Class<?> mActivity;
 
@@ -54,11 +55,19 @@ public class CoinProductEntity {
         this.mPrice = price;
     }
 
-    public Double getAmount() {
+    public int getmTotalSupply() {
+        return mTotalSupply;
+    }
+
+    public void setTotalSupply(int totalSupply) {
+        this.mTotalSupply = totalSupply;
+    }
+
+    public int getAmount() {
         return mAmount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(int amount) {
         this.mAmount = amount;
     }
 

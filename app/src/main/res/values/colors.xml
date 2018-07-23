@@ -21,6 +21,7 @@
     <color name="colorGeneralCommentBg">#F2F2F2</color>
     <color name="colorGeneralBg">#999999</color>
     <color name="colorGeneralText">#333333</color>
+    <color name="colorGeneralTextLight">#DDDDDD</color>
     <color name="colorFormLabel">#9E9E9E</color>
     <color name="colorEntityUserCoinSymbol">#afafaf</color>
     <color name="colorEntityUserCoinTotal">#555555</color>
